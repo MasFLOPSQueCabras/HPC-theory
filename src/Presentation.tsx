@@ -39,9 +39,9 @@ export function Presentation() {
           hash: true,
           transition: 'slide',
           width: 1200,
-          height: 700,
-          margin: 0.03,
-          minScale: 0.1,
+          height: 750,
+          margin: 0.04,
+          minScale: 0.05,
           maxScale: 3.0,
           mobileViewDistance: 4,
         }}

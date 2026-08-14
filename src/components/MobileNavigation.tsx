@@ -5,7 +5,7 @@ interface MobileNavigationProps {
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) => {
-  const [slideInfo, setSlideInfo] = useState({ current: 1, total: 1 });
+  const [slideText, setSlideText] = useState<string>('1 / 1');
   const [routes, setRoutes] = useState({ left: false, right: false, up: false, down: false });
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
 
@@ -14,15 +14,24 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
 
     const updateState = () => {
       try {
-        const pastCount = typeof reveal.getSlidePastCount === 'function' ? reveal.getSlidePastCount() : 0;
-        const total = typeof reveal.getTotalSlides === 'function' ? reveal.getTotalSlides() : 1;
+        let current = 1;
+        let total = 1;
+
+        if (typeof reveal.getSlidePastCount === 'function' && typeof reveal.getTotalSlides === 'function') {
+          const past = reveal.getSlidePastCount();
+          const tot = reveal.getTotalSlides();
+          if (typeof past === 'number' && typeof tot === 'number' && tot > 0) {
+            current = past + 1;
+            total = tot;
+          }
+        }
+
+        // Check if Reveal DOM slide-number has text
+        const domSlideNumber = document.querySelector('.reveal .slide-number');
+        const formatted = domSlideNumber?.textContent?.trim() || `${current} / ${total}`;
+        setSlideText(formatted);
+
         const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-
-        setSlideInfo({
-          current: pastCount + 1,
-          total: total || 1,
-        });
-
         setRoutes({
           left: !!available.left,
           right: !!available.right,
@@ -30,16 +39,20 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
           down: !!available.down,
         });
       } catch (err) {
-        console.error('Error updating reveal state:', err);
+        console.error('Error updating reveal mobile state:', err);
       }
     };
 
     updateState();
+
     if (typeof reveal.on === 'function') {
+      reveal.on('ready', updateState);
       reveal.on('slidechanged', updateState);
+      reveal.on('fragmentshown', updateState);
+      reveal.on('fragmenthidden', updateState);
     }
 
-    // Global Mobile Swipe Handler for seamless portrait & landscape navigation
+    // Global Mobile Swipe Handler for seamless portrait navigation
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         touchStartRef.current = {
@@ -60,29 +73,39 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
       const absX = Math.abs(deltaX);
       const absY = Math.abs(deltaY);
 
-      // Require minimum swipe distance (30px) and fast enough gesture (< 650ms)
-      if (deltaTime < 650 && (absX > 30 || absY > 30)) {
+      // Require minimum swipe distance (25px) and fast enough gesture (< 700ms)
+      if (deltaTime < 700 && (absX > 25 || absY > 25)) {
         if (absX > absY) {
           // Horizontal Swipe
-          if (deltaX < -30) {
-            // Swipe Left -> Next slide
-            reveal.next();
-          } else if (deltaX > 30) {
-            // Swipe Right -> Prev slide
-            reveal.prev();
-          }
-        } else {
-          // Vertical Swipe
-          if (deltaY < -30) {
-            // Swipe Up -> Down in stack or next
+          if (deltaX < -25) {
+            // Swipe Left -> Next
             const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
             if (available.down) {
               reveal.down();
             } else {
               reveal.next();
             }
-          } else if (deltaY > 30) {
-            // Swipe Down -> Up in stack or prev
+          } else if (deltaX > 25) {
+            // Swipe Right -> Prev
+            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
+            if (available.up) {
+              reveal.up();
+            } else {
+              reveal.prev();
+            }
+          }
+        } else {
+          // Vertical Swipe
+          if (deltaY < -25) {
+            // Swipe Up -> Down into vertical sub-slide or next
+            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
+            if (available.down) {
+              reveal.down();
+            } else {
+              reveal.next();
+            }
+          } else if (deltaY > 25) {
+            // Swipe Down -> Up in vertical stack or prev
             const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
             if (available.up) {
               reveal.up();
@@ -99,9 +122,16 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
+    // Periodic safety check to ensure slide number is always synced
+    const interval = setInterval(updateState, 500);
+
     return () => {
+      clearInterval(interval);
       if (typeof reveal.off === 'function') {
+        reveal.off('ready', updateState);
         reveal.off('slidechanged', updateState);
+        reveal.off('fragmentshown', updateState);
+        reveal.off('fragmenthidden', updateState);
       }
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
@@ -116,7 +146,14 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
         {/* Previous Button */}
         <button
           type="button"
-          onClick={() => reveal.prev()}
+          onClick={() => {
+            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
+            if (available.up) {
+              reveal.up();
+            } else {
+              reveal.prev();
+            }
+          }}
           className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#151a27] border border-[#232a3d] text-slate-200 hover:text-white hover:border-[#e6ff00]/40 text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation"
           aria-label="Diapositiva anterior"
         >
@@ -137,8 +174,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
             </button>
           )}
 
-          <span className="text-slate-300 font-bold px-2 py-0.5 rounded bg-[#07080c] border border-[#232a3d] text-[11px]">
-            {slideInfo.current} / {slideInfo.total}
+          <span className="text-[#e6ff00] font-bold px-2 py-0.5 rounded bg-[#07080c] border border-[#232a3d] text-[11px] font-mono tracking-wider">
+            {slideText}
           </span>
 
           {routes.down && (
@@ -156,7 +193,14 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
         {/* Next Button */}
         <button
           type="button"
-          onClick={() => reveal.next()}
+          onClick={() => {
+            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
+            if (available.down) {
+              reveal.down();
+            } else {
+              reveal.next();
+            }
+          }}
           className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#151a27] border border-[#e6ff00]/40 text-[#e6ff00] hover:bg-[#1a2233] text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation"
           aria-label="Siguiente diapositiva"
         >
