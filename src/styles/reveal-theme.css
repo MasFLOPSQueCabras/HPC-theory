@@ -1,0 +1,185 @@
+/* Custom HPC Theme - Clean, Minimalist & Professional */
+
+:root {
+  --hpc-bg: #0b0f19;
+  --hpc-card-bg: rgba(255, 255, 255, 0.03);
+  --hpc-card-border: rgba(255, 255, 255, 0.08);
+  --hpc-card-border-hover: rgba(255, 255, 255, 0.18);
+  --hpc-code-bg: #070a12;
+
+  /* Typography */
+  --hpc-text: #f3f4f6;
+  --hpc-text-bright: #ffffff;
+  --hpc-muted: #94a3b8;
+  --hpc-subtle: #cbd5e1;
+
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-code: 'Fira Code', monospace;
+}
+
+body {
+  background-color: var(--hpc-bg) !important;
+  color: var(--hpc-text) !important;
+  font-family: var(--font-main) !important;
+}
+
+.reveal {
+  font-family: var(--font-main) !important;
+  color: var(--hpc-text) !important;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--font-main) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+  color: #ffffff !important;
+}
+
+.reveal h1 {
+  font-size: 2.8rem !important;
+  line-height: 1.15 !important;
+  color: #ffffff !important;
+}
+
+.reveal h2 {
+  font-size: 1.8rem !important;
+  margin-bottom: 0.8rem !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.35rem;
+}
+
+.reveal h3 {
+  font-size: 1.25rem !important;
+  color: #ffffff !important;
+}
+
+.reveal p, .reveal li {
+  font-size: 0.92rem !important;
+  line-height: 1.5 !important;
+  color: var(--hpc-subtle) !important;
+}
+
+/* Card Containers - Pure, Neutral, No colored borders */
+.hpc-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.hpc-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.hpc-card {
+  background: var(--hpc-card-bg);
+  border: 1px solid var(--hpc-card-border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  transition: border-color 0.2s ease;
+}
+
+.hpc-card:hover {
+  border-color: var(--hpc-card-border-hover);
+}
+
+/* Minimalist Badges */
+.hpc-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.badge-cyan, .badge-amber, .badge-emerald, .badge-violet, .badge-gold, .badge-neutral {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Formula & Highlight Boxes */
+.hpc-formula-box {
+  background: var(--hpc-code-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-family: var(--font-code);
+  font-size: 1rem;
+  color: #f8fafc;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.hpc-code-block {
+  font-family: var(--font-code) !important;
+  font-size: 0.82rem !important;
+  background: var(--hpc-code-bg) !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--hpc-card-border) !important;
+  padding: 0.9rem !important;
+  text-align: left !important;
+  overflow-x: auto;
+  color: #f1f5f9 !important;
+}
+
+/* Godbolt Link Button - Clean & Professional */
+.godbolt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-decoration: none !important;
+  margin-top: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.godbolt-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tables */
+.hpc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.hpc-table th {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+}
+
+.hpc-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+}
+
+.hpc-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
