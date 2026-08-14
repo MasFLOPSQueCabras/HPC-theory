@@ -74,7 +74,7 @@ export const ScalingChart: React.FC = () => {
         lineY(idealData, {
           x: 'p',
           y: 'speedup',
-          stroke: '#64748b',
+          stroke: '#475569',
           strokeWidth: 1.5,
           strokeDasharray: '4 4',
         }),
@@ -82,38 +82,38 @@ export const ScalingChart: React.FC = () => {
         lineY(gustafsonData, {
           x: 'p',
           y: 'speedup',
-          stroke: '#38bdf8',
+          stroke: '#34d399',
           strokeWidth: 3,
         }),
         // Gustafson key dots
         dot(gustafsonDots, {
           x: 'p',
           y: 'speedup',
-          fill: '#ffffff',
-          stroke: '#38bdf8',
-          strokeWidth: 2,
+          fill: '#07080c',
+          stroke: '#34d399',
+          strokeWidth: 2.5,
           r: 4.5,
         }),
         // Amdahl Strong Scaling Line
         lineY(amdahlData, {
           x: 'p',
           y: 'speedup',
-          stroke: '#94a3b8',
+          stroke: '#fb7185',
           strokeWidth: 3,
         }),
         // Amdahl key dots
         dot(amdahlDots, {
           x: 'p',
           y: 'speedup',
-          fill: '#ffffff',
-          stroke: '#94a3b8',
-          strokeWidth: 2,
+          fill: '#07080c',
+          stroke: '#fb7185',
+          strokeWidth: 2.5,
           r: 4.5,
         }),
         // Asymptotic upper ceiling rule for Amdahl
         ruleY(asymptoticLimit, {
           y: 'speedup',
-          stroke: '#cbd5e1',
+          stroke: '#e6ff00',
           strokeWidth: 1.5,
           strokeDasharray: '3 3',
         }),
@@ -139,23 +139,23 @@ export const ScalingChart: React.FC = () => {
   const currentGustafsonAt128 = MAX_P - serialFraction * (MAX_P - 1);
 
   return (
-    <div className="hpc-card p-6 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-[#0f131d] border border-[#232a3d] shadow-2xl">
       {/* Header with Legend */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#232a3d]">
         <div className="flex items-center gap-2.5">
-          <span className="hpc-badge font-mono">Scaling Laws</span>
+          <span className="hpc-badge-purple font-mono text-xs mb-0">Scaling Laws</span>
           <h4 className="m-0 text-base font-bold text-white tracking-tight">
             Amdahl (Fuerte) vs Gustafson (Débil)
           </h4>
         </div>
 
         <div className="flex items-center gap-4 text-xs font-semibold">
-          <div className="flex items-center gap-1.5 text-slate-300">
-            <span className="w-3 h-0.5 bg-slate-400 inline-block rounded" />
+          <div className="flex items-center gap-1.5 text-[#fb7185]">
+            <span className="w-3 h-0.5 bg-[#fb7185] inline-block rounded" />
             <span>Amdahl: {currentAmdahlAt128.toFixed(1)}x en 128P</span>
           </div>
-          <div className="flex items-center gap-1.5 text-sky-400">
-            <span className="w-3 h-0.5 bg-sky-400 inline-block rounded" />
+          <div className="flex items-center gap-1.5 text-[#34d399]">
+            <span className="w-3 h-0.5 bg-[#34d399] inline-block rounded" />
             <span>Gustafson: {currentGustafsonAt128.toFixed(1)}x en 128P</span>
           </div>
           <div className="flex items-center gap-1.5 text-slate-400">
@@ -176,10 +176,10 @@ export const ScalingChart: React.FC = () => {
       </div>
 
       {/* Interactive Controls & Presets */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pt-3 border-t border-slate-800/80">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pt-3 border-t border-[#232a3d]">
         <div className="md:col-span-6 flex items-center gap-3">
           <label htmlFor="serial-slider" className="text-xs font-semibold text-slate-300 whitespace-nowrap">
-            Fracción Secuencial (<strong className="text-white font-mono">s</strong>): <strong className="text-white font-mono">{(serialFraction * 100).toFixed(0)}%</strong>
+            Fracción Secuencial (<strong className="text-white font-mono">s</strong>): <strong className="text-[#e6ff00] font-mono">{(serialFraction * 100).toFixed(0)}%</strong>
           </label>
           <input
             id="serial-slider"
@@ -189,7 +189,7 @@ export const ScalingChart: React.FC = () => {
             step="0.01"
             value={serialFraction}
             onChange={(e) => setSerialFraction(parseFloat(e.target.value))}
-            className="w-full accent-slate-300 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+            className="w-full accent-[#e6ff00] cursor-pointer h-1.5 bg-[#07080c] rounded-lg"
           />
         </div>
 
@@ -197,21 +197,33 @@ export const ScalingChart: React.FC = () => {
           <button
             type="button"
             onClick={() => setSerialFraction(0.01)}
-            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
+            className={`px-2.5 py-1 text-xs rounded font-mono transition-all border ${
+              serialFraction === 0.01
+                ? 'bg-[#151a27] text-[#e6ff00] border-[#e6ff00]/40'
+                : 'bg-[#07080c] text-slate-400 border-[#232a3d] hover:text-white'
+            }`}
           >
             1% Serial (Ultra-Paralelo)
           </button>
           <button
             type="button"
             onClick={() => setSerialFraction(0.05)}
-            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
+            className={`px-2.5 py-1 text-xs rounded font-mono transition-all border ${
+              serialFraction === 0.05
+                ? 'bg-[#151a27] text-[#e6ff00] border-[#e6ff00]/40'
+                : 'bg-[#07080c] text-slate-400 border-[#232a3d] hover:text-white'
+            }`}
           >
             5% Serial (Típico HPC)
           </button>
           <button
             type="button"
             onClick={() => setSerialFraction(0.15)}
-            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
+            className={`px-2.5 py-1 text-xs rounded font-mono transition-all border ${
+              serialFraction === 0.15
+                ? 'bg-[#151a27] text-[#e6ff00] border-[#e6ff00]/40'
+                : 'bg-[#07080c] text-slate-400 border-[#232a3d] hover:text-white'
+            }`}
           >
             15% Serial (Cuello Botella)
           </button>

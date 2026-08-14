@@ -12,41 +12,37 @@ export const CompilersOptimization: React.FC = () => {
       {/* 1. ¿Por qué importan los compiladores? */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Compiladores • Optimización</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Compiladores • Optimización</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               ¿Por qué importan los Compiladores en HPC?
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-5 my-2">
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Pilar 1</span>
+          <div className="grid grid-cols-3 gap-5 my-auto">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Pilar 1</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">Instruction Scheduling</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed">
                 Planificación estática: reordena operaciones independientes para saturar puertos de ejecución paralelos y mitigar dependencias RAW.
               </p>
             </div>
 
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Pilar 2</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#e6ff00]">
+              <span className="hpc-badge-yellow font-mono mb-2 text-xs">Pilar 2</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">Register Allocation</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed">
                 Asignación de registros: mantiene variables críticas en registros vectoriales (ej. ZMM de 512 bits) evitando derrames a RAM (Register Spilling).
               </p>
             </div>
 
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Pilar 3</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">Pilar 3</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">Loop Transformations</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed">
                 Transformaciones de bucle: auto-vectorización SIMD, desenrollado (Unrolling) y eliminación de alias de punteros con <code className="text-slate-200">__restrict__</code>.
               </p>
             </div>
-          </div>
-
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            💡 <strong className="text-white">Impacto en Rendimiento:</strong> Un compilador moderno con optimizaciones agresivas puede multiplicar el rendimiento por más de <strong>10x - 50x</strong> frente a código sin optimizar (-O0).
           </div>
         </div>
       </Slide>
@@ -54,31 +50,36 @@ export const CompilersOptimization: React.FC = () => {
       {/* 2. Dead Code Optimization (DCO) */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Optimizaciones • DCO</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Optimizaciones • DCO</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               DCO / DCE (Dead Code Optimization / Elimination)
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Grafo de Flujo de Datos</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 El compilador analiza el grafo de dependencias de la función. Si un cálculo intermedio no altera el valor de retorno ni genera efectos colaterales observables, <strong className="text-white">se suprime por completo en el binario final generado</strong>.
               </p>
             </div>
 
-            <div className="hpc-card p-6 flex flex-col justify-center">
-              <h3 className="m-0 text-lg font-bold text-white mb-2">⚡ Impacto en Rendimiento</h3>
+            <div className="hpc-card p-6 flex flex-col justify-center border-t-2 border-t-[#34d399]">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Impacto en Rendimiento</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Reduce drásticamente el número de instrucciones ejecutadas (<Math math="N_{\text{inst}}" />) y libera registros físicos en el procesador para cálculos que sí importan.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🔍 <strong className="text-white">Advertencia en Benchmarks:</strong> Si un benchmark calcula un resultado y no lo imprime ni devuelve, el compilador puede optimizar el bucle entero a cero ciclos.
+          <div className="hpc-card p-3 text-xs text-slate-300 flex items-center gap-3 border-l-2 border-l-[#fb7185]">
+            <span className="px-2 py-0.5 rounded bg-[#1e131d] text-[#fb7185] font-mono font-bold shrink-0">
+              [ADVERTENCIA]
+            </span>
+            <span>
+              <strong className="text-white">Benchmarks engañosos:</strong> Si un benchmark calcula un resultado y no lo imprime o devuelve, el compilador puede optimizar el bucle entero a cero ciclos de reloj.
+            </span>
           </div>
         </div>
       </Slide>
@@ -86,9 +87,9 @@ export const CompilersOptimization: React.FC = () => {
       {/* 3. DCO Código y Godbolt */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Optimizaciones • DCO en Compiler Explorer</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Optimizaciones • DCO en Compiler Explorer</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               DCO: Código Fuente y Ensamblador
             </h2>
           </div>
@@ -111,7 +112,7 @@ export const CompilersOptimization: React.FC = () => {
 
           <div className="pt-2">
             <a href={godboltDcoUrl} target="_blank" rel="noopener noreferrer" className="godbolt-btn">
-              ⚡ Ver Optimización DCO en Vivo en Compiler Explorer (Godbolt) &rarr;
+              Ver Optimización DCO en Vivo en Compiler Explorer (Godbolt) &rarr;
             </a>
           </div>
         </div>
@@ -120,31 +121,27 @@ export const CompilersOptimization: React.FC = () => {
       {/* 4. Auto-Vectorización y FMA */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Optimizaciones • Vectorización</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Optimizaciones • Vectorización</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               Auto-Vectorización SIMD y FMA
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+          <div className="grid grid-cols-2 gap-6 my-auto">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Emisión Automática de AVX-512</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Con <code className="text-slate-200 font-mono">-O3 -march=native -ffast-math</code>, el compilador emite instrucciones vectoriales <strong className="text-white">FMA (Fused Multiply-Add)</strong> <code className="text-slate-200 font-mono">vfmadd231ps</code> en registros ZMM de 512 bits.
               </p>
             </div>
 
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">El Modificador <code>__restrict__</code></h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Garantiza al compilador que los punteros no solapan regiones de memoria (evita <em>Pointer Aliasing</em>), permitiendo vectorizar de inmediato sin comprobaciones costosas en tiempo de ejecución.
               </p>
             </div>
-          </div>
-
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🚀 <strong className="text-white">Beneficio:</strong> Ejecuta 16 sumas-multiplicaciones de coma flotante por instrucción, cuadruplicando el IPC efectivo.
           </div>
         </div>
       </Slide>
@@ -152,9 +149,9 @@ export const CompilersOptimization: React.FC = () => {
       {/* 5. SIMD Código y Godbolt */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Optimizaciones • SIMD en Compiler Explorer</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Optimizaciones • SIMD en Compiler Explorer</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               SIMD FMA: Código y Ensamblador
             </h2>
           </div>
@@ -175,7 +172,7 @@ void vector_fma(float* __restrict__ c,
 
           <div className="pt-2">
             <a href={godboltSimdUrl} target="_blank" rel="noopener noreferrer" className="godbolt-btn">
-              🔍 Ver Ensamblador AVX-512 FMA en Compiler Explorer (Godbolt) &rarr;
+              Ver Ensamblador AVX-512 FMA en Compiler Explorer (Godbolt) &rarr;
             </a>
           </div>
         </div>

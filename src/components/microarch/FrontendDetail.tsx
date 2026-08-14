@@ -37,7 +37,7 @@ export const FrontendDetail: React.FC = () => {
   const current = blocks[selectedBlock];
 
   return (
-    <div className="hpc-card p-5 w-full max-w-5xl mx-auto bg-slate-900/80 border border-sky-500/30 shadow-2xl backdrop-blur-xl">
+    <div className="hpc-card p-5 w-full max-w-5xl mx-auto bg-[#0f131d] border border-[#38bdf8]/30 shadow-2xl">
       {/* Selector Tabs */}
       <div className="grid grid-cols-4 gap-2 mb-3">
         {blocks.map((b, idx) => (
@@ -47,8 +47,8 @@ export const FrontendDetail: React.FC = () => {
             onClick={() => setSelectedBlock(idx)}
             className={`p-2.5 rounded-lg text-center transition-all cursor-pointer border ${
               selectedBlock === idx
-                ? 'bg-sky-500/20 border-sky-500 text-sky-300 shadow-md'
-                : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-white'
+                ? 'bg-[#151a27] border-[#38bdf8] text-[#38bdf8] shadow-md font-bold'
+                : 'bg-[#07080c] border-[#232a3d] text-slate-400 hover:text-white'
             }`}
           >
             <div className="text-xs font-bold font-mono">{b.title}</div>
@@ -58,13 +58,13 @@ export const FrontendDetail: React.FC = () => {
       </div>
 
       {/* Detail Card */}
-      <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800">
+      <div className="p-4 rounded-xl bg-[#07080c] border border-[#232a3d]">
         <div className="flex items-center justify-between mb-2">
           <h4 className="m-0 text-sm font-bold text-white">{current.headline}</h4>
-          <span className="hpc-badge font-mono text-[10px]">{current.badge}</span>
+          <span className="hpc-badge-cyan font-mono text-[10px] mb-0">{current.badge}</span>
         </div>
         <p className="m-0 text-xs text-slate-300 leading-relaxed mb-3">{current.detail}</p>
-        <div className="p-2 rounded bg-slate-900/80 border border-slate-800 text-[11px] font-mono text-sky-300">
+        <div className="p-2 rounded bg-[#0f131d] border border-[#232a3d] text-[11px] font-mono text-[#38bdf8]">
           {current.specs}
         </div>
       </div>

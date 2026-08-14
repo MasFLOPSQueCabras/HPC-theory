@@ -42,24 +42,24 @@ export const PpaDiagram: React.FC = () => {
   const current = info[activePillar];
 
   return (
-    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-[#0f131d] border border-[#232a3d] shadow-2xl">
       {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#232a3d]">
         <div>
-          <span className="hpc-badge font-mono">Diseño de Silicio</span>
+          <span className="hpc-badge font-mono text-xs mb-1">Diseño de Silicio</span>
           <h4 className="m-0 text-base font-bold text-white tracking-tight mt-1">
             El Trilema del Silicio: PPA (Performance, Power, Area)
           </h4>
         </div>
         
         {/* Toggle buttons */}
-        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-950 border border-slate-800">
+        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-[#07080c] border border-[#232a3d]">
           <button
             type="button"
             onClick={() => setActivePillar('P')}
             className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
               activePillar === 'P'
-                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                ? 'bg-[#151a27] text-[#e6ff00] border-[#e6ff00]/40 shadow-sm'
                 : 'bg-transparent text-slate-400 border-transparent hover:text-white'
             }`}
           >
@@ -70,7 +70,7 @@ export const PpaDiagram: React.FC = () => {
             onClick={() => setActivePillar('PW')}
             className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
               activePillar === 'PW'
-                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                ? 'bg-[#10241e] text-[#34d399] border-[#34d399]/40 shadow-sm'
                 : 'bg-transparent text-slate-400 border-transparent hover:text-white'
             }`}
           >
@@ -81,7 +81,7 @@ export const PpaDiagram: React.FC = () => {
             onClick={() => setActivePillar('A')}
             className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
               activePillar === 'A'
-                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                ? 'bg-[#1e131d] text-[#fb7185] border-[#fb7185]/40 shadow-sm'
                 : 'bg-transparent text-slate-400 border-transparent hover:text-white'
             }`}
           >
@@ -93,60 +93,63 @@ export const PpaDiagram: React.FC = () => {
       {/* Main content: Triangle on left, details on right */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 my-3 items-center">
         {/* Left: SVG Triangle (5 cols) */}
-        <div className="md:col-span-5 flex flex-col items-center justify-center p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+        <div className="md:col-span-5 flex flex-col items-center justify-center p-3 rounded-xl bg-[#07080c] border border-[#232a3d]">
           <svg viewBox="0 0 260 210" className="w-full max-w-[240px] h-[190px] overflow-visible">
             {/* Triangle Background */}
             <polygon
               points="130,25 35,175 225,175"
               fill="rgba(255,255,255,0.02)"
-              stroke="rgba(255,255,255,0.15)"
+              stroke="#232a3d"
               strokeWidth="2"
             />
             {/* Inner lines to center */}
-            <line x1="130" y1="25" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
-            <line x1="35" y1="175" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
-            <line x1="225" y1="175" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
+            <line x1="130" y1="25" x2="130" y2="125" stroke="#232a3d" strokeDasharray="3 3" />
+            <line x1="35" y1="175" x2="130" y2="125" stroke="#232a3d" strokeDasharray="3 3" />
+            <line x1="225" y1="175" x2="130" y2="125" stroke="#232a3d" strokeDasharray="3 3" />
 
             {/* Performance Vertex (Top) */}
             <g onClick={() => setActivePillar('P')} className="cursor-pointer">
               <circle
                 cx="130" cy="25" r={activePillar === 'P' ? 22 : 18}
-                fill={activePillar === 'P' ? '#38bdf8' : '#1e293b'}
-                stroke="#64748b" strokeWidth={activePillar === 'P' ? 2.5 : 1.5}
+                fill={activePillar === 'P' ? '#e6ff00' : '#151a27'}
+                stroke={activePillar === 'P' ? '#e6ff00' : '#232a3d'}
+                strokeWidth={activePillar === 'P' ? 2.5 : 1.5}
                 className="transition-all duration-200"
               />
-              <text x="130" y="30" fill={activePillar === 'P' ? '#0f172a' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
+              <text x="130" y="30" fill={activePillar === 'P' ? '#07080c' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
                 P
               </text>
-              <text x="130" y="-3" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Performance</text>
+              <text x="130" y="-3" fill={activePillar === 'P' ? '#e6ff00' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">Performance</text>
             </g>
 
             {/* Power Vertex (Bottom-Left) */}
             <g onClick={() => setActivePillar('PW')} className="cursor-pointer">
               <circle
                 cx="35" cy="175" r={activePillar === 'PW' ? 22 : 18}
-                fill={activePillar === 'PW' ? '#38bdf8' : '#1e293b'}
-                stroke="#64748b" strokeWidth={activePillar === 'PW' ? 2.5 : 1.5}
+                fill={activePillar === 'PW' ? '#34d399' : '#151a27'}
+                stroke={activePillar === 'PW' ? '#34d399' : '#232a3d'}
+                strokeWidth={activePillar === 'PW' ? 2.5 : 1.5}
                 className="transition-all duration-200"
               />
-              <text x="35" y="180" fill={activePillar === 'PW' ? '#0f172a' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">
+              <text x="35" y="180" fill={activePillar === 'PW' ? '#07080c' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">
                 PW
               </text>
-              <text x="35" y="206" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Power</text>
+              <text x="35" y="206" fill={activePillar === 'PW' ? '#34d399' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">Power</text>
             </g>
 
             {/* Area Vertex (Bottom-Right) */}
             <g onClick={() => setActivePillar('A')} className="cursor-pointer">
               <circle
                 cx="225" cy="175" r={activePillar === 'A' ? 22 : 18}
-                fill={activePillar === 'A' ? '#38bdf8' : '#1e293b'}
-                stroke="#64748b" strokeWidth={activePillar === 'A' ? 2.5 : 1.5}
+                fill={activePillar === 'A' ? '#fb7185' : '#151a27'}
+                stroke={activePillar === 'A' ? '#fb7185' : '#232a3d'}
+                strokeWidth={activePillar === 'A' ? 2.5 : 1.5}
                 className="transition-all duration-200"
               />
-              <text x="225" y="180" fill={activePillar === 'A' ? '#0f172a' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
+              <text x="225" y="180" fill={activePillar === 'A' ? '#07080c' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
                 A
               </text>
-              <text x="225" y="206" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Area</text>
+              <text x="225" y="206" fill={activePillar === 'A' ? '#fb7185' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">Area</text>
             </g>
           </svg>
         </div>
@@ -161,7 +164,7 @@ export const PpaDiagram: React.FC = () => {
           {/* 4 Metric Cards */}
           <div className="grid grid-cols-2 gap-2.5">
             {current.metrics.map((m, idx) => (
-              <div key={idx} className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
+              <div key={idx} className="p-2.5 rounded-lg bg-[#07080c] border border-[#232a3d]">
                 <div className="text-xs font-bold text-white">{m.label}</div>
                 <div className="text-[11px] text-slate-400 mt-1 leading-tight">{m.detail}</div>
               </div>
@@ -169,8 +172,8 @@ export const PpaDiagram: React.FC = () => {
           </div>
 
           {/* Tradeoff warning */}
-          <div className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 text-xs text-slate-300">
-            <strong className="text-white">Compromiso (Trade-off): </strong>
+          <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] text-xs text-slate-300">
+            <strong className="text-[#e6ff00]">Compromiso (Trade-off): </strong>
             {current.tradeoff}
           </div>
         </div>

@@ -23,6 +23,7 @@ export function Presentation() {
       config={{
         controls: true,
         progress: true,
+        slideNumber: 'c/t',
         center: true,
         hash: true,
         transition: 'slide',

@@ -49,26 +49,31 @@ export const HazardsDiagram: React.FC = () => {
   const current = hazardData[activeHazard];
 
   return (
-    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-[#0f131d] border border-[#232a3d] shadow-2xl">
       {/* Header with Navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#232a3d]">
         <div className="flex items-center gap-2">
-          <span className="hpc-badge font-mono">Pipeline Hazards</span>
+          <span className="hpc-badge-rose font-mono text-xs mb-0">Pipeline Hazards</span>
           <h4 className="m-0 text-base font-bold text-white tracking-tight">
             Dependencias de Datos y Mitigaciones
           </h4>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-950 border border-slate-800">
+        {/* Buttons to switch hazard */}
+        <div className="flex items-center gap-1.5 bg-[#07080c] p-1 rounded-lg border border-[#232a3d]">
           {(['RAW', 'WAR', 'WAW', 'RAR'] as const).map((h) => (
             <button
               key={h}
               type="button"
               onClick={() => setActiveHazard(h)}
-              className={`px-3 py-1 text-xs rounded-md font-mono font-bold transition-all border ${
+              className={`px-3 py-1 text-xs font-mono font-bold rounded transition-all cursor-pointer ${
                 activeHazard === h
-                  ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
-                  : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+                  ? h === 'RAW'
+                    ? 'bg-[#1e131d] text-[#fb7185] border border-[#fb7185]/40 shadow-sm'
+                    : h === 'RAR'
+                    ? 'bg-[#102030] text-[#38bdf8] border border-[#38bdf8]/40 shadow-sm'
+                    : 'bg-[#161d2d] text-[#e6ff00] border border-[#e6ff00]/40 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               {h}
@@ -77,40 +82,53 @@ export const HazardsDiagram: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 my-3">
-        {/* Left: Code Snippet & Target Register (5 cols) */}
-        <div className="md:col-span-5 flex flex-col gap-3">
-          <div className="p-3.5 rounded-lg bg-slate-950/90 border border-slate-800">
+      {/* Main Details Panel */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-3">
+        {/* Left: Code Snippet & Description */}
+        <div className="md:col-span-5 flex flex-col justify-between p-4 rounded-xl bg-[#07080c] border border-[#232a3d]">
+          <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-mono text-slate-400">Instrucciones en Ensamblador</span>
-              <span className="hpc-badge font-mono text-[10px]">{current.name.split(' ')[0]}</span>
+              <span className="hpc-badge font-mono text-[10px] mb-0">{current.name.split(' ')[0]}</span>
+              <span className="text-[11px] font-mono text-slate-400">{current.type}</span>
             </div>
-            <pre className="m-0 font-mono text-xs text-slate-200 leading-relaxed">
-              <div>I1: {current.i1}</div>
-              <div className="mt-1">I2: {current.i2}</div>
-            </pre>
-          </div>
 
-          <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 text-xs text-slate-300">
-            <span className="font-bold text-white">Registro en Conflicto: </span>
-            <span className="font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700">
-              {current.targetReg}
-            </span>
-            <p className="mt-2 mb-0 text-[11px] text-slate-400 leading-normal">{current.desc}</p>
+            <div className="p-3 rounded-lg bg-[#030408] border border-[#232a3d] font-mono text-xs text-slate-200 my-2">
+              <div className="text-[#38bdf8] font-bold">I1: {current.i1}</div>
+              <div className="text-[#e6ff00] font-bold mt-1">I2: {current.i2}</div>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed mt-2">
+              {current.desc}
+            </p>
           </div>
         </div>
 
-        {/* Right: Solutions in In-Order vs OoO (7 cols) */}
+        {/* Right: Solutions Comparison */}
         <div className="md:col-span-7 flex flex-col gap-3">
-          <div className="p-3.5 rounded-lg bg-slate-950/80 border border-slate-800">
-            <h5 className="m-0 text-xs font-bold text-white mb-1">Solución Secuencial (In-Order)</h5>
-            <p className="m-0 text-xs text-slate-300 leading-relaxed">{current.inOrderSol}</p>
+          {/* In-Order Solution */}
+          <div className="p-3.5 rounded-xl bg-[#07080c] border border-[#232a3d] text-left">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="px-2 py-0.5 rounded bg-[#151a27] text-slate-300 font-mono text-[10px] font-bold border border-[#232a3d]">
+                IN-ORDER
+              </span>
+              <h5 className="m-0 text-xs font-bold text-white">Comportamiento en Pipeline Secuencial</h5>
+            </div>
+            <p className="m-0 text-xs text-slate-300 leading-relaxed">
+              {current.inOrderSol}
+            </p>
           </div>
 
-          <div className="p-3.5 rounded-lg bg-slate-950/80 border border-slate-800">
-            <h5 className="m-0 text-xs font-bold text-white mb-1">Solución Dinámica (Out-of-Order)</h5>
-            <p className="m-0 text-xs text-slate-300 leading-relaxed">{current.oooSol}</p>
+          {/* Out-of-Order Solution */}
+          <div className="p-3.5 rounded-xl bg-[#07080c] border border-[#e6ff00]/30 text-left">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="px-2 py-0.5 rounded bg-[#161d2d] text-[#e6ff00] font-mono text-[10px] font-bold border border-[#e6ff00]/40">
+                OUT-OF-ORDER (OoO)
+              </span>
+              <h5 className="m-0 text-xs font-bold text-[#e6ff00]">Solución Dinámica en Hardware</h5>
+            </div>
+            <p className="m-0 text-xs text-slate-300 leading-relaxed">
+              {current.oooSol}
+            </p>
           </div>
         </div>
       </div>

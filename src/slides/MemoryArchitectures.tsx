@@ -8,13 +8,15 @@ import { NumaDiagram } from '../components/NumaDiagram';
 export const MemoryArchitectures: React.FC = () => {
   return (
     <Stack>
-      {/* 1. Jerarquía de Latencias y Ancho de Banda (DIAGRAMA DEDICADO) */}
+      {/* 1. Jerarquía de Latencias y Ancho de Banda */}
       <Slide>
         <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
-          <span className="hpc-badge font-mono">Jerarquía de Memoria • La Escala de Latencia</span>
-          <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
-            El Muro de la Memoria: Jerarquía de Latencias y Ancho de Banda
-          </h2>
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Jerarquía de Memoria • La Escala de Latencia</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
+              El Muro de la Memoria: Jerarquía de Latencias y Ancho de Banda
+            </h2>
+          </div>
 
           <MemoryHierarchyDiagram />
         </div>
@@ -23,50 +25,57 @@ export const MemoryArchitectures: React.FC = () => {
       {/* 2. Análisis de la Jerarquía y Principio de Localidad */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Jerarquía de Memoria • Principios Teóricos</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Jerarquía de Memoria • Principios Teóricos</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               El Principio de Localidad y la Pirámide de Silicio
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Localidad 1</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Localidad 1</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Localidad Temporal</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
                 Si una dirección de memoria fue accedida recientemente, es altamente probable que vuelva a ser leída o modificada en un futuro cercano.
               </p>
-              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-400">
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] text-xs text-slate-400">
                 <strong className="text-white">Implementación:</strong> Mantener variables activas y acumuladores en registros de CPU y caché L1.
               </div>
             </div>
 
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Localidad 2</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">Localidad 2</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Localidad Espacial</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
                 Si se accede a una dirección de memoria <code className="text-slate-200 font-mono">addr</code>, es muy probable que se acceda a direcciones adyacentes <code className="text-slate-200 font-mono">addr + 1</code> poco después.
               </p>
-              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-400">
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] text-xs text-slate-400">
                 <strong className="text-white">Implementación:</strong> Transferencia de líneas de caché completas de 64 bytes (Cache Lines) y prefetchers por hardware.
               </div>
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🚀 <strong className="text-white">Regla para HPC:</strong> Organizar matrices en formato contiguo (<strong className="text-white">Structure of Arrays - SoA</strong>) para maximizar la localidad espacial y el ancho de banda vectorial.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#151a27] border border-[#e6ff00]/40 text-[#e6ff00] font-mono font-bold shrink-0">
+              [HPC REGLA]
+            </span>
+            <span>
+              <strong className="text-white">Regla para HPC:</strong> Organizar matrices en formato contiguo (<strong className="text-white">Structure of Arrays - SoA</strong>) para maximizar la localidad espacial y el ancho de banda vectorial.
+            </span>
           </div>
         </div>
       </Slide>
 
-      {/* 3. Gráfico Histórico del Memory Wall (CHART DEDICADO) */}
+      {/* 3. Gráfico Histórico del Memory Wall */}
       <Slide>
         <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
-          <span className="hpc-badge font-mono">Memory Wall • Divergencia Histórica</span>
-          <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
-            La Brecha Histórica entre Cómputo y Memoria (1980 - 2025)
-          </h2>
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Memory Wall • Divergencia Histórica</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
+              La Brecha Histórica entre Cómputo y Memoria (1980 - 2025)
+            </h2>
+          </div>
 
           <MemoryWallChart />
         </div>
@@ -75,16 +84,16 @@ export const MemoryArchitectures: React.FC = () => {
       {/* 4. Análisis del Memory Wall */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Memory Wall • Análisis de Causa</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Memory Wall • Análisis de Causa</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               ¿Por qué la DRAM no pudo seguir el ritmo de las CPUs?
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Causa Física</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#e6ff00]">
+              <span className="hpc-badge-yellow font-mono mb-2 text-xs">Causa Física</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Física del Condensador DRAM</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
                 Cada celda de DRAM es un minúsculo condensador de 1T1C:
@@ -95,31 +104,38 @@ export const MemoryArchitectures: React.FC = () => {
               </ul>
             </div>
 
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Impacto en Rendimiento</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#fb7185]">
+              <span className="hpc-badge-rose font-mono mb-2 text-xs">Impacto en Rendimiento</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">La Penalización del Fallo de Caché</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
                 En 1980, un fallo de memoria costaba 1 ciclo de reloj. En un procesador moderno a 4.0 GHz:
               </p>
-              <div className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 text-sm font-mono text-center text-slate-200">
-                Latencia DRAM (50 ns) &times; 4.0 GHz = <strong className="text-white">200 ciclos de CPU perdidos</strong>
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] text-sm font-mono text-center text-slate-200">
+                Latencia DRAM (50 ns) &times; 4.0 GHz = <strong className="text-[#fb7185]">200 ciclos de CPU perdidos</strong>
               </div>
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            ⚠️ Sin técnicas de mitigación masivas en silicio, una CPU pasaría el 95% de su tiempo congelada esperando datos de la DRAM.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#1e131d] border border-[#fb7185]/40 text-[#fb7185] font-mono font-bold shrink-0">
+              [ALERTA SILICIO]
+            </span>
+            <span>
+              Sin técnicas de mitigación masivas en silicio, una CPU pasaría el 95% de su tiempo congelada esperando datos de la DRAM.
+            </span>
           </div>
         </div>
       </Slide>
 
-      {/* 5. Soluciones en Silicio (DIAGRAMA DEDICADO) */}
+      {/* 5. Soluciones en Silicio */}
       <Slide>
         <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
-          <span className="hpc-badge font-mono">Memory Wall • Respuestas de la Industria</span>
-          <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
-            Mitigaciones en Silicio: HBM3e, 3D V-Cache y CXL
-          </h2>
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Memory Wall • Respuestas de la Industria</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
+              Mitigaciones en Silicio: HBM3e, 3D V-Cache y CXL
+            </h2>
+          </div>
 
           <MemorySolutionsDiagram />
         </div>
@@ -128,16 +144,16 @@ export const MemoryArchitectures: React.FC = () => {
       {/* 6. Detalle Arquitectural de Soluciones */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Memory Wall • Tecnologías de Memoria</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Memory Wall • Tecnologías de Memoria</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               HBM3e, 3D V-Cache y CXL Fabric en Detalle
             </h2>
           </div>
 
           <div className="grid grid-cols-3 gap-5 my-2">
-            <div className="hpc-card p-5">
-              <span className="hpc-badge font-mono mb-2 text-xs">Memoria Apilada</span>
+            <div className="hpc-card p-5 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Memoria Apilada</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">HBM3e (High Bandwidth)</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
                 • Capas de silicio 3D conectadas por <strong className="text-white">TSVs (Through-Silicon Vias)</strong>.<br />
@@ -146,8 +162,8 @@ export const MemoryArchitectures: React.FC = () => {
               </p>
             </div>
 
-            <div className="hpc-card p-5">
-              <span className="hpc-badge font-mono mb-2 text-xs">Caché 3D Apilada</span>
+            <div className="hpc-card p-5 border-t-2 border-t-[#e6ff00]">
+              <span className="hpc-badge-yellow font-mono mb-2 text-xs">Caché 3D Apilada</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">AMD 3D V-Cache</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
                 • Die de caché SRAM L3 apilado por unión directa cobre-cobre (Hybrid Bonding).<br />
@@ -156,8 +172,8 @@ export const MemoryArchitectures: React.FC = () => {
               </p>
             </div>
 
-            <div className="hpc-card p-5">
-              <span className="hpc-badge font-mono mb-2 text-xs">Memoria Abierta</span>
+            <div className="hpc-card p-5 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">Memoria Abierta</span>
               <h4 className="m-0 text-base font-bold text-white mb-2">CXL (Compute Express Link)</h4>
               <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
                 • Protocolo coherente sobre PCIe 5.0/6.0.<br />
@@ -167,19 +183,26 @@ export const MemoryArchitectures: React.FC = () => {
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            💡 La combinación de HBM3e (ancho de banda local) y CXL (capacidad global) define los supercomputadores Exascale modernos.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#102030] border border-[#38bdf8]/40 text-[#38bdf8] font-mono font-bold shrink-0">
+              [SÍNTESIS]
+            </span>
+            <span>
+              La combinación de HBM3e (ancho de banda local) y CXL (capacidad global) define los supercomputadores Exascale modernos.
+            </span>
           </div>
         </div>
       </Slide>
 
-      {/* 7. UMA vs NUMA Topología (DIAGRAMA DEDICADO) */}
+      {/* 7. UMA vs NUMA Topología */}
       <Slide>
-        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
-          <span className="hpc-badge font-mono">Jerarquía de Memoria • Topologías</span>
-          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
-            Arquitecturas de Memoria: UMA vs NUMA
-          </h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Jerarquía de Memoria • Topologías</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
+              Arquitecturas de Memoria: UMA vs NUMA
+            </h2>
+          </div>
 
           <NumaDiagram />
         </div>
@@ -188,17 +211,17 @@ export const MemoryArchitectures: React.FC = () => {
       {/* 8. Comparativa Real: AMD/Intel (NUMA) vs Apple Serie M (UMA) */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Arquitecturas Reales • Comparativa de la Industria</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Arquitecturas Reales • Comparativa de la Industria</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               AMD / Intel (NUMA) vs Apple Silicon Serie M (UMA)
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
             {/* AMD / Intel NUMA Card */}
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Servidores x86 • NUMA Distribuido</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Servidores x86 • NUMA Distribuido</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">AMD EPYC / Intel Xeon</h3>
               
               <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
@@ -210,8 +233,8 @@ export const MemoryArchitectures: React.FC = () => {
             </div>
 
             {/* Apple M-Series UMA Card */}
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">SoC Integrado • UMA Unificada</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">SoC Integrado • UMA Unificada</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Apple Silicon (M2/M3/M4 Max/Ultra)</h3>
               
               <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
@@ -223,8 +246,13 @@ export const MemoryArchitectures: React.FC = () => {
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            💡 <strong className="text-white">Divergencia de Diseño:</strong> En supercomputadores domina <strong className="text-white">NUMA</strong> por su capacidad de escalar a miles de nodos, mientras que en estaciones de trabajo para IA local, la <strong className="text-white">UMA</strong> de Apple destaca por su transferencia Zero-Copy de alta velocidad.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#161d2d] border border-[#e6ff00]/40 text-[#e6ff00] font-mono font-bold shrink-0">
+              [DIVERGENCIA]
+            </span>
+            <span>
+              En supercomputadores domina <strong className="text-white">NUMA</strong> por su capacidad de escalar a miles de nodos, mientras que en estaciones de trabajo para IA local, la <strong className="text-white">UMA</strong> de Apple destaca por su transferencia Zero-Copy de alta velocidad.
+            </span>
           </div>
         </div>
       </Slide>
@@ -232,42 +260,49 @@ export const MemoryArchitectures: React.FC = () => {
       {/* 9. La Política First-Touch */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Optimización • Asignación de Páginas</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Optimización • Asignación de Páginas</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               La Política First-Touch del Sistema Operativo
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Mecanismo Virtual</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">¿Cuándo se asigna la RAM física?</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 <code className="text-white font-mono">malloc()</code> únicamente reserva rango de direcciones virtuales. La <strong className="text-white">página física de 4KB se asigna en el primer acceso de escritura (Page Fault)</strong> en el socket NUMA local que ejecuta el hilo en ese instante.
               </p>
             </div>
 
-            <div className="hpc-card p-6">
-              <h3 className="m-0 text-lg font-bold text-white mb-2">⚠️ El Hilo Principal Centralizado</h3>
+            <div className="hpc-card p-6 border-t-2 border-t-[#fb7185]">
+              <span className="hpc-badge-rose font-mono mb-2 text-xs">Riesgo de Rendimiento</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">El Hilo Principal Centralizado</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
-                Si el hilo principal inicializa todo el arreglo secuencialmente en un bucle simple, <strong className="text-white">el 100% de las páginas físicas residirán en el Socket 0</strong>. El resto de sockets sufrirán penalizaciones de latencia remota (&gt;2.5x) durante todo el cálculo paralelo.
+                Si el hilo principal inicializa todo el arreglo secuencialmente en un bucle simple, <strong className="text-[#fb7185]">el 100% de las páginas físicas residirán en el Socket 0</strong>. El resto de sockets sufrirán penalizaciones de latencia remota (&gt;2.5x) durante todo el cálculo paralelo.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            💡 <strong className="text-white">Regla de Oro en Servidores NUMA:</strong> El hilo o procesador que calculará sobre los datos debe ser exactamente el que realice la inicialización en memoria.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#161d2d] border border-[#e6ff00]/40 text-[#e6ff00] font-mono font-bold shrink-0">
+              [REGLA DE ORO]
+            </span>
+            <span>
+              <strong className="text-white">Regla de Oro en Servidores NUMA:</strong> El hilo o procesador que calculará sobre los datos debe ser exactamente el que realice la inicialización en memoria.
+            </span>
           </div>
         </div>
       </Slide>
 
-      {/* 10. First-Touch: Antipatrón Serial (SLIDE DEDICADA) */}
+      {/* 10. First-Touch: Antipatrón Serial */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">First-Touch • Antipatrón (1/2)</span>
-            <h2 className="text-3xl font-bold text-rose-400 mb-3 border-b border-slate-800 pb-2">
-              ❌ Antipatrón: Inicialización Serial Centralizada
+          <div className="mb-2">
+            <span className="hpc-badge-rose font-mono mb-2.5">First-Touch • Antipatrón (1/2)</span>
+            <h2 className="text-3xl font-bold text-[#fb7185] mb-3 border-b border-[#232a3d] pb-2.5">
+              [ANTIPATRÓN] Inicialización Serial Centralizada
             </h2>
           </div>
 
@@ -288,19 +323,24 @@ for (int i = 0; i < N; i++) {
             </pre>
           </div>
 
-          <div className="hpc-card p-5 text-sm text-slate-300 border-rose-500/30">
-            ⚠️ <strong className="text-white">Consecuencia en Silicio:</strong> El bus de interconexión (UPI / Infinity Fabric) se satura con peticiones de lectura/escritura hacia la memoria del Socket 0, destruyendo la aceleración paralela esperada.
+          <div className="hpc-card p-5 text-sm text-slate-300 border-[#fb7185]/40 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#1e131d] text-[#fb7185] font-mono font-bold shrink-0">
+              [COLAPSO]
+            </span>
+            <span>
+              <strong className="text-white">Consecuencia en Silicio:</strong> El bus de interconexión (UPI / Infinity Fabric) se satura con peticiones de lectura/escritura hacia la memoria del Socket 0, destruyendo la aceleración paralela esperada.
+            </span>
           </div>
         </div>
       </Slide>
 
-      {/* 11. First-Touch: Patrón Paralelo (SLIDE DEDICADA) */}
+      {/* 11. First-Touch: Patrón Paralelo */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">First-Touch • Patrón Correcto (2/2)</span>
-            <h2 className="text-3xl font-bold text-emerald-400 mb-3 border-b border-slate-800 pb-2">
-              ✅ Patrón Correcto: First-Touch Paralelo Equitativo
+          <div className="mb-2">
+            <span className="hpc-badge-emerald font-mono mb-2.5">First-Touch • Patrón Correcto (2/2)</span>
+            <h2 className="text-3xl font-bold text-[#34d399] mb-3 border-b border-[#232a3d] pb-2.5">
+              [PATRÓN CORRECTO] First-Touch Paralelo Equitativo
             </h2>
           </div>
 
@@ -322,8 +362,13 @@ for (int i = 0; i < N; i++) {
             </pre>
           </div>
 
-          <div className="hpc-card p-5 text-sm text-slate-300 border-emerald-500/30">
-            🚀 <strong className="text-white">Resultado:</strong> Cada procesador accede exclusivamente a sus propios módulos DDR5 locales a latencia mínima (~60 ns) y ancho de banda multiplicado por el número de sockets.
+          <div className="hpc-card p-5 text-sm text-slate-300 border-[#34d399]/40 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#10241e] text-[#34d399] font-mono font-bold shrink-0">
+              [RESULTADO]
+            </span>
+            <span>
+              <strong className="text-white">Resultado:</strong> Cada procesador accede exclusivamente a sus propios módulos DDR5 locales a latencia mínima (~60 ns) y ancho de banda multiplicado por el número de sockets.
+            </span>
           </div>
         </div>
       </Slide>
@@ -331,17 +376,18 @@ for (int i = 0; i < N; i++) {
       {/* 12. Control de Afinidad */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">NUMA • Configuración de Ejecución</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">NUMA • Configuración de Ejecución</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               Afinidad de Hilos y Herramientas del Sistema
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">OpenMP</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Variables OpenMP (Fijación)</h3>
-              <div className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 font-mono text-sm text-slate-200 my-2">
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] font-mono text-sm text-slate-200 my-2">
                 export OMP_PROC_BIND=spread<br />
                 export OMP_PLACES=cores
               </div>
@@ -350,9 +396,10 @@ for (int i = 0; i < N; i++) {
               </p>
             </div>
 
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">Linux CLI</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Linux CLI (numactl)</h3>
-              <div className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 font-mono text-sm text-slate-200 my-2">
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] font-mono text-sm text-slate-200 my-2">
                 numactl --membind=0 --physcpubind=0-15 ./app
               </div>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
@@ -361,8 +408,13 @@ for (int i = 0; i < N; i++) {
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🚀 <strong className="text-white">Resultado:</strong> Rendimiento determinista y aislamiento de memoria garantizado en nodos de cómputo multi-tenant.
+          <div className="hpc-card p-4 text-xs text-slate-300 flex items-center gap-3">
+            <span className="px-2.5 py-1 rounded bg-[#10241e] border border-[#34d399]/40 text-[#34d399] font-mono font-bold shrink-0">
+              [GARANTÍA]
+            </span>
+            <span>
+              <strong className="text-white">Resultado:</strong> Rendimiento determinista y aislamiento de memoria garantizado en nodos de cómputo multi-tenant.
+            </span>
           </div>
         </div>
       </Slide>

@@ -1,12 +1,18 @@
 @import "tailwindcss";
 
-/* HPC Theme - Modern, Minimalist, Sober, High Legibility & Optimized Space Usage */
+/* HPC Theme - Solid Raw High Contrast, Neon Yellow Primary & High Legibility */
 
 :root {
-  --hpc-bg: #0b0f19;
-  --hpc-card-bg: rgba(15, 23, 42, 0.75);
-  --hpc-card-border: rgba(51, 65, 85, 0.6);
-  --hpc-card-border-hover: rgba(100, 116, 139, 0.8);
+  --hpc-bg: #07080c;
+  --hpc-card-bg: #0f131d;
+  --hpc-card-border: #232a3d;
+  --hpc-card-border-hover: #3d4963;
+  --hpc-primary: #e6ff00;
+  --hpc-primary-glow: rgba(230, 255, 0, 0.25);
+  --hpc-cyan: #38bdf8;
+  --hpc-emerald: #34d399;
+  --hpc-rose: #fb7185;
+  --hpc-purple: #c084fc;
 
   --font-main: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-code: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -23,6 +29,7 @@ body {
   font-family: var(--font-main) !important;
   color: #f1f5f9 !important;
   font-size: 18px !important;
+  background-color: var(--hpc-bg) !important;
 }
 
 .reveal .slides {
@@ -70,13 +77,12 @@ body {
   color: #cbd5e1 !important;
 }
 
-/* Base custom classes for cards and buttons - SOBER, SPACIOUS & READABLE */
+/* Base custom classes for cards and buttons - SOLID, HIGH CONTRAST */
 .hpc-card {
   background-color: var(--hpc-card-bg);
   border: 1px solid var(--hpc-card-border);
   border-radius: 0.85rem;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.7);
   transition: all 0.2s ease-in-out;
 }
 
@@ -84,47 +90,106 @@ body {
   border-color: var(--hpc-card-border-hover);
 }
 
-/* Unified minimal category badges */
+/* Category Badges with generous spacing */
 .hpc-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 0.45rem;
   font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  background-color: rgba(30, 41, 59, 0.85);
-  color: #94a3b8;
-  border: 1px solid rgba(71, 85, 105, 0.5);
+  letter-spacing: 0.04em;
+  background-color: #151a27;
+  color: #cbd5e1;
+  border: 1px solid #2d374d;
+  margin-bottom: 0.65rem;
 }
 
-.hpc-badge-amber,
-.hpc-badge-emerald,
-.hpc-badge-rose,
-.hpc-badge-slate {
+.hpc-badge-yellow {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 0.45rem;
   font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  background-color: rgba(30, 41, 59, 0.85);
-  color: #94a3b8;
-  border: 1px solid rgba(71, 85, 105, 0.5);
+  letter-spacing: 0.04em;
+  background-color: rgba(230, 255, 0, 0.12);
+  color: #e6ff00;
+  border: 1px solid rgba(230, 255, 0, 0.35);
+  margin-bottom: 0.65rem;
+}
+
+.hpc-badge-cyan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background-color: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  margin-bottom: 0.65rem;
+}
+
+.hpc-badge-emerald {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background-color: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  margin-bottom: 0.65rem;
+}
+
+.hpc-badge-rose {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background-color: rgba(251, 113, 133, 0.12);
+  color: #fb7185;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  margin-bottom: 0.65rem;
+}
+
+.hpc-badge-purple {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background-color: rgba(192, 132, 252, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  margin-bottom: 0.65rem;
 }
 
 /* Formula & Highlight Boxes */
 .hpc-formula-box {
-  background-color: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(71, 85, 105, 0.6);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  padding: 1.1rem 1.75rem;
+  background-color: #0c0f17;
+  border: 1px solid #232b3d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  padding: 1.25rem 2rem;
   border-radius: 0.65rem;
   font-family: var(--font-code);
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   color: #f8fafc;
   text-align: center;
 }
@@ -133,9 +198,9 @@ body {
   font-family: var(--font-code) !important;
   font-size: 0.92rem !important;
   line-height: 1.55 !important;
-  background-color: #030712 !important;
+  background-color: #030408 !important;
   border-radius: 0.65rem !important;
-  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  border: 1px solid #1f2738 !important;
   padding: 1.1rem 1.4rem !important;
   text-align: left !important;
   overflow-x: auto;
@@ -147,9 +212,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background-color: rgba(30, 41, 59, 0.95);
-  color: #f8fafc !important;
-  border: 1px solid rgba(100, 116, 139, 0.6);
+  background-color: #121722;
+  color: #ffffff !important;
+  border: 1px solid #2d384d;
   padding: 0.65rem 1.25rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -159,18 +224,70 @@ body {
 }
 
 .godbolt-btn:hover {
-  background-color: rgba(51, 65, 85, 0.95);
-  border-color: #cbd5e1;
+  background-color: #1a2233;
+  border-color: var(--hpc-primary);
+  color: var(--hpc-primary) !important;
 }
 
 /* KaTeX custom styles */
 .katex {
-  font-size: 1.12em;
+  font-size: 1.22em !important;
   color: #f1f5f9;
 }
 
 .katex-display {
-  margin: 0.4em 0 !important;
+  margin: 0.6em 0 !important;
+}
+
+.katex-display > .katex {
+  font-size: 1.38em !important;
+}
+
+/* Reveal Progress Bar - Neon Yellow */
+.reveal .progress {
+  height: 5px !important;
+  background-color: #131722 !important;
+}
+
+.reveal .progress span {
+  background: var(--hpc-primary) !important;
+  box-shadow: 0 0 12px var(--hpc-primary-glow) !important;
+}
+
+/* Reveal Controls - Neon Yellow */
+.reveal .controls {
+  color: var(--hpc-primary) !important;
+}
+
+.reveal .controls button {
+  color: var(--hpc-primary) !important;
+}
+
+.reveal .controls .navigate-left.enabled,
+.reveal .controls .navigate-right.enabled,
+.reveal .controls .navigate-up.enabled,
+.reveal .controls .navigate-down.enabled {
+  color: var(--hpc-primary) !important;
+}
+
+/* Slide Number in Upper Right Corner */
+.reveal .slide-number {
+  position: absolute !important;
+  top: 20px !important;
+  right: 28px !important;
+  bottom: auto !important;
+  left: auto !important;
+  font-family: var(--font-code) !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: var(--hpc-primary) !important;
+  background-color: #0d1017 !important;
+  border: 1px solid rgba(230, 255, 0, 0.4) !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 0.45rem !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+  z-index: 50 !important;
 }
 
 /* TanStack Chart host styling */

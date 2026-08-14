@@ -9,9 +9,9 @@ export const ScalingLaws: React.FC = () => {
       {/* 1. Strong Scaling & Amdahl */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Escalamiento Paralelo • Strong Scaling</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Escalamiento Paralelo • Strong Scaling</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               Escalamiento Fuerte y Ley de Amdahl (1967)
             </h2>
           </div>
@@ -20,15 +20,15 @@ export const ScalingLaws: React.FC = () => {
             <Math math="\text{Speedup}(P) = \frac{1}{(1 - p) + \frac{p}{P}} = \frac{1}{s + \frac{p}{P}}" block />
           </div>
 
-          <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+          <div className="grid grid-cols-2 gap-6 my-auto">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Tamaño de Problema Fijo</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Se incrementa el número de procesadores (<Math math="P" />) para resolver exactamente el <strong className="text-white">mismo tamaño de problema en el menor tiempo posible</strong> (minimizar el <em>Time-to-Solution</em>).
               </p>
             </div>
 
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#e6ff00]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Parámetros Clave</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 • <Math math="p" />: Fracción de código paralelizable.<br />
@@ -37,49 +37,50 @@ export const ScalingLaws: React.FC = () => {
               </p>
             </div>
           </div>
-
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            💡 <strong className="text-white">Objetivo:</strong> Reducir el tiempo de espera para simulaciones urgentes con carga de datos constante.
-          </div>
         </div>
       </Slide>
 
       {/* 2. El Cuello de Botella Serial */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Amdahl • Límite Teórico</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Amdahl • Límite Teórico</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               El Cuello de Botella Serial Asintótico
             </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#fb7185]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">
                 Límite Asintótico (<Math math="P \to \infty" />)
               </h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Incluso con un número infinito de procesadores (<Math math="P \to \infty" />), la aceleración máxima absoluta jamás superará el inverso de la porción serial:
               </p>
-              <div className="my-3 text-center text-base font-bold text-white">
+              <div className="my-3 text-center text-base font-bold text-[#fb7185]">
                 <Math math="\text{Speedup}_{\max} = \frac{1}{s}" />
               </div>
             </div>
 
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#e6ff00]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Ejemplo Numérico Real</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed mb-2">
-                Si apenas el <strong className="text-white">5% del código es serial (<Math math="s = 0.05" />)</strong>, la aceleración máxima teórica jamás superará <strong className="text-white">20x</strong>, aunque se desplieguen 100,000 núcleos.
+                Si apenas el <strong className="text-white">5% del código es serial (<Math math="s = 0.05" />)</strong>, la aceleración máxima teórica jamás superará <strong className="text-[#e6ff00]">20x</strong>, aunque se desplieguen 100,000 núcleos.
               </p>
-              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-400">
+              <div className="p-3 rounded-lg bg-[#07080c] border border-[#232a3d] text-xs text-slate-400">
                 El 95% restante se ejecuta en tiempo infinitesimal, pero el 5% serial domina por completo la duración.
               </div>
             </div>
           </div>
 
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            ⚠️ <strong className="text-white">Ley de Rendimientos Decrecientes:</strong> Duplicar los núcleos cerca del límite asintótico añade coste energético y monetario con ganancias marginales de rendimiento.
+          <div className="hpc-card p-3 text-xs text-slate-300 flex items-center gap-3 border-l-2 border-l-[#fb7185]">
+            <span className="px-2 py-0.5 rounded bg-[#1e131d] text-[#fb7185] font-mono font-bold shrink-0">
+              [LÍMITE]
+            </span>
+            <span>
+              <strong className="text-white">Rendimientos Decrecientes:</strong> Duplicar núcleos cerca del límite asintótico añade coste energético con ganancias marginales de velocidad.
+            </span>
           </div>
         </div>
       </Slide>
@@ -87,9 +88,9 @@ export const ScalingLaws: React.FC = () => {
       {/* 3. Weak Scaling & Gustafson */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Escalamiento Paralelo • Weak Scaling</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Escalamiento Paralelo • Weak Scaling</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               Escalamiento Débil y Ley de Gustafson (1988)
             </h2>
           </div>
@@ -98,34 +99,30 @@ export const ScalingLaws: React.FC = () => {
             <Math math="\text{Scaled Speedup}(P) = P - s \times (P - 1) = s + (1 - s) \times P" block />
           </div>
 
-          <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
+          <div className="grid grid-cols-2 gap-6 my-auto">
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Carga por Procesador Constante</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 El tamaño global del problema <strong className="text-white">crece proporcionalmente al número de procesadores</strong> (<Math math="N \propto P" />), manteniendo constante la carga de trabajo por núcleo.
               </p>
             </div>
 
-            <div className="hpc-card p-6">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">Filosofía del Supercómputo</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 En supercomputadores no queremos resolver el mismo problema minúsculo más rápido, sino <strong className="text-white">abordar problemas más grandes con mayor resolución física</strong> (mallas más finas en clima o modelos de IA con más parámetros).
               </p>
             </div>
           </div>
-
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🚀 <strong className="text-white">Escalamiento Lineal en Exascale:</strong> Con Gustafson, la aceleración escala casi linealmente con <Math math="P" />, convirtiéndose en el estándar de evaluación para el Top500.
-          </div>
         </div>
       </Slide>
 
-      {/* 4. Gráfico Comparativo (CHART DEDICADO) */}
+      {/* 4. Gráfico Comparativo */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Leyes de Escalamiento • Comparativa Visual</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Leyes de Escalamiento • Comparativa Visual</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               Visualizador de Escalamiento: Amdahl vs Gustafson
             </h2>
           </div>
@@ -137,16 +134,16 @@ export const ScalingLaws: React.FC = () => {
       {/* 5. Comparativa Estratégica: Amdahl vs Gustafson */}
       <Slide>
         <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
-          <div>
-            <span className="hpc-badge font-mono">Escalamiento Paralelo • Síntesis</span>
-            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+          <div className="mb-2">
+            <span className="hpc-badge font-mono mb-2.5">Escalamiento Paralelo • Síntesis</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-[#232a3d] pb-2.5">
               ¿Cuándo Aplicar Amdahl vs Gustafson?
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 my-2">
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Amdahl (Strong Scaling)</span>
+          <div className="grid grid-cols-2 gap-6 my-auto">
+            <div className="hpc-card p-6 border-t-2 border-t-[#38bdf8]">
+              <span className="hpc-badge-cyan font-mono mb-2 text-xs">Amdahl (Strong Scaling)</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Escalamiento Fuerte</h3>
               <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
                 <li><strong className="text-white">Objetivo:</strong> Reducir el tiempo de espera (latencia).</li>
@@ -156,8 +153,8 @@ export const ScalingLaws: React.FC = () => {
               </ul>
             </div>
 
-            <div className="hpc-card p-6">
-              <span className="hpc-badge font-mono mb-2 text-xs">Gustafson (Weak Scaling)</span>
+            <div className="hpc-card p-6 border-t-2 border-t-[#34d399]">
+              <span className="hpc-badge-emerald font-mono mb-2 text-xs">Gustafson (Weak Scaling)</span>
               <h3 className="m-0 text-lg font-bold text-white mb-2">Escalamiento Débil</h3>
               <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
                 <li><strong className="text-white">Objetivo:</strong> Maximizar la capacidad y precisión (throughput).</li>
@@ -166,10 +163,6 @@ export const ScalingLaws: React.FC = () => {
                 <li><strong className="text-white">Ejemplo:</strong> Simulación climática global o entrenamiento de modelos de billones de parámetros.</li>
               </ul>
             </div>
-          </div>
-
-          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
-            🏆 En supercómputo y Exascale, el diseño de algoritmos se enfoca primordialmente bajo el prisma de la <strong className="text-white">Ley de Gustafson</strong>.
           </div>
         </div>
       </Slide>

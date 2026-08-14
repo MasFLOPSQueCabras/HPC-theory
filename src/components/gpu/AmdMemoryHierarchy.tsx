@@ -2,69 +2,70 @@ import React from 'react';
 
 export const AmdMemoryHierarchy: React.FC = () => {
   return (
-    <div style={{ width: '100%', maxWidth: '960px', margin: '0 auto' }}>
+    <div className="w-full max-w-5xl mx-auto">
       {/* 3 Full-Size Memory Level Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', textAlign: 'left', marginBottom: '0.8rem' }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mb-3">
         
         {/* Level 1: LDS */}
-        <div className="hpc-card" style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="hpc-card p-4 flex flex-col justify-between border-t-2 border-t-[#fb7185]">
           <div>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem', color: '#f87171', background: 'rgba(248, 113, 113, 0.15)', border: '1px solid rgba(248, 113, 113, 0.3)' }}>
+            <span className="hpc-badge-rose text-[10px] font-mono mb-1">
               Nivel 1 (En el CU)
             </span>
-            <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>LDS (Local Data Share)</h4>
-            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.45 }}>
+            <h4 className="m-0 mb-1 text-sm font-bold text-white">LDS (Local Data Share)</h4>
+            <p className="m-0 mb-2 text-xs text-slate-300 leading-relaxed">
               Memoria SRAM compartida por todos los hilos del mismo Work-group. Equivalente directo a la <em>Shared Memory</em> de CUDA.
             </p>
           </div>
-          <ul style={{ fontSize: '0.76rem', paddingLeft: '1rem', margin: 0, color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <li><strong>Latencia:</strong> ~2.0 ns (~25 ciclos)</li>
-            <li><strong>Capacidad:</strong> 64 KB a 128 KB por CU</li>
-            <li><strong>Función:</strong> Intercambio directo de datos sin tocar la VRAM</li>
+          <ul className="text-xs pl-4 m-0 text-slate-400 flex flex-col gap-1 list-disc">
+            <li><strong className="text-white">Latencia:</strong> ~2.0 ns (~25 ciclos)</li>
+            <li><strong className="text-white">Capacidad:</strong> 64 KB a 128 KB por CU</li>
+            <li><strong className="text-white">Función:</strong> Intercambio directo sin tocar VRAM</li>
           </ul>
         </div>
 
         {/* Level 2: Infinity Cache */}
-        <div className="hpc-card" style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="hpc-card p-4 flex flex-col justify-between border-t-2 border-t-[#e6ff00]">
           <div>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem', color: '#f4b860', background: 'rgba(244, 184, 96, 0.15)', border: '1px solid rgba(244, 184, 96, 0.3)' }}>
+            <span className="hpc-badge-yellow text-[10px] font-mono mb-1">
               Nivel 2 (En el Die / XCD)
             </span>
-            <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>Infinity Cache (L2 / MALL)</h4>
-            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-              Caché global masiva (Memory Attached Last Level) interconectada con la red <strong>Infinity Fabric</strong> de alta velocidad.
+            <h4 className="m-0 mb-1 text-sm font-bold text-white">Infinity Cache (L2 / MALL)</h4>
+            <p className="m-0 mb-2 text-xs text-slate-300 leading-relaxed">
+              Caché global masiva (Memory Attached Last Level) interconectada con la red <strong className="text-white">Infinity Fabric</strong> de alta velocidad.
             </p>
           </div>
-          <ul style={{ fontSize: '0.76rem', paddingLeft: '1rem', margin: 0, color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <li><strong>Latencia:</strong> ~12 - 18 ns</li>
-            <li><strong>Capacidad:</strong> Hasta 256 MB Infinity Cache en CDNA 3</li>
-            <li><strong>Función:</strong> Maximiza el ancho de banda efectivo</li>
+          <ul className="text-xs pl-4 m-0 text-slate-400 flex flex-col gap-1 list-disc">
+            <li><strong className="text-white">Latencia:</strong> ~12 - 18 ns</li>
+            <li><strong className="text-white">Capacidad:</strong> Hasta 256 MB Infinity Cache</li>
+            <li><strong className="text-white">Función:</strong> Maximiza el ancho de banda efectivo</li>
           </ul>
         </div>
 
         {/* Level 3: HBM3 Memory */}
-        <div className="hpc-card" style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="hpc-card p-4 flex flex-col justify-between border-t-2 border-t-[#38bdf8]">
           <div>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem', color: '#38bdf8', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
+            <span className="hpc-badge-cyan text-[10px] font-mono mb-1">
               Nivel 3 (Externo HBM)
             </span>
-            <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>VRAM Global (HBM3 / HBM3e)</h4>
-            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.45 }}>
+            <h4 className="m-0 mb-1 text-sm font-bold text-white">VRAM Global (HBM3 / HBM3e)</h4>
+            <p className="m-0 mb-2 text-xs text-slate-300 leading-relaxed">
               Memoria masiva unificada líder en capacidad por acelerador para entrenamiento e inferencia de modelos gigantes.
             </p>
           </div>
-          <ul style={{ fontSize: '0.76rem', paddingLeft: '1rem', margin: 0, color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <li><strong>Latencia:</strong> ~100 - 180 ns</li>
-            <li><strong>Capacidad:</strong> <strong>192 GB (MI300X)</strong> a 288 GB (MI350X)</li>
-            <li><strong>Ancho de Banda:</strong> <strong>5.3 TB/s a 8.0 TB/s</strong></li>
+          <ul className="text-xs pl-4 m-0 text-slate-400 flex flex-col gap-1 list-disc">
+            <li><strong className="text-white">Latencia:</strong> ~100 - 180 ns</li>
+            <li><strong className="text-white">Capacidad:</strong> <strong className="text-white">192 GB (MI300X)</strong> a 288 GB</li>
+            <li><strong className="text-white">Ancho de Banda:</strong> <strong className="text-white">5.3 TB/s a 8.0 TB/s</strong></li>
           </ul>
         </div>
 
       </div>
 
       {/* Bottom Footer Callout */}
-      <div style={{ background: '#070a12', padding: '0.6rem 1rem', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.08)', fontSize: '0.8rem', color: '#cbd5e1', textAlign: 'center' }}>
-        🏛️ <strong>Ecosistema ROCm / HIP:</strong> La capa de portabilidad <code>HIP</code> permite compilar código CUDA en GPUs AMD mapeando directamente <code>__shared__</code> a LDS y las llamadas de sincronización de bloques.
+      <div className="bg-[#07080c] p-2.5 rounded-lg border border-[#232a3d] text-xs text-slate-300 text-center flex items-center justify-center gap-2">
+        <span className="px-2 py-0.5 rounded bg-[#151a27] text-[#38bdf8] font-mono text-[10px] font-bold border border-[#38bdf8]/40">ROCm / HIP</span>
+        <span>La capa de portabilidad <code>HIP</code> permite compilar código CUDA en GPUs AMD mapeando directamente <code>__shared__</code> a LDS y las llamadas de sincronización de bloques.</span>
       </div>
     </div>
   );
