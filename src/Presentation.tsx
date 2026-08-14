@@ -21,7 +21,12 @@ export function Presentation() {
   return (
     <Deck
       config={{
+        touch: true,
+        navigationMode: 'default',
         controls: true,
+        controlsTutorial: true,
+        controlsLayout: 'bottom-right',
+        controlsBackArrows: 'faded',
         progress: true,
         slideNumber: 'c/t',
         center: true,
@@ -29,9 +34,10 @@ export function Presentation() {
         transition: 'slide',
         width: 1200,
         height: 700,
-        margin: 0.05,
-        minScale: 0.2,
-        maxScale: 2.0,
+        margin: 0.03,
+        minScale: 0.1,
+        maxScale: 3.0,
+        mobileViewDistance: 4,
       }}
     >
       <Title />

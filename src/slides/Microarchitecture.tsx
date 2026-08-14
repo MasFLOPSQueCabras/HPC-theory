@@ -902,7 +902,7 @@ export const Microarchitecture: React.FC = () => {
             <div className="hpc-card p-6 border-t-2 border-t-[#fb7185]">
               <h3 className="m-0 text-lg font-bold text-white mb-2">El Muro del ILP</h3>
               <p className="m-0 text-sm text-slate-300 leading-relaxed">
-                Las dependencias de datos y saltos saturan el <strong className="text-white">ILP</strong> en <strong className="text-white">IPC &approx; 2 a 3</strong>. Extraer más ILP incrementa la complejidad del silicio y el consumo térmico exponencialmente.
+                Las dependencias de datos y saltos saturan el <strong className="text-white">ILP</strong> en <strong className="text-white">IPC ≈ 2 a 3</strong>. Extraer más ILP incrementa la complejidad del silicio y el consumo térmico exponencialmente.
               </p>
             </div>
           </div>

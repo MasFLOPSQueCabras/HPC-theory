@@ -257,10 +257,12 @@ body {
 /* Reveal Controls - Neon Yellow */
 .reveal .controls {
   color: var(--hpc-primary) !important;
+  z-index: 100 !important;
 }
 
 .reveal .controls button {
   color: var(--hpc-primary) !important;
+  touch-action: manipulation;
 }
 
 .reveal .controls .navigate-left.enabled,
@@ -288,6 +290,27 @@ body {
   letter-spacing: 0.05em !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
   z-index: 50 !important;
+}
+
+/* Touch & Mobile Optimizations */
+button, input, select, textarea, a, .tanstack-chart-container, svg {
+  touch-action: manipulation;
+}
+
+@media (max-width: 768px) {
+  .reveal .slide-number {
+    top: 10px !important;
+    right: 12px !important;
+    font-size: 0.72rem !important;
+    padding: 0.15rem 0.5rem !important;
+  }
+
+  .reveal .controls {
+    bottom: 12px !important;
+    right: 12px !important;
+    transform: scale(1.15) !important;
+    transform-origin: bottom right !important;
+  }
 }
 
 /* TanStack Chart host styling */
