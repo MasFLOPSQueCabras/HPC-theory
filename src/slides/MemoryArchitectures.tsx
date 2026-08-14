@@ -1,11 +1,22 @@
 import React from 'react';
 import { Slide, Stack } from '@revealjs/react';
 import { NumaDiagram } from '../components/NumaDiagram';
+import { MemoryWallDiagram } from '../components/MemoryWallDiagram';
 
 export const MemoryArchitectures: React.FC = () => {
   return (
     <Stack>
-      {/* 1. UMA vs NUMA Topología */}
+      {/* 1. El Muro de la Memoria (Memory Wall) */}
+      <Slide>
+        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
+          <span className="hpc-badge">Jerarquía de Memoria • La Brecha de Rendimiento</span>
+          <h2>El Muro de la Memoria (Memory Wall) y Jerarquía de Latencias</h2>
+
+          <MemoryWallDiagram />
+        </div>
+      </Slide>
+
+      {/* 2. UMA vs NUMA Topología */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
           <span className="hpc-badge">Jerarquía de Memoria • Topologías</span>
@@ -15,7 +26,7 @@ export const MemoryArchitectures: React.FC = () => {
         </div>
       </Slide>
 
-      {/* 2. Comparativa Real: AMD/Intel (NUMA) vs Apple Serie M (UMA) */}
+      {/* 3. Comparativa Real: AMD/Intel (NUMA) vs Apple Serie M (UMA) */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
           <span className="hpc-badge">Arquitecturas Reales • Comparativa de la Industria</span>
@@ -28,10 +39,10 @@ export const MemoryArchitectures: React.FC = () => {
               <h3 style={{ margin: '0.3rem 0 0.4rem 0', fontSize: '1.15rem', color: '#ffffff' }}>AMD EPYC / Intel Xeon</h3>
               
               <ul style={{ fontSize: '0.82rem', paddingLeft: '1.1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.45rem', lineHeight: 1.4 }}>
-                <li><strong>Topología:</strong> Multi-Socket y Multi-Chiplet conectados por buses de alta velocidad (Infinity Fabric / UPI).</li>
+                <li><strong>Topología:</strong> Multi-Socket y Multi-Chiplet conectados por buses de alta velocidad (AMD Infinity Fabric / Intel UPI - Ultra Path Interconnect).</li>
                 <li><strong>Memoria:</strong> Canales DDR5 independientes por procesador (hasta 12 canales por socket).</li>
                 <li><strong>Ventaja:</strong> Capacidad masiva de memoria RAM (de 1 TB a varios TB por nodo de servidor).</li>
-                <li><strong>Desafío:</strong> Accesos a memoria remota en otros sockets añaden &gt;2x de latencia; CPU y GPU requieren copias por PCIe.</li>
+                <li><strong>Desafío:</strong> Accesos a memoria remota en otros sockets añaden &gt;2x de latencia; CPU y GPU requieren copias explícitas por PCIe.</li>
               </ul>
             </div>
 
@@ -41,8 +52,8 @@ export const MemoryArchitectures: React.FC = () => {
               <h3 style={{ margin: '0.3rem 0 0 0', fontSize: '1.15rem', color: '#ffffff' }}>Apple Silicon (M2/M3/M4 Max/Ultra)</h3>
               
               <ul style={{ fontSize: '0.82rem', paddingLeft: '1.1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.45rem', lineHeight: 1.4 }}>
-                <li><strong>Topología:</strong> UMA integrada (System-in-Package con bus UltraFusion de bajísima latencia).</li>
-                <li><strong>Memoria:</strong> Bus LPDDR5X ultra ancho (hasta 800 GB/s en Ultra) compartido por CPU, GPU y NPU.</li>
+                <li><strong>Topología:</strong> <strong>UMA (Uniform Memory Access)</strong> integrada (System-in-Package con bus UltraFusion de bajísima latencia).</li>
+                <li><strong>Memoria:</strong> Bus LPDDR5X ultra ancho (hasta 800 GB/s en Ultra) compartido por CPU, GPU y NPU (Neural Processing Unit).</li>
                 <li><strong>Ventaja (Zero-Copy):</strong> CPU y GPU leen y escriben exactamente el mismo búfer físico sin copias por PCIe.</li>
                 <li><strong>Límite:</strong> Capacidad acotada a la RAM soldada (hasta 128-192 GB) y no escala a servidores multi-nodo.</li>
               </ul>
@@ -50,16 +61,16 @@ export const MemoryArchitectures: React.FC = () => {
           </div>
 
           <div className="hpc-card" style={{ padding: '0.8rem 1.2rem', fontSize: '0.82rem', color: '#e5e7eb' }}>
-            💡 <strong>Divergencia de Diseño:</strong> En HPC de gran escala dominan los servidores NUMA modulares por su capacidad de escalar a miles de nodos, mientras que en estaciones de trabajo para IA local, la UMA de Apple destaca por su transferencia Zero-Copy de alta velocidad.
+            💡 <strong>Divergencia de Diseño:</strong> En HPC de gran escala dominan los servidores <strong>NUMA (Non-Uniform Memory Access)</strong> modulares por su capacidad de escalar a miles de nodos, mientras que en estaciones de trabajo para IA local, la UMA de Apple destaca por su transferencia Zero-Copy de alta velocidad.
           </div>
         </div>
       </Slide>
 
-      {/* 3. La Política First-Touch */}
+      {/* 4. La Política First-Touch */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
           <span className="hpc-badge">Optimización • Asignación de Páginas</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>La Política First-Touch del SO</h2>
+          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>La Política First-Touch del Sistema Operativo</h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
             <div className="hpc-card" style={{ padding: '1.3rem' }}>
@@ -76,7 +87,7 @@ export const MemoryArchitectures: React.FC = () => {
         </div>
       </Slide>
 
-      {/* 4. Código C++: Mala Práctica */}
+      {/* 5. Código C++: Mala Práctica */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
           <span className="hpc-badge">NUMA • Antipatrón</span>
@@ -91,10 +102,10 @@ for (int i = 0; i < N; i++) {
     A[i] = 0.0; // ¡Toda la memoria física queda asignada en Node 0!
 }
 
-// 2. Bucle paralelo distribuido entre sockets
+// 2. Bucle paralelo distribuido entre sockets (OpenMP)
 #pragma omp parallel for
 for (int i = 0; i < N; i++) {
-    A[i] += 1.0; // Los hilos de Node 1 saturan el enlace inter-socket (UPI)
+    A[i] += 1.0; // Los hilos de Node 1 saturan el enlace inter-socket (UPI / IF)
 }`}
             </pre>
 
@@ -105,7 +116,7 @@ for (int i = 0; i < N; i++) {
         </div>
       </Slide>
 
-      {/* 5. Código C++: Buena Práctica */}
+      {/* 6. Código C++: Buena Práctica */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
           <span className="hpc-badge">NUMA • Patrón Correcto</span>
@@ -115,7 +126,7 @@ for (int i = 0; i < N; i++) {
             <pre className="hpc-code-block" style={{ fontSize: '0.82rem', padding: '1rem', margin: '0 0 0.8rem 0' }}>
 {`double *A = (double*) malloc(N * sizeof(double));
 
-// 1. Inicializado en paralelo con la MISMA partición de hilos
+// 1. Inicializado en paralelo con la MISMA partición de hilos (OpenMP)
 #pragma omp parallel for
 for (int i = 0; i < N; i++) {
     A[i] = 0.0; // Cada página física se asigna en la RAM del nodo local
@@ -135,7 +146,7 @@ for (int i = 0; i < N; i++) {
         </div>
       </Slide>
 
-      {/* 6. Control de Afinidad */}
+      {/* 7. Control de Afinidad */}
       <Slide>
         <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
           <span className="hpc-badge">NUMA • Configuración de Ejecución</span>
@@ -149,17 +160,17 @@ for (int i = 0; i < N; i++) {
                 export OMP_PLACES=cores
               </div>
               <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1' }}>
-                Fija hilos a núcleos impidiendo migraciones de contexto que destruirían la localidad de caché.
+                Fija hilos a núcleos impidiendo migraciones de contexto que destruirían la localidad de caché L1/L2.
               </p>
             </div>
 
             <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <strong style={{ color: '#ffffff', fontSize: '1rem' }}>Herramienta numactl:</strong>
+              <strong style={{ color: '#ffffff', fontSize: '1rem' }}>Herramienta numactl (Linux):</strong>
               <div style={{ background: '#070a12', padding: '0.6rem 0.8rem', borderRadius: '6px', margin: '0.5rem 0', fontFamily: 'var(--font-code)', fontSize: '0.82rem', color: '#f8fafc' }}>
                 numactl --membind=0 --physcpubind=0-15 ./app
               </div>
               <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1' }}>
-                Fuerza la ejecución del proceso y asignación de memoria en un socket NUMA exclusivo.
+                Fuerza la ejecución del proceso y asignación de memoria en un nodo NUMA exclusivo.
               </p>
             </div>
           </div>

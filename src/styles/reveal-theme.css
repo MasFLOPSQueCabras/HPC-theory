@@ -5,7 +5,11 @@
   --hpc-card-bg: rgba(255, 255, 255, 0.03);
   --hpc-card-border: rgba(255, 255, 255, 0.08);
   --hpc-card-border-hover: rgba(255, 255, 255, 0.18);
-  --hpc-code-bg: #070a12;
+  /* Theme Colors */
+  --hpc-primary: #38bdf8;
+  --hpc-secondary: #f4b860;
+  --hpc-danger: #f87171;
+  --hpc-success: #34d399;
 
   /* Typography */
   --hpc-text: #f3f4f6;

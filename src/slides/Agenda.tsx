@@ -14,30 +14,30 @@ export const Agenda: React.FC = () => {
             <div className="hpc-card" style={{ padding: '1.2rem 1.6rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <span className="hpc-badge">01</span>
-                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Microarquitectura de CPU</h3>
+                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Microarquitectura de CPU (Frontend &amp; Backend)</h3>
               </div>
               <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.86rem', color: '#9ca3af' }}>
-                Trilema PPA, leyes físicas, pipelining, hazards (RAW/WAR/WAW), predicción de saltos, Reorder Buffer (ROB) e instrucciones in-flight.
+                División Frontend (In-Order) y Backend (OoO), trilema PPA, pipelining, hazards (RAW/WAR/WAW), predicción de saltos (BPU / TAGE / BTB) y Reorder Buffer (ROB).
               </p>
             </div>
 
             <div className="hpc-card" style={{ padding: '1.2rem 1.6rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <span className="hpc-badge">02</span>
-                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Taxonomía de Flynn, SIMD y VLA</h3>
+                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Flynn, SIMD/VLA y Arquitecturas de GPUs (NVIDIA vs AMD)</h3>
               </div>
               <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.86rem', color: '#9ca3af' }}>
-                Clasificación de Flynn, operaciones vectoriales (FMA, Masking, Gather/Scatter), VLA en ARM SVE2 / RISC-V y modelos SPMD vs SIMT.
+                Clasificación de Flynn, vectorización VLA (ARM SVE2 / RISC-V RVV), modelos SPMD vs SIMT, anatomía de GPUs (NVIDIA SM/Tensor Cores vs AMD CU/Matrix Cores) y mapeo arquitectural.
               </p>
             </div>
 
             <div className="hpc-card" style={{ padding: '1.2rem 1.6rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <span className="hpc-badge">03</span>
-                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Memoria e Interconexiones (RDMA / RoCEv2 / IF)</h3>
+                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Memoria (Memory Wall / NUMA) e Interconexiones</h3>
               </div>
               <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.86rem', color: '#9ca3af' }}>
-                Topologías UMA vs NUMA, política First-Touch, RDMA y Kernel-Bypass, redes RoCEv2 / InfiniBand y AMD Infinity Fabric.
+                La brecha del Memory Wall, topologías UMA vs NUMA, política First-Touch, RDMA y Kernel-Bypass, redes RoCEv2 / InfiniBand y AMD Infinity Fabric.
               </p>
             </div>
           </div>
@@ -54,10 +54,10 @@ export const Agenda: React.FC = () => {
             <div className="hpc-card" style={{ padding: '1.2rem 1.6rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <span className="hpc-badge">04</span>
-                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Métricas y Modelo Roofline</h3>
+                <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Métricas, Formatos MX y Modelo Roofline</h3>
               </div>
               <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.86rem', color: '#9ca3af' }}>
-                Peak FLOPS, precisiones numéricas, la tríada de cuellos de botella (Compute, Memory e I/O Bound) y gráfica interactiva de Intensidad Operacional.
+                Peak FLOPS, precisiones escalares vs Block Floating Point (MXFP8/MXFP4 de OCP), tríada de cuellos de botella y visualizador interactivo Roofline.
               </p>
             </div>
 
@@ -77,7 +77,7 @@ export const Agenda: React.FC = () => {
                 <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>Compiladores y Optimizaciones</h3>
               </div>
               <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.86rem', color: '#9ca3af' }}>
-                El rol del compilador en HPC, Dead Code Optimization (DCO) y Auto-Vectorización con enlaces interactivos a Compiler Explorer (Godbolt).
+                El rol del compilador en HPC, Dead Code Optimization (DCO/DCE) y Auto-Vectorización con enlaces interactivos a Compiler Explorer (Godbolt).
               </p>
             </div>
           </div>

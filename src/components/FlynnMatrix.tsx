@@ -1,105 +1,112 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export const FlynnMatrix: React.FC = () => {
-  const [selectedCell, setSelectedCell] = useState<'SISD' | 'SIMD' | 'MISD' | 'MIMD'>('SIMD');
-
-  const details = {
-    SISD: {
-      title: 'SISD (Single Instruction, Single Data)',
-      desc: 'Procesador secuencial clásico de un solo núcleo (Modelo Von Neumann tradicional). Ejecuta una sola instrucción sobre un único dato a la vez.',
-      example: 'Ejemplo: CPUs antiguas mononúcleo (x86 tradicional sin extensiones vectoriales).'
+  const cards = [
+    {
+      id: 'SISD',
+      badge: 'SISD • Single Inst, Single Data',
+      title: 'CPU Mononúcleo Secuencial',
+      accentColor: '#38bdf8',
+      bgGlow: 'rgba(56, 189, 248, 0.05)',
+      borderColor: 'rgba(56, 189, 248, 0.3)',
+      points: [
+        '1 instrucción procesa 1 solo elemento de datos por ciclo.',
+        'Flujo determinista y secuencial (Von Neumann puro).',
+        'Hardware: CPUs mononúcleo clásicas y microcontroladores.'
+      ]
     },
-    SIMD: {
-      title: 'SIMD (Single Instruction, Multiple Data)',
-      desc: 'Una única instrucción controla múltiples unidades de procesamiento en paralelo aplicando la misma operación a un vector de datos.',
-      example: 'Ejemplo: Instrucciones AVX-512, ARM SVE, GPUs (Vector Processing).'
+    {
+      id: 'SIMD',
+      badge: 'SIMD • Single Inst, Multiple Data',
+      title: 'Vectorización Masiva (Pilar HPC)',
+      accentColor: '#34d399',
+      bgGlow: 'rgba(52, 211, 153, 0.05)',
+      borderColor: 'rgba(52, 211, 153, 0.3)',
+      points: [
+        '1 instrucción opera sobre vectores continuos de datos en 1 ciclo.',
+        'Paralelismo a nivel de datos (DLP) de alto rendimiento.',
+        'Hardware: x86 AVX-512, ARM SVE2, RISC-V RVV, GPUs (Vector).'
+      ]
     },
-    MISD: {
-      title: 'MISD (Multiple Instruction, Single Data)',
-      desc: 'Múltiples unidades de instrucción ejecutan diferentes operaciones sobre el mismo flujo de datos. Poco común en HPC general.',
-      example: 'Ejemplo: Sistemas de alta disponibilidad con redundancia de fallos (Sistemas aeroespaciales, Arrays Sistólicos).'
+    {
+      id: 'MISD',
+      badge: 'MISD • Multiple Inst, Single Data',
+      title: 'Misión Crítica y Sistólicos',
+      accentColor: '#a78bfa',
+      bgGlow: 'rgba(167, 139, 250, 0.05)',
+      borderColor: 'rgba(167, 139, 250, 0.3)',
+      points: [
+        'Múltiples instrucciones procesan el mismo dato en paralelo.',
+        'Tolerancia a fallos por votación redundante y filtros sistólicos.',
+        'Hardware: Control de vuelo aeroespacial, Systolic Arrays (TPU).'
+      ]
     },
-    MIMD: {
-      title: 'MIMD (Multiple Instruction, Multiple Data)',
-      desc: 'Múltiples procesadores autónomos ejecutan diferentes programas sobre diferentes flujos de datos de manera independiente.',
-      example: 'Ejemplo: Clusters de HPC, CPUs multinúcleo modernas ejecutando MPI u OpenMP.'
+    {
+      id: 'MIMD',
+      badge: 'MIMD • Multiple Inst, Multiple Data',
+      title: 'Supercómputo y Clústeres',
+      accentColor: '#f4b860',
+      bgGlow: 'rgba(244, 184, 96, 0.05)',
+      borderColor: 'rgba(244, 184, 96, 0.3)',
+      points: [
+        'Múltiples CPUs autónomas ejecutan programas y datos distintos.',
+        'Escalabilidad en memoria compartida (OpenMP) y distribuida (MPI).',
+        'Hardware: Servidores multi-socket, clústeres HPC y supercomputadores.'
+      ]
     }
-  };
+  ];
 
   return (
-    <div style={{ background: 'var(--hpc-card-bg)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--hpc-card-border)', backdropFilter: 'blur(12px)' }}>
-      <h4 style={{ margin: '0 0 0.8rem 0', color: 'var(--hpc-primary)', fontSize: '1.1rem' }}>Taxonomía de Flynn (Clasificación de Arquitecturas)</h4>
+    <div style={{ width: '100%', maxWidth: '960px', margin: '0 auto' }}>
+      {/* 2x2 Grid of 4 Static Quadrants */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.7rem' }}>
+        {cards.map((card) => (
+          <div
+            key={card.id}
+            style={{
+              background: card.bgGlow,
+              borderRadius: '10px',
+              border: `1px solid ${card.borderColor}`,
+              borderLeft: `3px solid ${card.accentColor}`,
+              padding: '0.85rem 1.1rem',
+              textAlign: 'left'
+            }}
+          >
+            {/* Card Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+              <span
+                className="hpc-badge"
+                style={{
+                  margin: 0,
+                  fontSize: '0.68rem',
+                  background: `${card.accentColor}22`,
+                  color: card.accentColor,
+                  border: `1px solid ${card.accentColor}55`,
+                  fontWeight: 700
+                }}
+              >
+                {card.badge}
+              </span>
+            </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
-        <div
-          onClick={() => setSelectedCell('SISD')}
-          style={{
-            padding: '1rem',
-            borderRadius: '8px',
-            background: selectedCell === 'SISD' ? 'rgba(56, 189, 248, 0.15)' : '#111827',
-            border: selectedCell === 'SISD' ? '2px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.08)',
-            cursor: 'pointer',
-            textAlign: 'left'
-          }}
-        >
-          <span className="hpc-badge badge-cyan">SISD</span>
-          <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#fff' }}>Single Inst. / Single Data</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--hpc-muted)', marginTop: '0.3rem' }}>CPU Mononúcleo Secuencial</div>
-        </div>
+            {/* Card Title */}
+            <h4 style={{ margin: '0 0 0.35rem 0', color: '#ffffff', fontSize: '0.96rem' }}>
+              {card.title}
+            </h4>
 
-        <div
-          onClick={() => setSelectedCell('SIMD')}
-          style={{
-            padding: '1rem',
-            borderRadius: '8px',
-            background: selectedCell === 'SIMD' ? 'rgba(244, 184, 96, 0.15)' : '#111827',
-            border: selectedCell === 'SIMD' ? '2px solid #f4b860' : '1px solid rgba(255, 255, 255, 0.08)',
-            cursor: 'pointer',
-            textAlign: 'left'
-          }}
-        >
-          <span className="hpc-badge badge-gold">SIMD</span>
-          <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#fff' }}>Single Inst. / Multiple Data</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--hpc-muted)', marginTop: '0.3rem' }}>Registros Vectoriales / AVX-512</div>
-        </div>
-
-        <div
-          onClick={() => setSelectedCell('MISD')}
-          style={{
-            padding: '1rem',
-            borderRadius: '8px',
-            background: selectedCell === 'MISD' ? 'rgba(129, 140, 248, 0.15)' : '#111827',
-            border: selectedCell === 'MISD' ? '2px solid #818cf8' : '1px solid rgba(255, 255, 255, 0.08)',
-            cursor: 'pointer',
-            textAlign: 'left'
-          }}
-        >
-          <span className="hpc-badge badge-indigo">MISD</span>
-          <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#fff' }}>Multiple Inst. / Single Data</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--hpc-muted)', marginTop: '0.3rem' }}>Redundancia / Sistólico</div>
-        </div>
-
-        <div
-          onClick={() => setSelectedCell('MIMD')}
-          style={{
-            padding: '1rem',
-            borderRadius: '8px',
-            background: selectedCell === 'MIMD' ? 'rgba(52, 211, 153, 0.15)' : '#111827',
-            border: selectedCell === 'MIMD' ? '2px solid #34d399' : '1px solid rgba(255, 255, 255, 0.08)',
-            cursor: 'pointer',
-            textAlign: 'left'
-          }}
-        >
-          <span className="hpc-badge badge-emerald">MIMD</span>
-          <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#fff' }}>Multiple Inst. / Multiple Data</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--hpc-muted)', marginTop: '0.3rem' }}>Multinúcleo / Clusters MPI</div>
-        </div>
+            {/* Bullet Points */}
+            <ul style={{ fontSize: '0.76rem', paddingLeft: '1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.2rem', lineHeight: 1.35 }}>
+              {card.points.map((pt, idx) => (
+                <li key={idx}>{pt}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
-      <div style={{ marginTop: '0.8rem', background: '#080d1a', padding: '0.8rem', borderRadius: '8px', textAlign: 'left', borderLeft: '4px solid var(--hpc-primary)' }}>
-        <strong style={{ color: 'var(--hpc-primary)', fontSize: '0.95rem' }}>{details[selectedCell].title}</strong>
-        <p style={{ margin: '0.3rem 0', fontSize: '0.85rem', color: '#e5e7eb' }}>{details[selectedCell].desc}</p>
-        <div style={{ fontSize: '0.8rem', color: '#38bdf8', fontStyle: 'italic' }}>{details[selectedCell].example}</div>
+      {/* Bottom Summary Bar */}
+      <div style={{ background: '#070a12', padding: '0.5rem 1rem', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.08)', fontSize: '0.78rem', color: '#cbd5e1', textAlign: 'center' }}>
+        💡 <strong>Taxonomía de Flynn (1966):</strong> Clasifica todas las arquitecturas según 2 ejes ortogonales: <strong>Flujo de Instrucciones</strong> (Single vs Multiple) y <strong>Flujo de Datos</strong> (Single vs Multiple). En HPC moderno se combinan <strong>MIMD</strong> (nodos MPI) con <strong>SIMD / SIMT</strong> (vectores y GPUs).
       </div>
     </div>
   );

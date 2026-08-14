@@ -4,145 +4,167 @@ export const SimtDiagram: React.FC = () => {
   const [viewStep, setViewStep] = useState<'converged' | 'diverged'>('diverged');
 
   return (
-    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-        <h4 style={{ margin: 0, color: '#ffffff', fontSize: '1.05rem' }}>SIMT: Estructura de Warp y Divergencia en GPU</h4>
-        
-        <div style={{ display: 'flex', gap: '0.3rem', background: '#070a12', padding: '0.2rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1.2rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', width: '100%', maxWidth: '960px', margin: '0 auto' }}>
+      {/* Top Header & Interactive Switcher */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.6rem' }}>
+        <div>
+          <span className="hpc-badge" style={{ margin: 0, fontSize: '0.72rem' }}>Arquitectura GPU</span>
+          <span style={{ marginLeft: '0.6rem', fontSize: '0.86rem', color: '#cbd5e1' }}>
+            32 Hilos por Warp comparten un único <strong>Program Counter (PC)</strong>
+          </span>
+        </div>
+
+        {/* Buttons */}
+        <div style={{ display: 'flex', gap: '0.4rem', background: '#070a12', padding: '0.25rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <button
             onClick={() => setViewStep('converged')}
             style={{
-              padding: '0.3rem 0.7rem',
+              padding: '0.4rem 0.9rem',
               borderRadius: '5px',
               border: 'none',
-              background: viewStep === 'converged' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: viewStep === 'converged' ? '#ffffff' : '#94a3b8',
+              background: viewStep === 'converged' ? 'rgba(52, 211, 153, 0.2)' : 'transparent',
+              color: viewStep === 'converged' ? '#34d399' : '#94a3b8',
               fontWeight: viewStep === 'converged' ? 700 : 500,
-              fontSize: '0.75rem',
-              cursor: 'pointer'
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
             }}
           >
-            Ejecución Convergente (100%)
+            ⚡ 1. Ejecución Convergente (100% Eficiencia)
           </button>
           <button
             onClick={() => setViewStep('diverged')}
             style={{
-              padding: '0.3rem 0.7rem',
+              padding: '0.4rem 0.9rem',
               borderRadius: '5px',
               border: 'none',
-              background: viewStep === 'diverged' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: viewStep === 'diverged' ? '#ffffff' : '#94a3b8',
+              background: viewStep === 'diverged' ? 'rgba(248, 113, 113, 0.2)' : 'transparent',
+              color: viewStep === 'diverged' ? '#f87171' : '#94a3b8',
               fontWeight: viewStep === 'diverged' ? 700 : 500,
-              fontSize: '0.75rem',
-              cursor: 'pointer'
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
             }}
           >
-            Divergencia de Warp (Serialización)
+            ⚠️ 2. Divergencia de Warp (Serialización)
           </button>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: '1.2rem', alignItems: 'center' }}>
-        
-        {/* SVG Canvas for SIMT */}
-        <div style={{ background: '#070a12', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          
-          {viewStep === 'converged' ? (
-            <svg viewBox="0 0 350 160" style={{ width: '100%', height: '160px' }}>
-              {/* Warp Controller */}
-              <rect x="10" y="10" width="330" height="28" rx="5" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
-              <text x="175" y="27" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">
-                Warp Issue Unit: 1 Instrucción Compartida para 32 Hilos (Lockstep)
-              </text>
+      {/* Main Full-Width SVG Canvas */}
+      <div style={{ background: '#070a12', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        {viewStep === 'converged' ? (
+          <svg viewBox="0 0 740 220" style={{ width: '100%', height: 'auto', display: 'block' }}>
+            {/* Warp Scheduler Unit */}
+            <rect x="10" y="8" width="720" height="38" rx="6" fill="#1e293b" stroke="#38bdf8" strokeWidth="1.8" />
+            <text x="370" y="26" fill="#ffffff" fontSize="12" fontWeight="bold" textAnchor="middle">
+              Warp Scheduler &amp; Dispatch Unit (1 Instrucción por Ciclo para los 32 Hilos en Lockstep)
+            </text>
+            <text x="370" y="39" fill="#38bdf8" fontSize="9.5" textAnchor="middle">
+              Instrucción compartida: c[i] = a[i] * b[i] + d[i] (FMA)
+            </text>
 
-              {/* 4 Representative Threads */}
-              {[0, 1, 2, 3].map((tid) => (
-                <g key={tid}>
-                  {/* Vertical Execution Arrow */}
-                  <line x1={45 + tid * 85} y1="45" x2={45 + tid * 85} y2="70" stroke="#cbd5e1" strokeWidth="1.5" />
+            {/* 8 Parallel Threads / Lanes */}
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((tid) => (
+              <g key={tid}>
+                {/* Arrow down from scheduler */}
+                <line x1={55 + tid * 88} y1="46" x2={55 + tid * 88} y2="72" stroke="#38bdf8" strokeWidth="1.8" />
+                <polygon points={`${52 + tid * 88},70 ${58 + tid * 88},70 ${55 + tid * 88},76`} fill="#38bdf8" />
 
-                  {/* Active Thread Box */}
-                  <rect x={15 + tid * 85} y="70" width="65" height="40" rx="4" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" />
-                  <text x={47 + tid * 85} y="86" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">Hilo T{tid}</text>
-                  <text x={47 + tid * 85} y="100" fill="#cbd5e1" fontSize="7.5" textAnchor="middle">Ejecutando</text>
-                </g>
-              ))}
+                {/* Thread Card */}
+                <rect x={18 + tid * 88} y="76" width="74" height="68" rx="6" fill="rgba(52, 211, 153, 0.12)" stroke="#34d399" strokeWidth="1.5" />
+                
+                <text x={55 + tid * 88} y="96" fill="#34d399" fontSize="11" fontWeight="bold" textAnchor="middle">
+                  {tid === 7 ? 'T31' : `Hilo T${tid}`}
+                </text>
+                
+                <rect x={24 + tid * 88} y="103" width="62" height="18" rx="3" fill="#070a12" stroke="rgba(52,211,153,0.3)" />
+                <text x={55 + tid * 88} y="115" fill="#ffffff" fontSize="8.5" fontWeight="bold" textAnchor="middle">
+                  ALU ACTIVA
+                </text>
 
-              {/* Bottom Utilization */}
-              <rect x="10" y="125" width="330" height="24" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
-              <text x="175" y="141" fill="#ffffff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                ⚡ Utilización del Silicio: 100% (Todos los carriles del Warp activos)
-              </text>
-            </svg>
-          ) : (
-            <svg viewBox="0 0 350 160" style={{ width: '100%', height: '160px' }}>
-              {/* Divergent Instruction */}
-              <rect x="10" y="8" width="330" height="24" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
-              <text x="175" y="24" fill="#ffffff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                if (tid % 2 == 0) {'{ Ruta A }'} else {'{ Ruta B }'}
-              </text>
+                <text x={55 + tid * 88} y="136" fill="#94a3b8" fontSize="8" textAnchor="middle">
+                  Dato [{tid === 7 ? '31' : tid}]
+                </text>
+              </g>
+            ))}
 
-              {/* Step 1: Cycle 0-N (Ruta A) */}
-              <text x="10" y="48" fill="#94a3b8" fontSize="8.5" fontWeight="bold">Paso 1 (Ruta A):</text>
-              {[
-                { tid: 0, state: 'Activo (Ruta A)', color: 'rgba(255,255,255,0.15)', text: '#ffffff' },
-                { tid: 1, state: 'Enmascarado', color: '#070a12', text: '#64748b' },
-                { tid: 2, state: 'Activo (Ruta A)', color: 'rgba(255,255,255,0.15)', text: '#ffffff' },
-                { tid: 3, state: 'Enmascarado', color: '#070a12', text: '#64748b' }
-              ].map((t, i) => (
-                <g key={i}>
-                  <rect x={70 + i * 68} y="38" width="62" height="20" rx="3" fill={t.color} stroke="rgba(255,255,255,0.15)" />
-                  <text x={101 + i * 68} y="51" fill={t.text} fontSize="7.5" textAnchor="middle">T{t.tid}: {t.state}</text>
-                </g>
-              ))}
+            {/* Bottom Utilization Banner */}
+            <rect x="10" y="160" width="720" height="48" rx="6" fill="rgba(52, 211, 153, 0.08)" stroke="rgba(52, 211, 153, 0.35)" strokeWidth="1.2" />
+            <text x="370" y="180" fill="#34d399" fontSize="12" fontWeight="bold" textAnchor="middle">
+              ⚡ Utilización Máxima del Silicio: 100%
+            </text>
+            <text x="370" y="196" fill="#cbd5e1" fontSize="10" textAnchor="middle">
+              Todos los 32 carriles vectoriales procesan datos simultáneamente en <strong>1 único ciclo de reloj</strong>.
+            </text>
+          </svg>
+        ) : (
+          <svg viewBox="0 0 740 235" style={{ width: '100%', height: 'auto', display: 'block' }}>
+            {/* Branch Header */}
+            <rect x="10" y="6" width="720" height="30" rx="5" fill="#1e293b" stroke="#f87171" strokeWidth="1.5" />
+            <text x="370" y="25" fill="#f87171" fontSize="11" fontWeight="bold" textAnchor="middle">
+              Condicional Divergente: if (threadIdx.x % 2 == 0) {'{ Rama A }'} else {'{ Rama B }'}
+            </text>
 
-              {/* Step 2: Cycle N-2N (Ruta B) */}
-              <text x="10" y="85" fill="#94a3b8" fontSize="8.5" fontWeight="bold">Paso 2 (Ruta B):</text>
-              {[
-                { tid: 0, state: 'Enmascarado', color: '#070a12', text: '#64748b' },
-                { tid: 1, state: 'Activo (Ruta B)', color: 'rgba(255,255,255,0.15)', text: '#ffffff' },
-                { tid: 2, state: 'Enmascarado', color: '#070a12', text: '#64748b' },
-                { tid: 3, state: 'Activo (Ruta B)', color: 'rgba(255,255,255,0.15)', text: '#ffffff' }
-              ].map((t, i) => (
-                <g key={i}>
-                  <rect x={70 + i * 68} y="75" width="62" height="20" rx="3" fill={t.color} stroke="rgba(255,255,255,0.15)" />
-                  <text x={101 + i * 68} y="88" fill={t.text} fontSize="7.5" textAnchor="middle">T{t.tid}: {t.state}</text>
-                </g>
-              ))}
+            {/* Step 1: Ciclo 1 (Rama A) */}
+            <text x="14" y="58" fill="#38bdf8" fontSize="10" fontWeight="bold">
+              Ciclo 1 &rarr; Ejecutando Rama A (Hilos Pares Activos):
+            </text>
 
-              {/* Impact Card */}
-              <rect x="10" y="112" width="330" height="40" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" />
-              <text x="175" y="127" fill="#ffffff" fontSize="8.5" fontWeight="bold" textAnchor="middle">
-                ⚠️ Serialización: Tiempo Total = Tiempo(Ruta A) + Tiempo(Ruta B)
-              </text>
-              <text x="175" y="142" fill="#cbd5e1" fontSize="7.5" textAnchor="middle">
-                La GPU ejecuta ambas ramas en serie enmascarando los hilos inactivos.
-              </text>
-            </svg>
-          )}
+            {[
+              { tid: 0, active: true, label: 'T0: Activo', sub: 'Rama A', color: 'rgba(52,211,153,0.15)', stroke: '#34d399', text: '#34d399' },
+              { tid: 1, active: false, label: 'T1: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 2, active: true, label: 'T2: Activo', sub: 'Rama A', color: 'rgba(52,211,153,0.15)', stroke: '#34d399', text: '#34d399' },
+              { tid: 3, active: false, label: 'T3: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 4, active: true, label: 'T4: Activo', sub: 'Rama A', color: 'rgba(52,211,153,0.15)', stroke: '#34d399', text: '#34d399' },
+              { tid: 5, active: false, label: 'T5: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 6, active: true, label: 'T6: Activo', sub: 'Rama A', color: 'rgba(52,211,153,0.15)', stroke: '#34d399', text: '#34d399' },
+              { tid: 7, active: false, label: 'T31: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' }
+            ].map((t, i) => (
+              <g key={`step1-${i}`}>
+                <rect x={16 + i * 90} y="66" width="78" height="34" rx="4" fill={t.color} stroke={t.stroke} strokeWidth="1.2" />
+                <text x={55 + i * 90} y="80" fill={t.text} fontSize="9.5" fontWeight="bold" textAnchor="middle">{t.label}</text>
+                <text x={55 + i * 90} y="93" fill={t.active ? '#ffffff' : '#475569'} fontSize="7.5" textAnchor="middle">{t.sub}</text>
+              </g>
+            ))}
 
-        </div>
+            {/* Step 2: Ciclo 2 (Rama B) */}
+            <text x="14" y="120" fill="#f4b860" fontSize="10" fontWeight="bold">
+              Ciclo 2 &rarr; Ejecutando Rama B (Hilos Impares Activos):
+            </text>
 
-        {/* Right Info Box */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div className="hpc-card" style={{ padding: '0.9rem' }}>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Modelo GPU</span>
-            <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Warps y Wavefronts</h4>
-            <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              En CUDA (NVIDIA), <strong>32 hilos forman un Warp</strong>. En ROCm (AMD), <strong>64 hilos forman un Wavefront</strong>. Todos comparten el mismo contador de programa (PC).
-            </p>
-          </div>
+            {[
+              { tid: 0, active: false, label: 'T0: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 1, active: true, label: 'T1: Activo', sub: 'Rama B', color: 'rgba(244,184,96,0.15)', stroke: '#f4b860', text: '#f4b860' },
+              { tid: 2, active: false, label: 'T2: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 3, active: true, label: 'T3: Activo', sub: 'Rama B', color: 'rgba(244,184,96,0.15)', stroke: '#f4b860', text: '#f4b860' },
+              { tid: 4, active: false, label: 'T4: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 5, active: true, label: 'T5: Activo', sub: 'Rama B', color: 'rgba(244,184,96,0.15)', stroke: '#f4b860', text: '#f4b860' },
+              { tid: 6, active: false, label: 'T6: NOP', sub: 'Enmascarado', color: 'rgba(255,255,255,0.02)', stroke: 'rgba(255,255,255,0.08)', text: '#64748b' },
+              { tid: 7, active: true, label: 'T31: Activo', sub: 'Rama B', color: 'rgba(244,184,96,0.15)', stroke: '#f4b860', text: '#f4b860' }
+            ].map((t, i) => (
+              <g key={`step2-${i}`}>
+                <rect x={16 + i * 90} y="128" width="78" height="34" rx="4" fill={t.color} stroke={t.stroke} strokeWidth="1.2" />
+                <text x={55 + i * 90} y="142" fill={t.text} fontSize="9.5" fontWeight="bold" textAnchor="middle">{t.label}</text>
+                <text x={55 + i * 90} y="155" fill={t.active ? '#ffffff' : '#475569'} fontSize="7.5" textAnchor="middle">{t.sub}</text>
+              </g>
+            ))}
 
-          <div className="hpc-card" style={{ padding: '0.9rem' }}>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Regla de Oro en HPC</span>
-            <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Evitar Divergencias</h4>
-            <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              Agrupar datos para que todos los hilos del mismo warp tomen la misma decisión lógica simultáneamente, conservando el 100% de la capacidad de cómputo.
-            </p>
-          </div>
-        </div>
+            {/* Bottom Penalty Warning */}
+            <rect x="10" y="174" width="720" height="52" rx="6" fill="rgba(248, 113, 113, 0.06)" stroke="rgba(248, 113, 113, 0.3)" strokeWidth="1.2" />
+            <text x="370" y="194" fill="#f87171" fontSize="11" fontWeight="bold" textAnchor="middle">
+              ⚠️ Serialización Forzada: Tiempo Total = Tiempo(Rama A) + Tiempo(Rama B)
+            </text>
+            <text x="370" y="212" fill="#cbd5e1" fontSize="9.5" textAnchor="middle">
+              El hardware apaga los carriles inactivos mediante <strong>máscaras de predicado (Predicate Bits)</strong>, reduciendo el throughput al <strong>50%</strong>.
+            </text>
+          </svg>
+        )}
+      </div>
 
+      {/* Summary Footer */}
+      <div style={{ marginTop: '0.8rem', background: '#070a12', padding: '0.5rem 1rem', borderRadius: '6px', textAlign: 'center', fontSize: '0.8rem', color: '#94a3b8' }}>
+        💡 <strong>Regla de Oro en Programación de GPUs (CUDA / HIP / SYCL):</strong> Agrupar datos para que todos los hilos del mismo warp tomen la misma decisión lógica simultáneamente.
       </div>
     </div>
   );
