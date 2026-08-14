@@ -4,31 +4,14 @@ import { Slide } from '@revealjs/react';
 export const Title: React.FC = () => {
   return (
     <Slide>
-      <div style={{ textAlign: 'center', padding: '3rem 1rem 2rem 1rem' }}>
-        <h1 style={{ fontSize: '3.8rem', fontWeight: 900, letterSpacing: '-0.03em', margin: '0 0 1rem 0' }}>
+      <div className="flex flex-col items-center justify-center min-h-[580px] text-center px-6 py-8">
+        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight leading-tight max-w-4xl mb-4">
           De la Microarquitectura a los Compiladores
         </h1>
         
-        <p style={{ fontSize: '1.35rem', color: 'var(--hpc-muted)', maxWidth: '780px', margin: '1.2rem auto 0 auto', fontWeight: 300, lineHeight: 1.4 }}>
-          Conceptos fundamentales, métricas de rendimiento, arquitecturas de memoria y optimización
+        <p className="text-xl text-slate-300 max-w-2xl font-normal leading-relaxed">
+          Fundamentos de silicio, modelos de rendimiento, jerarquía de memoria, paralelismo masivo y optimización de código.
         </p>
-
-        <div style={{
-          marginTop: '3.5rem',
-          display: 'inline-block',
-          fontFamily: 'var(--font-code)',
-          fontSize: '0.95rem',
-          color: 'var(--hpc-primary)',
-          fontWeight: 600,
-          letterSpacing: '0.06em',
-          padding: '0.45rem 1.4rem',
-          borderRadius: '8px',
-          background: 'rgba(244, 184, 96, 0.1)',
-          border: '1px solid rgba(244, 184, 96, 0.25)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
-        }}>
-          MasFLOPSQueCabras
-        </div>
       </div>
     </Slide>
   );

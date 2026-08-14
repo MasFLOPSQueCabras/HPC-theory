@@ -6,8 +6,6 @@ export const PpaDiagram: React.FC = () => {
   const info = {
     P: {
       name: 'Performance (Rendimiento)',
-      badge: 'badge-cyan',
-      color: '#00f2fe',
       target: 'Maximizar IPC, Frecuencia y Throughput de Cómputo',
       metrics: [
         { label: 'IPC (Instrucciones por Ciclo)', detail: 'Decodificación ancha (Wide Issue) y ejecución fuera de orden (OoO).' },
@@ -19,8 +17,6 @@ export const PpaDiagram: React.FC = () => {
     },
     PW: {
       name: 'Power (Potencia y Eficiencia Térmica)',
-      badge: 'badge-amber',
-      color: '#f59e0b',
       target: 'Minimizar Consumo Energético y Respetar el Límite Térmico (TDP)',
       metrics: [
         { label: 'Potencia Dinámica (P_dyn)', detail: 'P_dyn = α · C · V² · f. El voltaje (V) impacta cuadráticamente.' },
@@ -32,8 +28,6 @@ export const PpaDiagram: React.FC = () => {
     },
     A: {
       name: 'Area (Superficie de Silicio y Coste)',
-      badge: 'badge-emerald',
-      color: '#10b981',
       target: 'Optimizar Coste por Oblea y Balancear Caché vs Lógica',
       metrics: [
         { label: 'Tamaño del Die (mm²)', detail: 'Dies más grandes sufren menor rendimiento de fabricación (Defect Yield).' },
@@ -48,171 +42,136 @@ export const PpaDiagram: React.FC = () => {
   const current = info[activePillar];
 
   return (
-    <div style={{ background: 'rgba(15, 23, 42, 0.85)', padding: '1.2rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
       {/* Header bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
         <div>
-          <h4 style={{ margin: 0, color: '#00f2fe', fontSize: '1.1rem' }}>El Trilema del Silicio: PPA (Performance, Power, Area)</h4>
-          <span style={{ fontSize: '0.78rem', color: '#94a3af' }}>Los tres pilares interdependientes del diseño de microarquitecturas</span>
+          <span className="hpc-badge font-mono">Diseño de Silicio</span>
+          <h4 className="m-0 text-base font-bold text-white tracking-tight mt-1">
+            El Trilema del Silicio: PPA (Performance, Power, Area)
+          </h4>
         </div>
         
         {/* Toggle buttons */}
-        <div style={{ display: 'flex', gap: '0.4rem', background: '#0b0f19', padding: '0.25rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-950 border border-slate-800">
           <button
+            type="button"
             onClick={() => setActivePillar('P')}
-            style={{
-              padding: '0.35rem 0.9rem',
-              borderRadius: '6px',
-              border: 'none',
-              background: activePillar === 'P' ? '#00f2fe' : 'transparent',
-              color: activePillar === 'P' ? '#0b0f19' : '#9ca3af',
-              fontWeight: 'bold',
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              activePillar === 'P'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Performance
           </button>
           <button
+            type="button"
             onClick={() => setActivePillar('PW')}
-            style={{
-              padding: '0.35rem 0.9rem',
-              borderRadius: '6px',
-              border: 'none',
-              background: activePillar === 'PW' ? '#f59e0b' : 'transparent',
-              color: activePillar === 'PW' ? '#0b0f19' : '#9ca3af',
-              fontWeight: 'bold',
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              activePillar === 'PW'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Power
           </button>
           <button
+            type="button"
             onClick={() => setActivePillar('A')}
-            style={{
-              padding: '0.35rem 0.9rem',
-              borderRadius: '6px',
-              border: 'none',
-              background: activePillar === 'A' ? '#10b981' : 'transparent',
-              color: activePillar === 'A' ? '#0b0f19' : '#9ca3af',
-              fontWeight: 'bold',
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              activePillar === 'A'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Area
           </button>
         </div>
       </div>
 
-      {/* Main Grid: SVG on Left, Rich Card on Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'center' }}>
-        
-        {/* SVG Diagram */}
-        <div style={{ background: '#0b0f19', padding: '0.8rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'center' }}>
-          <svg viewBox="0 0 260 230" style={{ width: '100%', height: '210px', overflow: 'visible' }}>
+      {/* Main content: Triangle on left, details on right */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 my-3 items-center">
+        {/* Left: SVG Triangle (5 cols) */}
+        <div className="md:col-span-5 flex flex-col items-center justify-center p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+          <svg viewBox="0 0 260 210" className="w-full max-w-[240px] h-[190px] overflow-visible">
             {/* Triangle Background */}
             <polygon
-              points="130,35 35,185 225,185"
-              fill="rgba(30, 41, 59, 0.5)"
-              stroke="#334155"
+              points="130,25 35,175 225,175"
+              fill="rgba(255,255,255,0.02)"
+              stroke="rgba(255,255,255,0.15)"
               strokeWidth="2"
             />
+            {/* Inner lines to center */}
+            <line x1="130" y1="25" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
+            <line x1="35" y1="175" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
+            <line x1="225" y1="175" x2="130" y2="125" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
 
-            {/* Inner Balance Lines to Center */}
-            <line x1="130" y1="35" x2="130" y2="135" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
-            <line x1="35" y1="185" x2="130" y2="135" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
-            <line x1="225" y1="185" x2="130" y2="135" stroke="#475569" strokeWidth="1.5" strokeDasharray="3 3" />
-
-            {/* Center Balance Circle */}
-            <circle cx="130" cy="135" r="14" fill="#1e293b" stroke="#64748b" strokeWidth="1.5" />
-            <text x="130" y="139" fill="#94a3b8" fontSize="8" fontWeight="bold" textAnchor="middle">PPA</text>
-
-            {/* Node P (Top) */}
-            <g onClick={() => setActivePillar('P')} style={{ cursor: 'pointer' }}>
+            {/* Performance Vertex (Top) */}
+            <g onClick={() => setActivePillar('P')} className="cursor-pointer">
               <circle
-                cx="130"
-                cy="35"
-                r="22"
-                fill={activePillar === 'P' ? '#00f2fe' : '#1e293b'}
-                stroke="#00f2fe"
-                strokeWidth={activePillar === 'P' ? '3' : '2'}
+                cx="130" cy="25" r={activePillar === 'P' ? 22 : 18}
+                fill={activePillar === 'P' ? '#38bdf8' : '#1e293b'}
+                stroke="#64748b" strokeWidth={activePillar === 'P' ? 2.5 : 1.5}
+                className="transition-all duration-200"
               />
-              <text x="130" y="40" fill={activePillar === 'P' ? '#0b0f19' : '#fff'} fontSize="11" fontWeight="bold" textAnchor="middle">
-                PERF
+              <text x="130" y="30" fill={activePillar === 'P' ? '#0f172a' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
+                P
               </text>
-              <text x="130" y="8" fill="#00f2fe" fontSize="10" fontWeight="bold" textAnchor="middle">
-                Performance
-              </text>
+              <text x="130" y="-3" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Performance</text>
             </g>
 
-            {/* Node Power (Bottom Left) */}
-            <g onClick={() => setActivePillar('PW')} style={{ cursor: 'pointer' }}>
+            {/* Power Vertex (Bottom-Left) */}
+            <g onClick={() => setActivePillar('PW')} className="cursor-pointer">
               <circle
-                cx="35"
-                cy="185"
-                r="22"
-                fill={activePillar === 'PW' ? '#f59e0b' : '#1e293b'}
-                stroke="#f59e0b"
-                strokeWidth={activePillar === 'PW' ? '3' : '2'}
+                cx="35" cy="175" r={activePillar === 'PW' ? 22 : 18}
+                fill={activePillar === 'PW' ? '#38bdf8' : '#1e293b'}
+                stroke="#64748b" strokeWidth={activePillar === 'PW' ? 2.5 : 1.5}
+                className="transition-all duration-200"
               />
-              <text x="35" y="190" fill={activePillar === 'PW' ? '#0b0f19' : '#fff'} fontSize="10" fontWeight="bold" textAnchor="middle">
-                POWER
+              <text x="35" y="180" fill={activePillar === 'PW' ? '#0f172a' : '#ffffff'} fontSize="10" fontWeight="bold" textAnchor="middle">
+                PW
               </text>
-              <text x="35" y="222" fill="#f59e0b" fontSize="10" fontWeight="bold" textAnchor="middle">
-                Potencia
-              </text>
+              <text x="35" y="206" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Power</text>
             </g>
 
-            {/* Node Area (Bottom Right) */}
-            <g onClick={() => setActivePillar('A')} style={{ cursor: 'pointer' }}>
+            {/* Area Vertex (Bottom-Right) */}
+            <g onClick={() => setActivePillar('A')} className="cursor-pointer">
               <circle
-                cx="225"
-                cy="185"
-                r="22"
-                fill={activePillar === 'A' ? '#10b981' : '#1e293b'}
-                stroke="#10b981"
-                strokeWidth={activePillar === 'A' ? '3' : '2'}
+                cx="225" cy="175" r={activePillar === 'A' ? 22 : 18}
+                fill={activePillar === 'A' ? '#38bdf8' : '#1e293b'}
+                stroke="#64748b" strokeWidth={activePillar === 'A' ? 2.5 : 1.5}
+                className="transition-all duration-200"
               />
-              <text x="225" y="190" fill={activePillar === 'A' ? '#0b0f19' : '#fff'} fontSize="10" fontWeight="bold" textAnchor="middle">
-                AREA
+              <text x="225" y="180" fill={activePillar === 'A' ? '#0f172a' : '#ffffff'} fontSize="11" fontWeight="bold" textAnchor="middle">
+                A
               </text>
-              <text x="225" y="222" fill="#10b981" fontSize="10" fontWeight="bold" textAnchor="middle">
-                Área / Coste
-              </text>
+              <text x="225" y="206" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Area</text>
             </g>
           </svg>
         </div>
 
-        {/* Right Column: Detailed Info Card */}
-        <div style={{ background: '#0b0f19', padding: '1rem 1.2rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>Pilar Seleccionado</span>
-              <h3 style={{ margin: 0, color: '#ffffff', fontSize: '1.05rem' }}>{current.name}</h3>
-            </div>
-            <div style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: '500', marginTop: '0.2rem' }}>
-              🎯 Objetivo: {current.target}
-            </div>
+        {/* Right: Dynamic Pillar Info (7 cols) */}
+        <div className="md:col-span-7 flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-white">{current.name}</span>
+            <span className="text-xs text-slate-400 font-medium">({current.target})</span>
           </div>
 
-          {/* Metrics Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', background: 'rgba(255,255,255,0.02)', padding: '0.6rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+          {/* 4 Metric Cards */}
+          <div className="grid grid-cols-2 gap-2.5">
             {current.metrics.map((m, idx) => (
-              <div key={idx} style={{ fontSize: '0.74rem' }}>
-                <strong style={{ color: '#ffffff', display: 'block' }}>• {m.label}</strong>
-                <span style={{ color: '#9ca3af', fontSize: '0.7rem', lineHeight: 1.25 }}>{m.detail}</span>
+              <div key={idx} className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
+                <div className="text-xs font-bold text-white">{m.label}</div>
+                <div className="text-[11px] text-slate-400 mt-1 leading-tight">{m.detail}</div>
               </div>
             ))}
           </div>
 
-          {/* Trade-off box */}
-          <div style={{ background: 'rgba(245, 158, 11, 0.08)', padding: '0.45rem 0.8rem', borderRadius: '6px', border: '1px solid rgba(245, 158, 11, 0.2)', fontSize: '0.73rem', color: '#cbd5e1' }}>
-            ⚖️ <strong>Compromiso (Trade-off):</strong> {current.tradeoff}
+          {/* Tradeoff warning */}
+          <div className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 text-xs text-slate-300">
+            <strong className="text-white">Compromiso (Trade-off): </strong>
+            {current.tradeoff}
           </div>
         </div>
       </div>

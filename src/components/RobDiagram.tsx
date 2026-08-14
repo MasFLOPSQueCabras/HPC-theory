@@ -4,169 +4,114 @@ export const RobDiagram: React.FC = () => {
   const [selectedState, setSelectedState] = useState<'flow' | 'exceptions' | 'rollback'>('flow');
 
   const slots = [
-    { id: 0, inst: 'LOAD R1, [0x1000]', state: 'Pending (DRAM Miss ~200c)', isHead: true, statusColor: '#94a3b8' },
-    { id: 1, inst: 'ADD R4, R1, R2', state: 'Waiting R1 (Blocked)', isHead: false, statusColor: '#94a3b8' },
-    { id: 2, inst: 'MUL R6, R7, R8', state: 'Finished (Ready to Commit)', isHead: false, statusColor: '#ffffff' },
-    { id: 3, inst: 'FMA R9, R10, R11', state: 'Executing in FPU (In-Flight)', isHead: false, statusColor: '#ffffff' },
-    { id: 4, inst: 'SUB R12, R13, R14', state: 'Allocated / Decoded', isHead: false, statusColor: '#cbd5e1', isTail: true },
+    { id: 0, inst: 'LOAD R1, [0x1000]', state: 'Pending (DRAM Miss ~200c)', isHead: true, badge: 'bg-slate-800 text-slate-200 border-slate-700' },
+    { id: 1, inst: 'ADD R4, R1, R2', state: 'Waiting R1 (Blocked in RS)', isHead: false, badge: 'bg-slate-900 text-slate-400 border-slate-800' },
+    { id: 2, inst: 'MUL R6, R7, R8', state: 'Finished (Speculative Ready)', isHead: false, badge: 'bg-slate-800 text-slate-200 border-slate-700' },
+    { id: 3, inst: 'FMA R9, R10, R11', state: 'Executing in FPU (In-Flight)', isHead: false, badge: 'bg-slate-800 text-slate-200 border-slate-700' },
+    { id: 4, inst: 'SUB R12, R13, R14', state: 'Allocated / Renamed', isHead: false, isTail: true, badge: 'bg-slate-900 text-slate-400 border-slate-800' },
   ];
 
   return (
-    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
       {/* Header & Mode Selector */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-        <h4 style={{ margin: 0, color: '#ffffff', fontSize: '1.05rem' }}>Anatomía del Reorder Buffer (ROB) y Ventana In-Flight</h4>
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+        <div className="flex items-center gap-2">
+          <span className="hpc-badge font-mono">Microarquitectura</span>
+          <h4 className="m-0 text-base font-bold text-white tracking-tight">
+            Anatomía del Reorder Buffer (ROB) y Ventana In-Flight
+          </h4>
+        </div>
         
-        <div style={{ display: 'flex', gap: '0.3rem', background: '#070a12', padding: '0.2rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-950 border border-slate-800">
           <button
+            type="button"
             onClick={() => setSelectedState('flow')}
-            style={{
-              padding: '0.3rem 0.7rem',
-              borderRadius: '5px',
-              border: 'none',
-              background: selectedState === 'flow' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: selectedState === 'flow' ? '#ffffff' : '#94a3b8',
-              fontWeight: selectedState === 'flow' ? 700 : 500,
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              selectedState === 'flow'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Flujo In-Flight
           </button>
           <button
+            type="button"
             onClick={() => setSelectedState('exceptions')}
-            style={{
-              padding: '0.3rem 0.7rem',
-              borderRadius: '5px',
-              border: 'none',
-              background: selectedState === 'exceptions' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: selectedState === 'exceptions' ? '#ffffff' : '#94a3b8',
-              fontWeight: selectedState === 'exceptions' ? 700 : 500,
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              selectedState === 'exceptions'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Excepciones Precisas
           </button>
           <button
+            type="button"
             onClick={() => setSelectedState('rollback')}
-            style={{
-              padding: '0.3rem 0.7rem',
-              borderRadius: '5px',
-              border: 'none',
-              background: selectedState === 'rollback' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: selectedState === 'rollback' ? '#ffffff' : '#94a3b8',
-              fontWeight: selectedState === 'rollback' ? 700 : 500,
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              selectedState === 'rollback'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             Rollback Especulativo
           </button>
         </div>
       </div>
 
-      {/* Main Grid: FIFO Table on Left, Conceptual Breakdown on Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.2rem', alignItems: 'start' }}>
-        
-        {/* Visual FIFO Queue */}
-        <div style={{ background: '#070a12', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
-            <span>Buffer Circular FIFO (512 entradas en CPUs modernas)</span>
-            <span>Ventana In-Flight</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {slots.map((slot) => (
-              <div
-                key={slot.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  padding: '0.45rem 0.8rem',
-                  borderRadius: '5px',
-                  border: slot.isHead ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)',
-                  fontSize: '0.78rem',
-                  fontFamily: 'var(--font-code)'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <span style={{ color: '#94a3b8', fontSize: '0.7rem', width: '16px' }}>#{slot.id}</span>
-                  <span style={{ color: '#ffffff', fontWeight: 600 }}>{slot.inst}</span>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <span style={{ fontSize: '0.7rem', color: '#cbd5e1' }}>{slot.state}</span>
-                  {slot.isHead && <span className="hpc-badge" style={{ margin: 0, padding: '0.1rem 0.4rem', fontSize: '0.65rem' }}>HEAD</span>}
-                  {slot.isTail && <span className="hpc-badge" style={{ margin: 0, padding: '0.1rem 0.4rem', fontSize: '0.65rem' }}>TAIL</span>}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ROB Circular Buffer Table */}
+      <div className="my-3 overflow-hidden rounded-lg border border-slate-800 bg-slate-950/80">
+        <div className="grid grid-cols-12 gap-2 p-2 bg-slate-900/90 text-slate-400 text-[11px] font-mono font-bold border-b border-slate-800">
+          <div className="col-span-2">ROB Entry</div>
+          <div className="col-span-4">Instrucción Despachada</div>
+          <div className="col-span-4">Estado de Ejecución</div>
+          <div className="col-span-2 text-right">Puntero</div>
         </div>
 
-        {/* Right Info Box */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          {selectedState === 'flow' && (
-            <>
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>¿Qué es una Instrucción "In-Flight"?</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  Una instrucción está <strong>in-flight</strong> desde que entra al ROB en el Frontend hasta que se retira (Commit) en el Backend. Durante este tiempo, calcula sus resultados de forma especulativa en registros físicos temporales.
-                </p>
+        <div className="divide-y divide-slate-800/60">
+          {slots.map((slot) => (
+            <div key={slot.id} className="grid grid-cols-12 gap-2 p-2.5 items-center text-xs font-mono">
+              <div className="col-span-2 text-white font-bold">ROB #{slot.id}</div>
+              <div className="col-span-4 text-slate-200 font-medium">{slot.inst}</div>
+              <div className="col-span-4">
+                <span className={`px-2 py-0.5 rounded text-[11px] border ${slot.badge}`}>
+                  {slot.state}
+                </span>
               </div>
-
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Tolerancia a Latencias de Memoria</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  Si la instrucción de la cabeza (HEAD) sufre un fallo de caché DRAM (~200 ciclos), el procesador <strong>continúa ejecutando cientos de instrucciones independientes in-flight</strong> hasta llenar el ROB.
-                </p>
+              <div className="col-span-2 text-right">
+                {slot.isHead && (
+                  <span className="px-2 py-0.5 rounded bg-slate-800 text-white font-bold border border-slate-700 text-[10px]">
+                    HEAD (Commit)
+                  </span>
+                )}
+                {slot.isTail && (
+                  <span className="px-2 py-0.5 rounded bg-slate-800 text-white font-bold border border-slate-700 text-[10px]">
+                    TAIL (Allocate)
+                  </span>
+                )}
               </div>
-            </>
-          )}
-
-          {selectedState === 'exceptions' && (
-            <>
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Excepciones Precisas</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  Si una instrucción genera una excepción (ej. división por cero o fallo de página), el fallo <strong>no se dispara de inmediato</strong>. Espera a que la instrucción llegue a la cabeza del ROB (Commit).
-                </p>
-              </div>
-
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Garantía de Estado Secuencial</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  Si la instrucción culpable pertenecía a una rama especulativa descartada, la excepción se purga silenciosamente sin corromper el sistema operativo.
-                </p>
-              </div>
-            </>
-          )}
-
-          {selectedState === 'rollback' && (
-            <>
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Rollback en 1 Ciclo</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  Ante una predicción de salto fallida (Branch Misprediction), el procesador ajusta el puntero de cola (TAIL) del ROB hasta el salto, <strong>descartando todas las instrucciones especulativas in-flight</strong> instantáneamente.
-                </p>
-              </div>
-
-              <div className="hpc-card" style={{ padding: '0.9rem' }}>
-                <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Evolución del Tamaño del ROB</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                  • Intel Skylake (2015): 224 entradas.<br />
-                  • AMD Zen 4 (2022): 320 entradas.<br />
-                  • Intel Raptor Lake (2022): 512 entradas.<br />
-                  • Apple M4 / Zen 5 (2024): 600+ entradas in-flight.
-                </p>
-              </div>
-            </>
-          )}
+            </div>
+          ))}
         </div>
+      </div>
 
+      {/* Explanatory details based on active mode */}
+      <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+        {selectedState === 'flow' && (
+          <div>
+            <strong className="text-white">Flujo Circular FIFO:</strong> Las instrucciones entran en orden en el <strong className="text-white">TAIL</strong> durante la etapa de renombre (Rename), se ejecutan en cualquier orden en las unidades funcionales del Backend, y se confirman (Commit / Retire) estrictamente en orden en el <strong className="text-white">HEAD</strong> cuando el resultado está listo.
+          </div>
+        )}
+        {selectedState === 'exceptions' && (
+          <div>
+            <strong className="text-white">Excepciones Precisas:</strong> Si la instrucción #0 produce un fallo de página (Page Fault) o división por cero, el procesador detiene el commit en el HEAD y descarta todas las instrucciones posteriores del ROB, manteniendo el estado arquitectural visible 100% limpio y consistente.
+          </div>
+        )}
+        {selectedState === 'rollback' && (
+          <div>
+            <strong className="text-white">Recuperación Especulativa:</strong> Ante un fallo de predicción de saltos (Branch Misprediction), el puntero TAIL se rebobina instantáneamente hasta la entrada del salto erróneo en el ROB, liberando los registros físicos especulativos sin penalizaciones colaterales.
+          </div>
+        )}
       </div>
     </div>
   );

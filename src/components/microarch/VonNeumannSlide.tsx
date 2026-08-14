@@ -3,19 +3,19 @@ import { Math } from '../Math';
 
 export const VonNeumannSlide: React.FC = () => {
   return (
-    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1.2rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: '1.4rem', alignItems: 'center' }}>
+    <div className="hpc-card p-5 w-full max-w-5xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
         
-        {/* Left: Diagram */}
-        <div style={{ background: '#070a12', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(248, 113, 113, 0.2)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
-            <span className="hpc-badge" style={{ background: 'rgba(248, 113, 113, 0.15)', color: '#f87171', border: '1px solid rgba(248, 113, 113, 0.3)' }}>
-              1945 &bull; John von Neumann
+        {/* Left: Diagram (6 cols) */}
+        <div className="md:col-span-6 p-4 rounded-xl bg-slate-950/90 border border-rose-500/30">
+          <div className="flex items-center justify-between mb-3">
+            <span className="hpc-badge-rose font-mono text-[10px]">
+              1945 • John von Neumann
             </span>
-            <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Bus Único Compartido</span>
+            <span className="text-xs text-slate-400 font-mono">Bus Único Compartido</span>
           </div>
 
-          <svg viewBox="0 0 340 120" style={{ width: '100%', height: '110px' }}>
+          <svg viewBox="0 0 340 120" className="w-full h-[110px]">
             {/* CPU Box */}
             <rect x="10" y="20" width="100" height="80" rx="6" fill="#1e293b" stroke="#f87171" strokeWidth="2" />
             <text x="60" y="45" fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">CPU Core</text>
@@ -38,27 +38,27 @@ export const VonNeumannSlide: React.FC = () => {
           </svg>
         </div>
 
-        {/* Right: Technical Characteristics */}
-        <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div className="hpc-card" style={{ padding: '0.9rem' }}>
-            <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Principio de Diseño</h4>
-            <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              Las instrucciones del programa y los datos residen en el <strong>mismo espacio físico de direcciones</strong> y comparten los mismos buses de datos y control.
+        {/* Right: Technical Characteristics (6 cols) */}
+        <div className="md:col-span-6 flex flex-col gap-3 text-left">
+          <div className="p-3.5 rounded-lg bg-slate-950/80 border border-slate-800">
+            <h4 className="m-0 text-xs font-bold text-white mb-1">Principio de Diseño</h4>
+            <p className="m-0 text-xs text-slate-300 leading-relaxed">
+              Las instrucciones del programa y los datos residen en el <strong className="text-white">mismo espacio físico de direcciones</strong> y comparten los mismos buses de datos y control.
             </p>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.9rem', borderLeft: '3px solid #f87171' }}>
-            <h4 style={{ margin: '0 0 0.3rem 0', color: '#f87171', fontSize: '0.95rem' }}>⚠️ El Cuello de Botella de Von Neumann</h4>
-            <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              En un instante de tiempo <Math math="t" />, la CPU solo puede transferir <strong>una instrucción O un dato</strong> a través del bus compartido. La velocidad de cómputo queda estrangulada por el caudal del canal de memoria único.
+          <div className="p-3.5 rounded-lg bg-slate-950/80 border border-rose-500/30">
+            <h4 className="m-0 text-xs font-bold text-rose-400 mb-1">⚠️ El Cuello de Botella de Von Neumann</h4>
+            <p className="m-0 text-xs text-slate-300 leading-relaxed">
+              En un instante de tiempo <Math math="t" />, la CPU solo puede transferir <strong className="text-white">una instrucción O un dato</strong> a través del bus compartido. La velocidad de cómputo queda estrangulada por el caudal del canal único.
             </p>
           </div>
         </div>
 
       </div>
 
-      <div style={{ marginTop: '0.8rem', background: '#070a12', padding: '0.5rem 1rem', borderRadius: '6px', fontSize: '0.78rem', color: '#94a3b8', textAlign: 'center' }}>
-        🏛️ <strong>Uso actual:</strong> Estándar universal para la <strong>Memoria RAM Principal</strong> y almacenamiento secundario por su bajo costo de cableado y flexibilidad de asignación.
+      <div className="mt-3 p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 text-center text-xs text-slate-400">
+        🏛️ <strong className="text-slate-200">Uso actual:</strong> Estándar universal para la <strong className="text-white">Memoria RAM Principal (DDR5)</strong> por su bajo coste de cableado y flexibilidad de asignación.
       </div>
     </div>
   );

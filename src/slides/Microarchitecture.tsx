@@ -2,7 +2,6 @@ import React from 'react';
 import { Slide, Stack } from '@revealjs/react';
 import { VonNeumannSlide } from '../components/microarch/VonNeumannSlide';
 import { HarvardSlide } from '../components/microarch/HarvardSlide';
-import { SplitCacheExplanation } from '../components/microarch/SplitCacheExplanation';
 import { FrontendBackendOverview } from '../components/microarch/FrontendBackendOverview';
 import { FrontendDetail } from '../components/microarch/FrontendDetail';
 import { BackendDetail } from '../components/microarch/BackendDetail';
@@ -17,425 +16,650 @@ export const Microarchitecture: React.FC = () => {
     <Stack>
       {/* 1. ISA vs Microarquitectura */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Fundamentos</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1.2rem' }}>ISA vs Microarquitectura (&mu;Arch)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Fundamentos</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              ISA vs Microarquitectura (&mu;Arch)
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.4rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
-                <span className="hpc-badge">ISA</span>
-                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Instruction Set Architecture</h3>
-              </div>
-              <p style={{ margin: 0, fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.5 }}>
-                El <strong>contrato lógico abstracto</strong> entre software y hardware (ej. <code>x86-64</code>, <code>ARMv9</code>, <code>RISC-V</code>). Define los registros visibles para el programador (ARF - Architectural Register File), los opcodes, modos de direccionamiento y el modelo de consistencia de memoria.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-3">ISA</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Instruction Set Architecture</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                El <strong className="text-white">contrato lógico abstracto</strong> entre software y hardware (ej. <code className="text-slate-200 font-mono">x86-64</code>, <code className="text-slate-200 font-mono">ARMv9</code>, <code className="text-slate-200 font-mono">RISC-V</code>). Define los registros visibles (ARF), los opcodes, modos de direccionamiento y el modelo de consistencia de memoria.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.4rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
-                <span className="hpc-badge">&mu;Arch</span>
-                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Microarquitectura (Silicio)</h3>
-              </div>
-              <p style={{ margin: 0, fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.5 }}>
-                La <strong>implementación física en silicio</strong> (ej. Intel Golden Cove, AMD Zen 5, Apple M4, ARM Neoverse V2). Determina la profundidad del pipeline, el tamaño del Reorder Buffer (ROB), la cantidad de puertos de ejecución (ALUs, FPUs, AGUs) y la jerarquía de cachés.
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-3">&mu;Arch</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Microarquitectura (Silicio)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                La <strong className="text-white">implementación física en silicio</strong> (ej. Intel Golden Cove, AMD Zen 5, Apple M4, ARM Neoverse V2). Determina la profundidad del pipeline, el tamaño del Reorder Buffer (ROB), los puertos de ejecución y la jerarquía de cachés.
               </p>
             </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Desacoplamiento:</strong> Dos procesadores pueden compartir exactamente la misma ISA (ej. AMD EPYC e Intel Xeon x86-64) pero poseer microarquitecturas de silicio radicalmente distintas.
           </div>
         </div>
       </Slide>
 
       {/* 2. Ecuación de Rendimiento de la CPU */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Métricas Fundamentales</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>Ecuación Clásica de Rendimiento de la CPU</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Métricas Fundamentales</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Ecuación Clásica de Rendimiento de la CPU
+            </h2>
+          </div>
 
-          <div className="hpc-formula-box" style={{ fontSize: '1.2rem', padding: '0.8rem 1.2rem', margin: '0.6rem 0 1.2rem 0' }}>
+          <div className="hpc-formula-box my-2 text-lg">
             <Math math="\text{CPU Time} = N_{\text{inst}} \times \text{CPI} \times T_{\text{clk}} = \frac{N_{\text{inst}} \times \text{CPI}}{f}" block />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.2rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>Término 1: N_inst</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>N° de Instrucciones</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Determinado por la complejidad algorítmica del código fuente y la agresividad del compilador al optimizar (eliminando código muerto con DCO/DCE).
+          <div className="grid grid-cols-3 gap-5 my-2">
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">Término 1: N_inst</span>
+              <h4 className="m-0 text-base font-bold text-white mb-1">N° de Instrucciones</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Determinado por la complejidad del algoritmo y la optimización del compilador (eliminando código muerto con DCO/DCE).
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>Término 2: CPI / IPC</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>CPI (Ciclos / Instrucción)</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Determinado por la microarquitectura (Pipelining, ejecución fuera de orden OoO). Su inverso es el <strong>IPC (Instructions Per Cycle)</strong>: <Math math="\text{IPC} = \frac{1}{\text{CPI}}" />.
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">Término 2: CPI / IPC</span>
+              <h4 className="m-0 text-base font-bold text-white mb-1">CPI (Ciclos / Inst)</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Determinado por la microarquitectura (Pipelining, ejecución OoO). Su inverso es el <strong className="text-white">IPC (Instructions Per Cycle)</strong>: <Math math="\text{IPC} = \frac{1}{\text{CPI}}" />.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>Término 3: T_clk / f</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1.05rem', color: '#ffffff' }}>Tiempo de Ciclo y Frecuencia</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.4 }}>
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">Término 3: T_clk / f</span>
+              <h4 className="m-0 text-base font-bold text-white mb-1">Tiempo de Ciclo y Frecuencia</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
                 Determinado por el nodo litográfico y el retardo del camino crítico (<Math math="T_{\text{clk}} = \frac{1}{f}" /> en GHz).
               </p>
             </div>
           </div>
+
+          <div className="hpc-card p-3.5 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Objetivo HPC:</strong> Minimizar los tres términos en paralelo mediante compiladores modernos, microarquitectura fuera de orden y litografías de vanguardia.
+          </div>
         </div>
       </Slide>
 
-      {/* 3. El Trilema del Silicio: PPA */}
+      {/* 3. El Trilema del Silicio: PPA (DIAGRAMA DEDICADO) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Trilema de Diseño</span>
-          <h2>El Trilema Fundamental del Silicio: PPA (Power, Performance, Area)</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Trilema de Diseño</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            El Trilema Fundamental del Silicio: PPA (Power, Performance, Area)
+          </h2>
 
           <PpaDiagram />
         </div>
       </Slide>
 
-      {/* 4. Leyes Físicas y Dennard Scaling */}
+      {/* 4. Ley de Moore vs Dennard Scaling */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Límites Físicos</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>Leyes Físicas y el Fin de Dennard Scaling</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Leyes Físicas (1/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Leyes Físicas: Ley de Moore vs Dennard Scaling
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginBottom: '1rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Ley de Moore (1965)</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                El número de transistores por chip se duplica cada ~2 años. Permite integrar más núcleos, mayores cachés L3 (LLC - Last Level Cache) y unidades vectoriales SIMD de 512 bits.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Escalamiento de Transistores</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Ley de Moore (1965)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                El número de transistores integrados por chip se duplica aproximadamente cada dos años. Permite añadir más núcleos en paralelo, cachés L3 compartidas más masivas y registros vectoriales anchos (AVX-512).
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Dennard Scaling (1974 - 2005)</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Establecía que al reducir el tamaño del transistor, la densidad de potencia permanecía constante porque el voltaje (<Math math="V" />) bajaba proporcionalmente con la escala litográfica.
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Escalamiento de Potencia</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Dennard Scaling (1974 - 2005)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Establecía que al reducir el tamaño físico del transistor, la densidad de potencia permanecía constante porque el voltaje de operación (<Math math="V" />) bajaba en proporción directa con la litografía.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.9rem 1.2rem', fontSize: '0.85rem', color: '#e5e7eb' }}>
-            ⚠️ <strong>Ruptura en 2005:</strong> Por debajo de ~0.8V, las corrientes de fuga cuántica dispararon el consumo estático. El escalamiento libre de frecuencia de reloj (~3-5 GHz) se detuvo para siempre.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 Durante décadas, Dennard Scaling permitió aumentar la frecuencia de reloj sin sobrecalentar el procesador.
           </div>
         </div>
       </Slide>
 
-      {/* 5. El Muro de Potencia y Dark Silicon */}
+      {/* 5. El Fin de Dennard Scaling (2005) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Límites Físicos</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>Power Wall y Silicio Oscuro (Dark Silicon)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Leyes Físicas (2/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              El Fin de Dennard Scaling y el Muro de Frecuencia
+            </h2>
+          </div>
 
-          <div className="hpc-formula-box" style={{ fontSize: '1.15rem', margin: '0.4rem 0 1rem 0', padding: '0.7rem 1.2rem' }}>
+          <div className="hpc-card p-6 my-2 border-slate-700">
+            <h3 className="m-0 text-lg font-bold text-white mb-3">⚠️ Ruptura del Dennard Scaling en 2005</h3>
+            <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+              Al descender por debajo del umbral de <strong className="text-white">~0.8V</strong>, el grosor del óxido de puerta se redujo a unos pocos átomos, disparando las <strong className="text-white">corrientes de fuga cuántica (fuga de túnel)</strong>.
+            </p>
+            <p className="m-0 text-sm text-slate-300 leading-relaxed">
+              El escalamiento libre de frecuencia de reloj se estancó en el rango de <strong className="text-white">3.0 a 5.0 GHz</strong> para siempre. La industria se vio forzada a abandonar la carrera por GHz mononúcleo e iniciar la era de los <strong className="text-white">procesadores multinúcleo y aceleradores heterogéneos (GPUs / TPUs)</strong>.
+            </p>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Consecuencia HPC:</strong> La ganancia de rendimiento ya no es automática por hardware; el software debe ser explícitamente paralelo.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 6. Power Wall y Dark Silicon */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Límites Térmicos</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Power Wall y Silicio Oscuro (Dark Silicon)
+            </h2>
+          </div>
+
+          <div className="hpc-formula-box my-2 text-lg">
             <Math math="P_{\text{total}} = P_{\text{dyn}} + P_{\text{leak}} = (\alpha \cdot C \cdot V^2 \cdot f) + (I_{\text{leak}} \cdot V)" block />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>El Muro de Potencia (Power Wall)</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Power Wall</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Límite térmico máximo (~300W a 500W por socket) que puede disiparse por refrigeración antes de la degradación física o electromigración del silicio.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Silicio Oscuro (Dark Silicon)</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                En litografías modernas sub-3nm, <strong>un porcentaje significativo del silicio debe permanecer apagado o en reposo</strong> para no sobrepasar el presupuesto térmico máximo del procesador.
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Dark Silicon</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                En litografías modernas sub-3nm, <strong className="text-white">un porcentaje significativo del silicio debe permanecer apagado o en reposo</strong> para no sobrepasar el presupuesto térmico máximo del procesador.
               </p>
             </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Solución de la Industria:</strong> Diseñar silicio heterogéneo (núcleos especializados que se activan solo para su carga: NPU, AVX-512, decodificadores multimedia).
           </div>
         </div>
       </Slide>
 
-      {/* 6. Arquitectura Clásica 1: Modelo Von Neumann */}
+      {/* 7. Arquitectura Clásica 1: Modelo Von Neumann (DIAGRAMA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Arquitectura de Computadores • Modelo Clásico (1/2)</span>
-          <h2>Arquitectura Clásica: Modelo Von Neumann (1945)</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Arquitectura Clásica • 1/2</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            Arquitectura Clásica: Modelo Von Neumann (1945)
+          </h2>
 
           <VonNeumannSlide />
         </div>
       </Slide>
 
-      {/* 7. Arquitectura Clásica 2: Modelo Harvard */}
+      {/* 8. Arquitectura Clásica 2: Modelo Harvard (DIAGRAMA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Arquitectura de Computadores • Modelo Clásico (2/2)</span>
-          <h2>Arquitectura Clásica: Modelo Harvard (1944)</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Arquitectura Clásica • 2/2</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            Arquitectura Clásica: Modelo Harvard (1944)
+          </h2>
 
           <HarvardSlide />
         </div>
       </Slide>
 
-      {/* 8. Fundamento Previo: ¿Por qué Caché I y Caché D Separadas? */}
+      {/* 9. Harvard Modificada: El Conflicto de Caché Unificada */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Jerarquía de Silicio • Fundamento de Caché L1</span>
-          <h2>Arquitectura Harvard Dividida: ¿Por qué Caché I y Caché D Separadas?</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Jerarquía L1 • Harvard Modificada (1/4)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              El Conflicto Estructural en Caché Unificada
+            </h2>
+          </div>
 
-          <SplitCacheExplanation />
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Von Neumann Puro</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">❌ El Conflicto Estructural</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Si el núcleo utiliza una sola memoria caché para instrucciones y datos:
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li>En el mismo ciclo de reloj, la etapa <strong className="text-white">Fetch (IF)</strong> necesita leer una nueva instrucción.</li>
+                <li>Simultáneamente, la etapa <strong className="text-white">Memoria (MEM)</strong> necesita leer o escribir una variable de datos (Load / Store).</li>
+                <li>Ambas etapas compiten por los mismos puertos físicos del bus de caché.</li>
+              </ul>
+            </div>
+
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Harvard Modificada</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">✅ La Solución: Nivel L1 Dividido (Split)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Todas las CPUs modernas dividen físicamente su memoria caché L1 en dos bancos independientes:
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li><strong className="text-white">L1 I-Cache (32-64 KB):</strong> Exclusiva para instrucciones, conectada al Frontend.</li>
+                <li><strong className="text-white">L1 D-Cache (32-64 KB):</strong> Exclusiva para datos, conectada a las AGUs del Backend.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 A nivel de memoria RAM y caché L2/L3 el sistema es Von Neumann unificado; a nivel de caché L1 es Harvard dividido.
+          </div>
         </div>
       </Slide>
 
-      {/* 9. Sección 1 Microarquitectura: Visión General Frontend vs Backend */}
+      {/* 10. Harvard Modificada: Pilar 1 (Ancho de Banda) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Estructura Fundamental</span>
-          <h2>Microarquitectura de CPU: Visión General Frontend vs Backend</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Jerarquía L1 • Harvard Modificada (2/4)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Pilar 1: Duplicación de Ancho de Banda y Concurrencia
+            </h2>
+          </div>
+
+          <div className="hpc-card p-6 my-2">
+            <h3 className="m-0 text-lg font-bold text-white mb-3">Acceso Simultáneo en el Mismo Ciclo de Reloj</h3>
+            <p className="m-0 text-sm text-slate-300 leading-relaxed mb-4">
+              Al separar la L1 en dos estructuras físicas con rutas de buses independientes, el procesador puede realizar <strong className="text-white">dos accesos a memoria concurrentes en cada ciclo</strong> sin colisiones ni arbitraje de bus.
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-slate-950/80 border border-slate-800">
+                <span className="font-bold text-white text-sm">Flujo de Instrucciones:</span>
+                <p className="m-0 mt-1 text-xs text-slate-300 leading-relaxed">El Frontend lee hasta 32 o 64 bytes de instrucciones desde la I-Cache para alimentar el decodificador.</p>
+              </div>
+              <div className="p-4 rounded-lg bg-slate-950/80 border border-slate-800">
+                <span className="font-bold text-white text-sm">Flujo de Datos:</span>
+                <p className="m-0 mt-1 text-xs text-slate-300 leading-relaxed">El Backend ejecuta hasta 3 operaciones Load/Store de 512 bits simultáneamente en la D-Cache.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Resultado:</strong> Cero ciclos de stall perdidos por contención entre la búsqueda de código y la lectura de datos.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 11. Harvard Modificada: Pilar 2 (Especialización de Silicio) */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Jerarquía L1 • Harvard Modificada (3/4)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Pilar 2: Especialización de Silicio (Read-Only vs Read/Write)
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Frontend</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">L1 I-Cache (Solo Lectura)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                El código binario en ejecución no se auto-modifica durante cálculos ordinarios.
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li>No requiere puertos de escritura pesados.</li>
+                <li>Elimina circuitos complejos de protocolo de coherencia (MESI / MOESI).</li>
+                <li>Diseño más denso, rápido y de menor consumo por bit.</li>
+              </ul>
+            </div>
+
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Backend</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">L1 D-Cache (Lectura y Escritura)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Maneja modificaciones intensivas de matrices y variables en memoria.
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li>Múltiples puertos de lectura y escritura paralelos.</li>
+                <li>Controladores de coherencia de caché inter-núcleo en hardware.</li>
+                <li>Integración directa con Store Buffers y Line Fill Buffers.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 Especializar cada caché según su patrón de acceso optimiza el consumo de energía y maximiza la velocidad de respuesta en nanosegundos.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 12. Harvard Modificada: Pilar 3 (Prevención de Contaminación) */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Jerarquía L1 • Harvard Modificada (4/4)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Pilar 3: Prevención de Contaminación de Caché (Cache Pollution)
+            </h2>
+          </div>
+
+          <div className="hpc-card p-6 my-2">
+            <h3 className="m-0 text-lg font-bold text-white mb-3">Aislamiento de Código vs Datos Masivos</h3>
+            <p className="m-0 text-sm text-slate-300 leading-relaxed mb-4">
+              En computación científica e inteligencia artificial, los bucles de cálculo procesan volúmenes gigantescos de datos (matrices de gigabytes o terabytes):
+            </p>
+            <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 text-sm text-slate-300 leading-relaxed">
+              Si la caché fuera unificada, el flujo continuo de datos de la matriz expulsaría las instrucciones del bucle de la caché (polución de caché), forzando continuos fallos de instrucción (I-Cache misses). Al estar separadas, <strong className="text-white">el bucle crítico de cálculo permanece caliente y residente en la I-Cache de forma indefinida</strong>.
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Impacto en HPC:</strong> Permite que bucles de cálculo intensivo se ejecuten a máxima velocidad sin degradar la tasa de aciertos de instrucciones.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 13. Frontend vs Backend: Visión General (DIAGRAMA) */}
+      <Slide>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Estructura Fundamental</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            Microarquitectura de CPU: Visión General Frontend vs Backend
+          </h2>
 
           <FrontendBackendOverview />
         </div>
       </Slide>
 
-      {/* 10. Sección 2 Microarquitectura: Frontend en Profundidad */}
+      {/* 14. Frontend en Detalle (DIAGRAMA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • In-Order Frontend</span>
-          <h2>El Frontend en Detalle: Fetch, Predicción, Decodificación y Renaming</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • In-Order Frontend</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            El Frontend en Detalle: Fetch, Predicción, Decodificación y Renaming
+          </h2>
 
           <FrontendDetail />
         </div>
       </Slide>
 
-      {/* 11. Sección 3 Microarquitectura: Backend en Profundidad */}
+      {/* 15. Backend en Detalle (DIAGRAMA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Out-of-Order Backend</span>
-          <h2>El Backend en Detalle: Issue Queue, Ejecución Paralela y Retiro (ROB)</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Out-of-Order Backend</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            El Backend en Detalle: Issue Queue, Ejecución Paralela y Retiro (ROB)
+          </h2>
 
           <BackendDetail />
         </div>
       </Slide>
 
-      {/* 12. Pipelining Clásico */}
+      {/* 16. Segmentación RISC de 5 Etapas (DIAGRAMA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Segmentación</span>
-          <h2>Segmentación de Instrucciones (Pipelining RISC de 5 Etapas)</h2>
-
-          <p style={{ margin: '0.2rem 0 0.8rem 0', fontSize: '0.88rem', color: '#cbd5e1' }}>
-            Divide la ejecución de cada instrucción en 5 etapas secuenciales independientes (<strong>IF</strong>: Instruction Fetch, <strong>ID</strong>: Instruction Decode, <strong>EX</strong>: Execute, <strong>MEM</strong>: Memory Access, <strong>WB</strong>: Writeback) para completar 1 instrucción por ciclo.
-          </p>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Segmentación</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            Segmentación de Instrucciones (Pipelining RISC de 5 Etapas)
+          </h2>
 
           <PipelineDiagram />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginTop: '1rem' }}>
-            <div className="hpc-card" style={{ padding: '1rem' }}>
-              <h4 style={{ margin: 0, color: '#ffffff', fontSize: '0.95rem' }}>Throughput (Rendimiento) vs Latencia</h4>
-              <p style={{ fontSize: '0.8rem', margin: '0.3rem 0 0 0', color: '#cbd5e1', lineHeight: 1.35 }}>
-                La segmentación no reduce el tiempo individual de una instrucción (latencia), pero multiplica la tasa de instrucciones completadas por segundo (throughput).
+          <div className="grid grid-cols-2 gap-5 my-2">
+            <div className="hpc-card p-4">
+              <h4 className="m-0 text-sm font-bold text-white mb-1">Throughput (Rendimiento) vs Latencia</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                La segmentación no reduce el tiempo individual de una instrucción (latencia), pero multiplica la tasa de instrucciones completadas por unidad de tiempo.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1rem' }}>
-              <h4 style={{ margin: 0, color: '#ffffff', fontSize: '0.95rem' }}>Aceleración Teórica (Speedup)</h4>
-              <p style={{ fontSize: '0.8rem', margin: '0.3rem 0 0 0', color: '#cbd5e1', lineHeight: 1.35 }}>
-                Con <Math math="k" /> etapas perfectamente balanceadas: <Math math="\text{Speedup} \approx k" /> respecto a una ejecución no segmentada monolítica.
+            <div className="hpc-card p-4">
+              <h4 className="m-0 text-sm font-bold text-white mb-1">Aceleración Teórica (Speedup)</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Con <Math math="k" /> etapas balanceadas: <Math math="\text{Speedup} \approx k" /> respecto a una ejecución no segmentada monolítica.
               </p>
             </div>
           </div>
         </div>
       </Slide>
 
-      {/* 13. Visión General e Interactiva de Hazards */}
+      {/* 17. Peligros (Hazards) del Pipeline (DIAGRAMA DEDICADO) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Pipeline Hazards</span>
-          <h2>Peligros (Hazards) del Pipeline y Clasificación</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Pipeline Hazards</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            Peligros (Hazards) del Pipeline y Clasificación
+          </h2>
 
           <HazardsDiagram />
         </div>
       </Slide>
 
-      {/* 14. Data Hazard 1: RAW (Read-After-Write) */}
+      {/* 18. RAW (Read-After-Write) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Hazards de Datos • Dependencia Real</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>RAW (Read-After-Write): Dependencia Verdadera</h2>
-
-          <div style={{ background: '#070a12', padding: '0.9rem 1.2rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '1.2rem', maxWidth: '950px' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem' }}>Ejemplo en Ensamblador:</div>
-            <pre style={{ margin: 0, fontFamily: 'var(--font-code)', fontSize: '0.85rem', color: '#f8fafc', lineHeight: 1.5 }}>
-              <div>I1: ADD R1, R2, R3   <span style={{ color: '#94a3b8' }}>; Escribe en R1</span></div>
-              <div>I2: SUB R4, R1, R5   <span style={{ color: '#94a3b8' }}>; Lee R1 (debe esperar a que I1 produzca el valor)</span></div>
-            </pre>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Hazards de Datos • Dependencia Real</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              RAW (Read-After-Write): Dependencia Verdadera
+            </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Comportamiento en In-Order</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                El hardware introduce <strong>Data Forwarding (Bypass directo desde la salida de la ALU a la entrada de EX)</strong>. Si I1 era un <code>load</code> de memoria, se debe insertar un <strong>ciclo de stall (burbuja)</strong>.
+          <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 font-mono text-sm text-slate-200 my-2">
+            <div>I1: ADD R1, R2, R3   <span className="text-slate-500">; Escribe en R1</span></div>
+            <div className="mt-2">I2: SUB R4, R1, R5   <span className="text-slate-500">; Lee R1 (debe esperar a que I1 produzca el valor)</span></div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">Comportamiento Secuencial (In-Order)</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                El hardware introduce <strong className="text-white">Data Forwarding</strong> (Bypass directo desde la salida de la ALU a la entrada de EX). Si I1 era un <code className="text-white font-mono">load</code> de memoria, se debe insertar un ciclo de stall (burbuja).
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Comportamiento en Out-of-Order (OoO)</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                I2 se coloca en la <strong>Estación de Reserva (RS / Issue Queue)</strong> y espera dinámicamente hasta que I1 difunde su resultado por el <strong>CDB (Common Data Bus / Bus Común de Datos)</strong>.
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">Comportamiento Dinámico (OoO)</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                I2 se coloca en la <strong className="text-white">Estación de Reserva (RS / Issue Queue)</strong> y espera dinámicamente hasta que I1 difunde su resultado por el <strong className="text-white">CDB (Common Data Bus)</strong>.
               </p>
             </div>
+          </div>
+
+          <div className="hpc-card p-3.5 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Regla Clave:</strong> Las dependencias RAW son las únicas dependencias de datos reales que no se pueden eliminar con renombre de registros.
           </div>
         </div>
       </Slide>
 
-      {/* 15. Data Hazard 2: WAR (Write-After-Read) */}
+      {/* 19. WAR (Write-After-Read) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Hazards de Datos • Antidependencia</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>WAR (Write-After-Read): Falsa Dependencia de Nombre</h2>
-
-          <div style={{ background: '#070a12', padding: '0.9rem 1.2rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '1.2rem', maxWidth: '950px' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem' }}>Ejemplo en Ensamblador:</div>
-            <pre style={{ margin: 0, fontFamily: 'var(--font-code)', fontSize: '0.85rem', color: '#f8fafc', lineHeight: 1.5 }}>
-              <div>I1: ADD R4, R1, R5   <span style={{ color: '#94a3b8' }}>; Lee R1</span></div>
-              <div>I2: SUB R1, R2, R3   <span style={{ color: '#94a3b8' }}>; Escribe en R1 (no debe sobreescribir antes de que I1 lea)</span></div>
-            </pre>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Hazards de Datos • Antidependencia</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              WAR (Write-After-Read): Falsa Dependencia de Nombre
+            </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Inexistente en Pipelines In-Order</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
+          <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 font-mono text-sm text-slate-200 my-2">
+            <div>I1: ADD R4, R1, R5   <span className="text-slate-500">; Lee R1</span></div>
+            <div className="mt-2">I2: SUB R1, R2, R3   <span className="text-slate-500">; Escribe en R1 (no debe sobreescribir antes de que I1 lea)</span></div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">Inexistente en Pipelines In-Order</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 En un pipeline estrictamente secuencial, la lectura del operando en la etapa ID de I1 ocurre antes de que I2 alcance la etapa Writeback (WB).
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Solución en OoO: Register Renaming</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                El hardware asigna a I2 un <strong>registro físico distinto (ej. P19 en vez de P12)</strong> mediante la <strong>RAT (Register Alias Table / Tabla de Alias de Registros)</strong>, eliminando por completo la falsa dependencia.
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">Solución: Register Renaming</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                El hardware asigna a I2 un <strong className="text-white">registro físico distinto (ej. P19 en vez de P12)</strong> mediante la <strong className="text-white">RAT (Register Alias Table)</strong>, eliminando por completo la falsa dependencia.
               </p>
             </div>
+          </div>
+
+          <div className="hpc-card p-3.5 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Falsa Dependencia:</strong> Solo existe porque la ISA tiene un número finito de nombres de registro arquitecturales (ARF).
           </div>
         </div>
       </Slide>
 
-      {/* 16. Data Hazard 3: WAW (Write-After-Write) */}
+      {/* 20. WAW (Write-After-Write) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Hazards de Datos • Dependencia de Salida</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>WAW (Write-After-Write): Dependencia de Salida</h2>
-
-          <div style={{ background: '#070a12', padding: '0.9rem 1.2rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '1.2rem', maxWidth: '950px' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem' }}>Ejemplo en Ensamblador:</div>
-            <pre style={{ margin: 0, fontFamily: 'var(--font-code)', fontSize: '0.85rem', color: '#f8fafc', lineHeight: 1.5 }}>
-              <div>I1: MUL R1, R2, R3   <span style={{ color: '#94a3b8' }}>; Escribe en R1 (Operación larga de 4 ciclos)</span></div>
-              <div>I2: ADD R1, R4, R5   <span style={{ color: '#94a3b8' }}>; Escribe en R1 (Operación rápida de 1 ciclo)</span></div>
-            </pre>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Hazards de Datos • Dependencia de Salida</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              WAW (Write-After-Write): Dependencia de Salida
+            </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>El Conflicto de Salida</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
+          <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 font-mono text-sm text-slate-200 my-2">
+            <div>I1: MUL R1, R2, R3   <span className="text-slate-500">; Escribe en R1 (Operación larga de 4 ciclos)</span></div>
+            <div className="mt-2">I2: ADD R1, R4, R5   <span className="text-slate-500">; Escribe en R1 (Operación rápida de 1 ciclo)</span></div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">El Conflicto de Salida</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
                 Si I2 termina antes que I1 en un motor fuera de orden o superescalar, la escritura tardía de I1 sobreescribiría y corrompería el valor más reciente de R1.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Solución: Renaming + Reorder Buffer</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                Se asignan registros físicos independientes en la <strong>RAT (Register Alias Table)</strong> y el <strong>ROB (Reorder Buffer)</strong> garantiza que el retiro arquitectural respete el orden del programa.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Slide>
-
-      {/* 17. RAR y Resumen de Dependencias */}
-      <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Hazards de Datos • Síntesis</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>RAR (Read-After-Read) y Resumen de Mitigaciones</h2>
-
-          <div style={{ background: '#070a12', padding: '0.7rem 1.2rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '1rem', maxWidth: '950px' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.2rem' }}>RAR (Lectura Concurrente):</div>
-            <code style={{ fontSize: '0.82rem', color: '#f8fafc' }}>
-              I1: ADD R4, R1, R2 &nbsp;|&nbsp; I2: SUB R5, R1, R3 &nbsp;&rarr;&nbsp; No es un hazard (lectura simultánea compartida sin conflicto)
-            </code>
-          </div>
-
-          <table className="hpc-table" style={{ maxWidth: '950px' }}>
-            <thead>
-              <tr>
-                <th>Hazard</th>
-                <th>Nombre Técnico</th>
-                <th>¿Afecta a In-Order?</th>
-                <th>Solución en Out-of-Order (OoO)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>RAW</strong></td>
-                <td>Dependencia Verdadera (True Dependency)</td>
-                <td>Sí (Forwarding / Stalls)</td>
-                <td>Estaciones de Reserva (RS) + CDB (Common Data Bus)</td>
-              </tr>
-              <tr>
-                <td><strong>WAR</strong></td>
-                <td>Antidependencia (Anti-dependency)</td>
-                <td>No</td>
-                <td>Register Renaming (RAT / PRF - Physical Register File)</td>
-              </tr>
-              <tr>
-                <td><strong>WAW</strong></td>
-                <td>Dependencia de Salida (Output Dependency)</td>
-                <td>Solo latencia variable</td>
-                <td>Register Renaming (RAT) + ROB (Reorder Buffer)</td>
-              </tr>
-              <tr>
-                <td><strong>RAR</strong></td>
-                <td>Lectura Concurrente</td>
-                <td>No (Sin conflicto)</td>
-                <td>Múltiples puertos de lectura en el PRF</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </Slide>
-
-      {/* 18. Predicción de Saltos y Especulación */}
-      <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Especulación</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>Predicción de Saltos (BPU) y Especulación</h2>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginBottom: '1rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Coste de Branch Misprediction</h3>
-              <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                En pipelines profundos (14 a 20 etapas), un fallo de predicción obliga a vaciar el pipeline (<strong>Pipeline Flush</strong>), desperdiciando de <strong>15 a 20 ciclos de trabajo útil</strong>.
-              </p>
-            </div>
-
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>BPU y Predictores Modernos</h3>
-              <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                La <strong>BPU (Branch Prediction Unit)</strong> utiliza el <strong>BTB (Branch Target Buffer)</strong> y algoritmos avanzados como <strong>TAGE (TAgged GEometric History Length)</strong> o redes neuronales perceptrón para alcanzar precisiones de <strong>&gt;98%</strong>.
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-base font-bold text-white mb-2">Solución: Renaming + ROB</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Se asignan registros físicos independientes en la <strong className="text-white">RAT</strong> y el <strong className="text-white">ROB</strong> garantiza que el retiro arquitectural respete el orden estricto del programa.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.9rem 1.2rem', fontSize: '0.84rem', color: '#e5e7eb' }}>
-            💡 <strong>Retiro Especulativo Seguro:</strong> Las instrucciones especulativas calculan sus resultados en registros temporales. Si el salto fue acertado, se confirman en el Reorder Buffer (ROB); si falló, se descartan instantáneamente sin alterar el estado arquitectural visible.
+          <div className="hpc-card p-3.5 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Garantía del ROB:</strong> Aunque las instrucciones terminen fuera de orden en el Backend, el ROB escribe en el archivo arquitectural en orden de programa.
           </div>
         </div>
       </Slide>
 
-      {/* 19. In-Order vs Out-of-Order */}
+      {/* 21. Resumen General de Mitigaciones de Hazards (Tabla) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Planificación Dinámica</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>In-Order vs Out-of-Order (OoO)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Hazards de Datos • Síntesis</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Resumen General de Hazards y Mitigaciones
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.3rem' }}>
-              <span className="hpc-badge">In-Order (Secuencial)</span>
-              <h3 style={{ fontSize: '1.15rem', margin: '0.4rem 0', color: '#ffffff' }}>Secuencia Estricta</h3>
-              <ul style={{ fontSize: '0.82rem', paddingLeft: '1.1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.4rem', lineHeight: 1.4 }}>
+          <div className="hpc-card overflow-hidden my-2 border border-slate-800">
+            <table className="w-full text-sm text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-950/90 text-white border-b border-slate-700">
+                  <th className="p-3.5 font-bold">Hazard</th>
+                  <th className="p-3.5 font-bold">Nombre Técnico</th>
+                  <th className="p-3.5 font-bold">¿Afecta a In-Order?</th>
+                  <th className="p-3.5 font-bold">Solución en Out-of-Order (OoO)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tr className="hover:bg-slate-800/30">
+                  <td className="p-3.5 font-bold text-white font-mono">RAW</td>
+                  <td className="p-3.5">Dependencia Verdadera</td>
+                  <td className="p-3.5 text-slate-200">Sí (Forwarding / Stalls)</td>
+                  <td className="p-3.5 font-semibold">Estaciones de Reserva (RS) + CDB</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30">
+                  <td className="p-3.5 font-bold text-white font-mono">WAR</td>
+                  <td className="p-3.5">Antidependencia de Nombre</td>
+                  <td className="p-3.5 text-slate-400">No</td>
+                  <td className="p-3.5 font-semibold">Register Renaming (RAT / PRF)</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30">
+                  <td className="p-3.5 font-bold text-white font-mono">WAW</td>
+                  <td className="p-3.5">Dependencia de Salida</td>
+                  <td className="p-3.5 text-slate-400">No (solo latencia variable)</td>
+                  <td className="p-3.5 font-semibold">Register Renaming (RAT) + ROB</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30">
+                  <td className="p-3.5 font-bold text-white font-mono">RAR</td>
+                  <td className="p-3.5">Lectura Concurrente</td>
+                  <td className="p-3.5 text-slate-400">No (Sin conflicto)</td>
+                  <td className="p-3.5 font-semibold">Múltiples puertos de lectura en el PRF</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="hpc-card p-3.5 text-xs text-slate-300 text-center">
+            ⚡ <strong className="text-white">Conclusión:</strong> El hardware fuera de orden convierte falsas dependencias de nombre (WAR/WAW) en paralelismo puro mediante silicio de renombrado.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 22. Predicción de Saltos y Especulación */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Especulación</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Predicción de Saltos (BPU) y Especulación
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Coste de Branch Misprediction</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                En pipelines profundos (14 a 20 etapas), un fallo de predicción obliga a vaciar el pipeline (<strong className="text-white">Pipeline Flush</strong>), desperdiciando de <strong className="text-white">15 a 20 ciclos de trabajo útil</strong>.
+              </p>
+            </div>
+
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Predictores Modernos (BPU)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                La <strong className="text-white">BPU (Branch Prediction Unit)</strong> utiliza el <strong className="text-white">BTB (Branch Target Buffer)</strong> y algoritmos avanzados como <strong className="text-white">TAGE</strong> o redes neuronales perceptrón para alcanzar precisiones de <strong className="text-white">&gt;98%</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Retiro Especulativo Seguro:</strong> Las instrucciones especulativas calculan sus resultados en registros temporales. Si el salto fue acertado, se confirman en el Reorder Buffer (ROB); si falló, se descartan instantáneamente sin alterar el estado arquitectural visible.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 23. In-Order vs Out-of-Order */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Planificación Dinámica</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              In-Order vs Out-of-Order (OoO)
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">In-Order (Secuencial)</h3>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
                 <li>Ejecuta en el orden exacto del flujo binario del programa.</li>
                 <li>Solo sufre de dependencias verdaderas (RAW).</li>
                 <li>Un fallo de caché LLC (L3) o latencia DRAM (~200 ciclos) congela el núcleo entero.</li>
@@ -443,10 +667,9 @@ export const Microarchitecture: React.FC = () => {
               </ul>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.3rem' }}>
-              <span className="hpc-badge">Out-of-Order (OoO Dinámico)</span>
-              <h3 style={{ fontSize: '1.15rem', margin: '0.4rem 0', color: '#ffffff' }}>Ejecución Dinámica</h3>
-              <ul style={{ fontSize: '0.82rem', paddingLeft: '1.1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.4rem', lineHeight: 1.4 }}>
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Out-of-Order (OoO Dinámico)</h3>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
                 <li>Desacopla la decodificación de la ejecución de instrucciones.</li>
                 <li>Elimina dependencias falsas WAR y WAW mediante Register Renaming (RAT / PRF).</li>
                 <li>Ejecuta trabajo independiente mientras espera datos lentos de memoria principal.</li>
@@ -454,47 +677,57 @@ export const Microarchitecture: React.FC = () => {
               </ul>
             </div>
           </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Para HPC:</strong> OoO permite extraer ILP y mantener saturadas las ALUs y unidades vectoriales FMA a pesar de los fallos de caché.
+          </div>
         </div>
       </Slide>
 
-      {/* 20. El Reorder Buffer (ROB) y Operaciones In-Flight */}
+      {/* 24. El Reorder Buffer (ROB) (DIAGRAMA DEDICADO) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Microarquitectura • Gestión In-Flight</span>
-          <h2>El Reorder Buffer (ROB) y Operaciones In-Flight</h2>
+        <div className="text-left px-8 py-5 max-w-6xl w-full mx-auto">
+          <span className="hpc-badge font-mono">Microarquitectura • Gestión In-Flight</span>
+          <h2 className="text-2xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+            El Reorder Buffer (ROB) y Operaciones In-Flight
+          </h2>
 
           <RobDiagram />
         </div>
       </Slide>
 
-      {/* 21. Superescalar y Límites del ILP */}
+      {/* 25. Superescalar y Límites del ILP */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Microarquitectura • Límites de Rendimiento</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>Superescalar y el Muro del ILP (Instruction-Level Parallelism)</h2>
-
-          <div className="hpc-formula-box" style={{ fontSize: '1.05rem', margin: '0.4rem 0 1rem 0', padding: '0.7rem 1.2rem' }}>
-            Rendimiento CPU = Frecuencia (GHz) × IPC (Instrucciones por Ciclo &gt; 1)
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[560px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Microarquitectura • Límites de Rendimiento</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Superescalar y el Muro del ILP (Instruction-Level Parallelism)
+            </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginBottom: '1rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Multiple Issue (6 a 8 vías)</h3>
-              <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Capacidad del hardware para decodificar, despachar y retirar múltiples instrucciones independientes simultáneamente en cada ciclo de reloj.
+          <div className="hpc-formula-box my-2 text-lg">
+            <Math math="\text{Rendimiento CPU} = \text{Frecuencia (GHz)} \times \text{IPC (Instrucciones por Ciclo} > 1\text{)}" block />
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Ancho de Despacho (Multiple Issue)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Capacidad del hardware para decodificar, despachar y retirar múltiples instrucciones independientes simultáneamente en cada ciclo de reloj (6 a 8 vías).
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>El Muro del ILP (ILP Wall)</h3>
-              <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                Las dependencias de datos y saltos saturan el <strong>ILP (Instruction-Level Parallelism)</strong> en <strong>IPC &approx; 2 a 3</strong>. Extraer más ILP incrementa la complejidad del silicio y el consumo térmico exponencialmente.
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">El Muro del ILP</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Las dependencias de datos y saltos saturan el <strong className="text-white">ILP</strong> en <strong className="text-white">IPC &approx; 2 a 3</strong>. Extraer más ILP incrementa la complejidad del silicio y el consumo térmico exponencialmente.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.9rem 1.2rem', fontSize: '0.84rem', color: '#e5e7eb' }}>
-            🚀 <strong>Conclusión para HPC:</strong> Al alcanzarse el muro del ILP, la computación de alto rendimiento viró hacia el <strong>Paralelismo de Datos (SIMD / VLA)</strong> y el <strong>Multiprocesamiento (Multinúcleo / NUMA / GPUs)</strong>.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Conclusión para HPC:</strong> Al alcanzarse el muro del ILP, la computación de alto rendimiento viró hacia el <strong className="text-white">Paralelismo de Datos (SIMD / VLA)</strong> y el <strong className="text-white">Multiprocesamiento (Multinúcleo / NUMA / GPUs)</strong>.
           </div>
         </div>
       </Slide>

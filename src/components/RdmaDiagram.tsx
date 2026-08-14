@@ -4,41 +4,36 @@ export const RdmaDiagram: React.FC = () => {
   const [protocol, setProtocol] = useState<'tcp' | 'rdma'>('rdma');
 
   return (
-    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
       {/* Header & Toggle */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-        <h4 style={{ margin: 0, color: '#ffffff', fontSize: '1.05rem' }}>Mecanismos de Transferencia de Red: TCP/IP vs RDMA</h4>
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+        <div className="flex items-center gap-2">
+          <span className="hpc-badge font-mono">Redes &amp; Kernel Bypass</span>
+          <h4 className="m-0 text-base font-bold text-white tracking-tight">
+            Mecanismos de Red: TCP/IP Tradicional vs RDMA
+          </h4>
+        </div>
         
-        <div style={{ display: 'flex', gap: '0.3rem', background: '#070a12', padding: '0.2rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-950 border border-slate-800">
           <button
+            type="button"
             onClick={() => setProtocol('tcp')}
-            style={{
-              padding: '0.3rem 0.8rem',
-              borderRadius: '5px',
-              border: 'none',
-              background: protocol === 'tcp' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: protocol === 'tcp' ? '#ffffff' : '#94a3b8',
-              fontWeight: protocol === 'tcp' ? 700 : 500,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              protocol === 'tcp'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             TCP/IP Tradicional
           </button>
           <button
+            type="button"
             onClick={() => setProtocol('rdma')}
-            style={{
-              padding: '0.3rem 0.8rem',
-              borderRadius: '5px',
-              border: 'none',
-              background: protocol === 'rdma' ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-              color: protocol === 'rdma' ? '#ffffff' : '#94a3b8',
-              fontWeight: protocol === 'rdma' ? 700 : 500,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
+            className={`px-3 py-1 text-xs rounded-md font-semibold transition-all border ${
+              protocol === 'rdma'
+                ? 'bg-slate-700 text-white border-slate-600 shadow-sm'
+                : 'bg-transparent text-slate-400 border-transparent hover:text-white'
+            }`}
           >
             RDMA / RoCEv2 (HPC)
           </button>
@@ -46,147 +41,104 @@ export const RdmaDiagram: React.FC = () => {
       </div>
 
       {/* Main Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '1.4rem', alignItems: 'center' }}>
-        
-        {/* SVG Diagram Canvas */}
-        <div style={{ background: '#070a12', padding: '0.9rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 my-3 items-center">
+        {/* SVG Diagram Canvas (7 cols) */}
+        <div className="md:col-span-7 p-3.5 rounded-lg bg-slate-950/90 border border-slate-800">
           {protocol === 'tcp' ? (
-            <svg viewBox="0 0 380 185" style={{ width: '100%', height: '185px' }}>
+            <svg viewBox="0 0 380 180" className="w-full h-[180px]">
               {/* Node A (Sender) */}
-              <rect x="15" y="10" width="155" height="165" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" />
+              <rect x="15" y="10" width="155" height="160" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.15)" />
               <text x="92" y="26" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Nodo Local (Emisor)</text>
 
-              {/* Layers Node A */}
-              <rect x="25" y="36" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.15)" />
-              <text x="92" y="52" fill="#ffffff" fontSize="9" textAnchor="middle">Espacio de Usuario (App)</text>
+              <rect x="25" y="38" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
+              <text x="92" y="55" fill="#ffffff" fontSize="9" textAnchor="middle">User Space (App Memory)</text>
 
-              <rect x="25" y="72" width="135" height="34" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" />
-              <text x="92" y="86" fill="#ffffff" fontSize="8.5" fontWeight="bold" textAnchor="middle">Kernel OS / TCP Stack</text>
-              <text x="92" y="98" fill="#94a3b8" fontSize="7.5" textAnchor="middle">(Múltiples Copias y Context Switches)</text>
+              <rect x="25" y="74" width="135" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.3)" />
+              <text x="92" y="91" fill="#e2e8f0" fontSize="9" fontWeight="bold" textAnchor="middle">Kernel OS (TCP Buffer Copy)</text>
 
-              <rect x="25" y="118" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.15)" />
-              <text x="92" y="134" fill="#ffffff" fontSize="9" textAnchor="middle">Driver NIC / PCIe</text>
-
-              {/* Data flow arrows inside Node A */}
-              <line x1="92" y1="62" x2="92" y2="72" stroke="#94a3b8" strokeWidth="1.5" />
-              <line x1="92" y1="106" x2="92" y2="118" stroke="#94a3b8" strokeWidth="1.5" />
-
-              {/* Center Network Cable */}
-              <line x1="170" y1="131" x2="210" y2="131" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="3 2" />
-              <text x="190" y="122" fill="#94a3b8" fontSize="8" textAnchor="middle">Red</text>
+              <rect x="25" y="112" width="135" height="26" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.2)" />
+              <text x="92" y="129" fill="#94a3b8" fontSize="9" textAnchor="middle">NIC (Driver Ring)</text>
 
               {/* Node B (Receiver) */}
-              <rect x="210" y="10" width="155" height="165" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" />
+              <rect x="210" y="10" width="155" height="160" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.15)" />
               <text x="287" y="26" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Nodo Remoto (Receptor)</text>
 
-              {/* Layers Node B */}
-              <rect x="220" y="36" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.15)" />
-              <text x="287" y="52" fill="#ffffff" fontSize="9" textAnchor="middle">Espacio de Usuario (App)</text>
+              <rect x="220" y="38" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
+              <text x="287" y="55" fill="#ffffff" fontSize="9" textAnchor="middle">User Space (App Memory)</text>
 
-              <rect x="220" y="72" width="135" height="34" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" />
-              <text x="287" y="86" fill="#ffffff" fontSize="8.5" fontWeight="bold" textAnchor="middle">Kernel OS / TCP Stack</text>
-              <text x="287" y="98" fill="#94a3b8" fontSize="7.5" textAnchor="middle">(Interrupciones CPU y Buffer Copy)</text>
+              <rect x="220" y="74" width="135" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.3)" />
+              <text x="287" y="91" fill="#e2e8f0" fontSize="9" fontWeight="bold" textAnchor="middle">Kernel OS (TCP Stack Copy)</text>
 
-              <rect x="220" y="118" width="135" height="26" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.15)" />
-              <text x="287" y="134" fill="#ffffff" fontSize="9" textAnchor="middle">Driver NIC / PCIe</text>
+              <rect x="220" y="112" width="135" height="26" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.2)" />
+              <text x="287" y="129" fill="#94a3b8" fontSize="9" textAnchor="middle">NIC (Ethernet Switch)</text>
 
-              <line x1="287" y1="118" x2="287" y2="106" stroke="#94a3b8" strokeWidth="1.5" />
-              <line x1="287" y1="72" x2="287" y2="62" stroke="#94a3b8" strokeWidth="1.5" />
-
-              <text x="190" y="162" fill="#cbd5e1" fontSize="8" textAnchor="middle">Latencia: ~10 - 50 &mu;s</text>
+              {/* Line Traversal */}
+              <path d="M 92,64 L 92,74 M 92,102 L 92,112 M 160,125 L 220,125 M 287,112 L 287,102 M 287,74 L 287,64" stroke="#94a3b8" strokeWidth="2" strokeDasharray="3 2" fill="none" />
+              <text x="190" y="165" fill="#e2e8f0" fontSize="8.5" fontWeight="bold" textAnchor="middle">⚠️ Copias en RAM + Interrupciones CPU (&gt;15 &mu;s)</text>
             </svg>
           ) : (
-            <svg viewBox="0 0 380 185" style={{ width: '100%', height: '185px' }}>
+            <svg viewBox="0 0 380 180" className="w-full h-[180px]">
               {/* Node A (Sender) */}
-              <rect x="15" y="10" width="155" height="165" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" />
+              <rect x="15" y="10" width="155" height="160" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.2)" />
               <text x="92" y="26" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Nodo Local (Emisor)</text>
 
-              {/* User RAM Buffer */}
-              <rect x="25" y="38" width="135" height="30" rx="4" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" />
-              <text x="92" y="56" fill="#ffffff" fontSize="9.5" fontWeight="bold" textAnchor="middle">Memoria RAM Usuario</text>
+              <rect x="25" y="38" width="135" height="28" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.25)" />
+              <text x="92" y="55" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">User Space Memory (DMA)</text>
 
-              {/* Bypassed Kernel */}
-              <rect x="25" y="78" width="135" height="24" rx="4" fill="#070a12" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 2" />
-              <text x="92" y="93" fill="#64748b" fontSize="8" textAnchor="middle">⚡ Kernel Bypass (Cero CPU)</text>
+              <rect x="25" y="74" width="135" height="24" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" strokeDasharray="2 2" />
+              <text x="92" y="90" fill="#64748b" fontSize="8.5" textAnchor="middle">⚡ Kernel Bypass (0 Copias)</text>
 
-              {/* RNIC */}
-              <rect x="25" y="112" width="135" height="30" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
-              <text x="92" y="130" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">Tarjeta RDMA (RNIC)</text>
-
-              {/* Direct DMA Line A */}
-              <path d="M 40 68 L 40 112" stroke="#ffffff" strokeWidth="2" fill="none" />
-              <text x="48" y="92" fill="#cbd5e1" fontSize="7.5">Direct DMA</text>
-
-              {/* High Speed Fabric Wire */}
-              <line x1="160" y1="127" x2="220" y2="127" stroke="#ffffff" strokeWidth="2.5" />
-              <text x="190" y="118" fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">RoCEv2 / IB</text>
+              <rect x="25" y="108" width="135" height="28" rx="4" fill="#0f172a" stroke="#64748b" />
+              <text x="92" y="125" fill="#94a3b8" fontSize="9" fontWeight="bold" textAnchor="middle">RNIC (Hardware Offload)</text>
 
               {/* Node B (Receiver) */}
-              <rect x="210" y="10" width="155" height="165" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" />
+              <rect x="210" y="10" width="155" height="160" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.2)" />
               <text x="287" y="26" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Nodo Remoto (Receptor)</text>
 
-              {/* Remote RAM Buffer */}
-              <rect x="220" y="38" width="135" height="30" rx="4" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" />
-              <text x="287" y="56" fill="#ffffff" fontSize="9.5" fontWeight="bold" textAnchor="middle">Memoria RAM Remota</text>
+              <rect x="220" y="38" width="135" height="28" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.25)" />
+              <text x="287" y="55" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">User Space Memory (Direct)</text>
 
-              {/* Bypassed Kernel Remote */}
-              <rect x="220" y="78" width="135" height="24" rx="4" fill="#070a12" stroke="rgba(255,255,255,0.08)" strokeDasharray="3 2" />
-              <text x="287" y="93" fill="#64748b" fontSize="8" textAnchor="middle">⚡ Kernel Bypass (Cero CPU)</text>
+              <rect x="220" y="74" width="135" height="24" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" strokeDasharray="2 2" />
+              <text x="287" y="90" fill="#64748b" fontSize="8.5" textAnchor="middle">⚡ Kernel Bypass (0 Copias)</text>
 
-              {/* Remote RNIC */}
-              <rect x="220" y="112" width="135" height="30" rx="4" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
-              <text x="287" y="130" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">Tarjeta RDMA (RNIC)</text>
+              <rect x="220" y="108" width="135" height="28" rx="4" fill="#0f172a" stroke="#64748b" />
+              <text x="287" y="125" fill="#94a3b8" fontSize="9" fontWeight="bold" textAnchor="middle">RNIC (RoCEv2 / IB NDR)</text>
 
-              {/* Direct DMA Line B */}
-              <path d="M 340 112 L 340 68" stroke="#ffffff" strokeWidth="2" fill="none" />
-              <text x="328" y="92" fill="#cbd5e1" fontSize="7.5" textAnchor="end">Direct DMA</text>
-
-              <text x="190" y="162" fill="#ffffff" fontSize="8.5" fontWeight="bold" textAnchor="middle">⚡ Latencia: &lt; 1 &mu;s (Ultra Baja)</text>
+              {/* Direct DMA Arrow */}
+              <path d="M 92,66 L 92,108 M 160,122 L 220,122 M 287,108 L 287,66" stroke="#f8fafc" strokeWidth="2" fill="none" />
+              <text x="190" y="165" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">⚡ Zero-Copy DMA Directo (&lt;1.0 &mu;s)</text>
             </svg>
           )}
-
         </div>
 
-        {/* Right Info Box */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+        {/* Text Description (5 cols) */}
+        <div className="md:col-span-5 flex flex-col gap-3">
           {protocol === 'tcp' ? (
             <>
-              <div className="hpc-card" style={{ padding: '0.9rem 1.1rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Sobrecarga de CPU</span>
-                <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Pila TCP/IP Convencional</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                  Cada mensaje debe ser copiado por la CPU desde el espacio de usuario hacia los buffers del kernel, gestionando interrupciones que saturan los núcleos.
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800">
+                <h5 className="m-0 text-xs font-bold text-white mb-1">Sobrecarga de la CPU y SO</h5>
+                <p className="m-0 text-[11px] text-slate-300 leading-normal">
+                  Cada paquete TCP pasa por el stack del kernel, requiriendo copias de memoria (User-to-Kernel) y continuos cambios de contexto.
                 </p>
               </div>
-              <div className="hpc-card" style={{ padding: '0.9rem 1.1rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Límite en Clusters</span>
-                <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                  La latencia de ~10 a 50 microsegundos impide el escalamiento de algoritmos paralelos que requieren sincronización frecuente (MPI Allreduce).
-                </p>
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-300">
+                ⚠️ Latencia típica: <strong className="text-white">10 - 50 &mu;s</strong>. Destruye el escalamiento de MPI en Exascale.
               </div>
             </>
           ) : (
             <>
-              <div className="hpc-card" style={{ padding: '0.9rem 1.1rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Pilares de RDMA</span>
-                <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Kernel Bypass & Zero-Copy</h4>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                  La tarjeta RNIC transfiere datos directamente desde la RAM del usuario emisor a la RAM del receptor vía PCIe sin despertar al sistema operativo.
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800">
+                <h5 className="m-0 text-xs font-bold text-white mb-1">Direct Memory Access (Kernel Bypass)</h5>
+                <p className="m-0 text-[11px] text-slate-300 leading-normal">
+                  La tarjeta RNIC lee y escribe directamente en la memoria del espacio de usuario mediante DMA por hardware sin involucrar a la CPU del receptor.
                 </p>
               </div>
-              <div className="hpc-card" style={{ padding: '0.9rem 1.1rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Rendimiento en Supercomputadores</span>
-                <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                  • Latencia inferior a <strong>1 microsegundo (&lt;1 &mu;s)</strong>.<br />
-                  • <strong>0% de uso de CPU</strong> en transferencias de red.<br />
-                  • Base de InfiniBand, RoCEv2 y NVIDIA GPUDirect RDMA.
-                </p>
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 text-xs text-slate-300">
+                ⚡ Latencia ultra baja: <strong className="text-white">&lt; 0.8 &mu;s</strong> y 0% de uso de CPU para la transferencia.
               </div>
             </>
           )}
         </div>
-
       </div>
     </div>
   );

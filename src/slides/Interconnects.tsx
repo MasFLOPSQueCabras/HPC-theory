@@ -7,113 +7,172 @@ export const Interconnects: React.FC = () => {
     <Stack>
       {/* 1. Jerarquía de Interconexiones */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Redes & Interconexiones • Jerarquía</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>Jerarquía de Interconexiones en HPC</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Redes &amp; Interconexiones • Jerarquía</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Jerarquía de Interconexiones en HPC
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.2rem', marginBottom: '0.8rem' }}>
-            <div className="hpc-card" style={{ padding: '1.1rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>On-Package / Socket</span>
-              <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.98rem' }}>Inter-Chiplet &amp; Socket</h4>
-              <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                • <strong>AMD Infinity Fabric (IF):</strong> Enlace coherente CPU-Die y Socket.<br />
-                • <strong>Intel UPI (Ultra Path Interconnect):</strong> Coherencia multi-socket.<br />
-                • <strong>Apple UltraFusion:</strong> Bus 2.5 TB/s en SiP (System-in-Package).
+          <div className="grid grid-cols-3 gap-5 my-2">
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">On-Package / Socket</span>
+              <h4 className="m-0 text-base font-bold text-white mb-2">Inter-Chiplet &amp; Socket</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
+                • <strong className="text-white">AMD Infinity Fabric:</strong> Enlace CPU-Die coherente.<br />
+                • <strong className="text-white">Intel UPI:</strong> Coherencia multi-socket.<br />
+                • <strong className="text-white">Apple UltraFusion:</strong> Bus 2.5 TB/s en SiP.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.1rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Intra-Nodo (Host &harr; GPU)</span>
-              <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.98rem' }}>Buses de Aceleradores</h4>
-              <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                • <strong>NVIDIA NVLink / NVSwitch:</strong> 900 GB/s a 1.8 TB/s por GPU.<br />
-                • <strong>PCIe 5.0 / 6.0:</strong> 64 a 128 GB/s bi-direccional.<br />
-                • <strong>CXL (Compute Express Link):</strong> Memoria coherente abierta.
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">Intra-Nodo (Host &harr; GPU)</span>
+              <h4 className="m-0 text-base font-bold text-white mb-2">Buses de Aceleradores</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
+                • <strong className="text-white">NVIDIA NVLink:</strong> 900 GB/s a 1.8 TB/s por GPU.<br />
+                • <strong className="text-white">PCIe 5.0 / 6.0:</strong> 64 a 128 GB/s bi-direccional.<br />
+                • <strong className="text-white">CXL Fabric:</strong> Memoria coherente abierta.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.1rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Inter-Nodo (Cluster Fabric)</span>
-              <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.98rem' }}>Redes de Supercómputo</h4>
-              <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                • <strong>InfiniBand (HDR / NDR / XDR):</strong> 400 - 800 Gbps nativo.<br />
-                • <strong>RoCEv2:</strong> RDMA sobre Ethernet convergente.<br />
-                • <strong>HPE Slingshot:</strong> Red especializada Exascale.
+            <div className="hpc-card p-5">
+              <span className="hpc-badge font-mono mb-2 text-xs">Inter-Nodo (Cluster Fabric)</span>
+              <h4 className="m-0 text-base font-bold text-white mb-2">Redes de Supercómputo</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed space-y-1">
+                • <strong className="text-white">InfiniBand (NDR/XDR):</strong> 400 - 800 Gbps.<br />
+                • <strong className="text-white">RoCEv2:</strong> RDMA sobre Ethernet convergente.<br />
+                • <strong className="text-white">HPE Slingshot:</strong> Red Exascale especializada.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.7rem 1.2rem', fontSize: '0.82rem', color: '#e5e7eb' }}>
-            💡 <strong>El Cuello de Botella en Escala:</strong> A medida que se añaden miles de nodos, la latencia de la red de interconexión domina el tiempo de sincronización en algoritmos MPI (Message Passing Interface) como <code>MPI_Allreduce</code> y <code>MPI_Bcast</code>.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">El Cuello de Botella en Escala:</strong> A medida que se añaden miles de nodos, la latencia de la red domina el tiempo de sincronización en colectivas MPI (<code className="text-slate-100 font-mono">MPI_Allreduce</code>, <code className="text-slate-100 font-mono">MPI_Bcast</code>).
           </div>
         </div>
       </Slide>
 
-      {/* 2. RDMA y Kernel Bypass */}
+      {/* 2. RDMA y Kernel Bypass (DIAGRAMA DEDICADO) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.5rem 1rem' }}>
-          <span className="hpc-badge">Redes de Alto Rendimiento • RDMA</span>
-          <h2>RDMA (Remote Direct Memory Access) y Kernel Bypass</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Redes de Alto Rendimiento • RDMA (1/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Mecanismos de Red: TCP/IP Tradicional vs RDMA
+            </h2>
+          </div>
 
           <RdmaDiagram />
         </div>
       </Slide>
 
-      {/* 3. RoCEv2: RDMA over Converged Ethernet */}
+      {/* 3. Principios de RDMA: Kernel Bypass y GPUDirect */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Redes & Interconexiones • RoCEv2</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>RoCEv2 (RDMA over Converged Ethernet v2)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Redes de Alto Rendimiento • RDMA (2/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Principios de RDMA: Kernel Bypass y GPUDirect
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.4rem', marginBottom: '0.8rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>¿Qué es RoCEv2?</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                Protocolo que encapsula tramas RDMA dentro de paquetes <strong>UDP/IP (puerto 4791)</strong>, permitiendo comunicación con latencia sub-microsegundo sobre infraestructura y switches Ethernet estándar sin adquirir hardware propietario de InfiniBand.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Mecanismo Hardware</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Kernel Bypass y Zero-Copy DMA</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                La tarjeta de red inteligente (<strong className="text-white">RNIC</strong>) transfiere buffers directamente entre el espacio de memoria del usuario de dos servidores:
               </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li><strong className="text-white">Cero Copias en RAM:</strong> Elimina el copiado redundante de User Space a Kernel Buffers.</li>
+                <li><strong className="text-white">Cero Interrupciones de CPU:</strong> La CPU del nodo receptor no participa en el transporte.</li>
+                <li><strong className="text-white">Latencia Sub-Microsegundo:</strong> Reduce la latencia de red de &gt;15 &mu;s a <strong className="text-white">&lt;0.8 &mu;s</strong>.</li>
+              </ul>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h4 style={{ margin: '0 0 0.3rem 0', color: '#ffffff', fontSize: '1rem' }}>Requisitos de Red sin Pérdidas (Lossless Ethernet)</h4>
-              <ul style={{ fontSize: '0.8rem', paddingLeft: '1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.35rem', lineHeight: 1.35 }}>
-                <li><strong>PFC (Priority-based Flow Control):</strong> Pausa el tráfico a nivel de clase de prioridad antes de que se desborden los buffers del switch.</li>
-                <li><strong>ECN (Explicit Congestion Notification):</strong> Marca paquetes en tránsito IP para que los extremos reduzcan la tasa de emisión antes de que ocurran pérdidas.</li>
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Aceleración Extrema</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">GPUDirect RDMA</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Extensión que conecta directamente la red a la memoria VRAM (HBM) de GPUs:
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li>La RNIC lee/escribe en la memoria de la GPU a través del bus PCIe sin pasar por la RAM del host ni por la CPU.</li>
+                <li>Crítico para entrenamiento de modelos LLM multi-nodo distribuidos (<strong className="text-white">All-Reduce en Megatron-LM / DeepSpeed</strong>).</li>
               </ul>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.8rem 1.2rem', fontSize: '0.82rem', color: '#e5e7eb' }}>
-            🚀 <strong>GPUDirect RDMA:</strong> Permite que las tarjetas de red <strong>RNIC (RDMA Network Interface Controller)</strong> lean y escriban directamente en la memoria VRAM (HBM) de GPUs NVIDIA o AMD en otros servidores a través de PCIe y RoCEv2/InfiniBand, eliminando la intervención de la CPU y la RAM del sistema.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 En computación Exascale, el 100% del tráfico inter-nodo de MPI y NCCL se transporta mediante RDMA nativo.
           </div>
         </div>
       </Slide>
 
-      {/* 4. AMD Infinity Fabric */}
+      {/* 4. RoCEv2: RDMA over Converged Ethernet */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Interconexiones On-Package • AMD Infinity Fabric</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>AMD Infinity Fabric (IF)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Redes &amp; Interconexiones • RoCEv2</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              RoCEv2 (RDMA over Converged Ethernet v2)
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.4rem', marginBottom: '0.8rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>SDF</span>
-              <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '1rem' }}>SDF (Scalable Data Fabric)</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                Red de conmutación transversal de altísimo ancho de banda encargada de transferir datos entre los <strong>CCDs (Core Complex Dies)</strong>, el <strong>IOD (Input-Output Die)</strong>, los controladores de memoria DDR5 y los enlaces PCIe / CXL.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-lg font-bold text-white mb-2">¿Qué es RoCEv2?</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Protocolo que encapsula tramas RDMA dentro de paquetes <strong className="text-white">UDP/IP (puerto 4791)</strong>, permitiendo comunicación con latencia sub-microsegundo sobre infraestructura y switches Ethernet estándar sin adquirir hardware propietario de InfiniBand.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>SCF</span>
-              <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '1rem' }}>SCF (Scalable Control Fabric)</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                Motor de control que supervisa la <strong>coherencia de caché distribuida en hardware</strong> entre todos los núcleos, la gestión de energía térmica por die y las señales de sincronización e interrupción.
+            <div className="hpc-card p-6">
+              <h4 className="m-0 text-lg font-bold text-white mb-2">Requisitos de Red sin Pérdidas (Lossless)</h4>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-2 list-disc leading-relaxed">
+                <li><strong className="text-white">PFC (Priority Flow Control):</strong> Pausa el tráfico a nivel de clase antes del desborde de buffers.</li>
+                <li><strong className="text-white">ECN (Explicit Congestion Notification):</strong> Marca paquetes en tránsito para reducir la tasa antes de pérdidas.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 RoCEv2 democratiza el rendimiento de InfiniBand sobre redes Ethernet masivas en centros de datos modernos de IA.
+          </div>
+        </div>
+      </Slide>
+
+      {/* 5. AMD Infinity Fabric */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Interconexiones On-Package • AMD Infinity Fabric</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              AMD Infinity Fabric (IF)
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">SDF</span>
+              <h4 className="m-0 text-lg font-bold text-white mb-2">SDF (Scalable Data Fabric)</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Red de conmutación transversal de altísimo ancho de banda encargada de transferir datos entre los <strong className="text-white">CCDs (Core Complex Dies)</strong>, el <strong className="text-white">IOD (Input-Output Die)</strong>, los controladores de memoria DDR5 y los enlaces PCIe / CXL.
+              </p>
+            </div>
+
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">SCF</span>
+              <h4 className="m-0 text-lg font-bold text-white mb-2">SCF (Scalable Control Fabric)</h4>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Motor de control que supervisa la <strong className="text-white">coherencia de caché distribuida en hardware</strong> entre todos los núcleos, la gestión de energía térmica por die y las señales de sincronización e interrupción.
               </p>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.8rem 1.2rem', fontSize: '0.82rem', color: '#cbd5e1' }}>
-            💡 <strong>Memoria Unificada Heterogénea en APUs Exascale:</strong> En aceleradores como <strong>AMD Instinct MI300A (APU - Accelerated Processing Unit)</strong>, Infinity Fabric conecta 24 núcleos de CPU Zen 4 y 228 Compute Units de GPU CDNA 3 al mismo pool coherente de 128 GB de memoria HBM3 compartida a 5.3 TB/s.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Memoria Unificada Heterogénea en APUs Exascale:</strong> En aceleradores como <strong className="text-white">AMD Instinct MI300A</strong>, Infinity Fabric conecta 24 núcleos de CPU Zen 4 y 228 Compute Units de GPU CDNA 3 al mismo pool coherente de 128 GB de memoria HBM3 compartida a 5.3 TB/s.
           </div>
         </div>
       </Slide>

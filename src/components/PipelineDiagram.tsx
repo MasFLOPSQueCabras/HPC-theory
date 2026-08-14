@@ -2,25 +2,35 @@ import React from 'react';
 
 export const PipelineDiagram: React.FC = () => {
   const stages = [
-    { name: 'IF (Fetch)', color: '#38bdf8', desc: 'Lectura de instrucción desde la memoria I-Cache' },
-    { name: 'ID (Decode)', color: '#818cf8', desc: 'Decodificación y lectura de registros' },
-    { name: 'EX (Execute)', color: '#f4b860', desc: 'Cálculo en la ALU / FPU o dirección' },
-    { name: 'MEM (Memory)', color: '#34d399', desc: 'Acceso a caché de datos (Load / Store)' },
-    { name: 'WB (Writeback)', color: '#f87171', desc: 'Escritura del resultado en registro físico' },
+    { name: 'IF (Fetch)', desc: 'Lectura de instrucción desde la caché I-Cache' },
+    { name: 'ID (Decode)', desc: 'Decodificación y lectura de registros (ARF)' },
+    { name: 'EX (Execute)', desc: 'Cálculo en la ALU / FPU o cálculo de dirección' },
+    { name: 'MEM (Memory)', desc: 'Acceso a caché D-Cache (Load / Store)' },
+    { name: 'WB (Writeback)', desc: 'Escritura del resultado en registro físico' },
   ];
 
   return (
-    <div style={{ background: 'var(--hpc-card-bg)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--hpc-card-border)', backdropFilter: 'blur(12px)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-        <h4 style={{ margin: 0, color: 'var(--hpc-primary)', fontSize: '1rem' }}>Segmentación Clásica RISC (5 Etapas)</h4>
-        <span className="hpc-badge badge-gold" style={{ fontSize: '0.7rem' }}>Throughput Ideal: 1 Inst/Ciclo</span>
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+        <div className="flex items-center gap-2">
+          <span className="hpc-badge font-mono">Pipelining</span>
+          <h4 className="m-0 text-base font-bold text-white tracking-tight">
+            Segmentación Clásica RISC de 5 Etapas
+          </h4>
+        </div>
+        <span className="hpc-badge font-mono">
+          Throughput Teórico: 1 Inst / Ciclo
+        </span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.6rem' }}>
+      <div className="grid grid-cols-5 gap-3 my-3">
         {stages.map((stage, i) => (
-          <div key={i} style={{ background: '#111827', borderTop: `4px solid ${stage.color}`, padding: '0.8rem 0.5rem', borderRadius: '6px', textAlign: 'center' }}>
-            <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: stage.color }}>{stage.name}</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--hpc-subtle)', marginTop: '0.4rem', lineHeight: 1.3 }}>{stage.desc}</div>
+          <div
+            key={i}
+            className="p-3 rounded-lg bg-slate-950/90 border border-slate-800 border-t-2 border-t-slate-500 text-center flex flex-col justify-between"
+          >
+            <div className="font-bold text-xs font-mono text-white">{stage.name}</div>
+            <div className="text-[11px] text-slate-400 mt-2 leading-tight">{stage.desc}</div>
           </div>
         ))}
       </div>

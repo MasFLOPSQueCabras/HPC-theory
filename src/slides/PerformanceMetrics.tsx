@@ -7,178 +7,236 @@ export const PerformanceMetrics: React.FC = () => {
     <Stack>
       {/* 1. FLOPS y Fórmula */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Métricas • Capacidad de Cómputo</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>FLOPS (Floating-Point Operations Per Second)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Métricas • Capacidad de Cómputo</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              FLOPS (Floating-Point Operations Per Second)
+            </h2>
+          </div>
 
-          <div className="hpc-formula-box" style={{ fontSize: '1.15rem', padding: '0.8rem 1.2rem', margin: '0.6rem 0 1.2rem 0' }}>
+          <div className="hpc-formula-box my-2 text-lg">
             <Math math="\text{Peak FLOPS} = \text{Sockets} \times \frac{\text{Cores}}{\text{Socket}} \times f \times \frac{\text{FLOPs}}{\text{Cycle}}" block />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>FLOPS vs FLOPs</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.86rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                • <strong>FLOPS (con 'S' mayúscula):</strong> Tasa de rendimiento temporal (*Floating-Point Operations Per Second*).<br />
-                • <strong>FLOPs (con 's' minúscula):</strong> Conteo absoluto de operaciones matemáticas ejecutadas por el algoritmo.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">FLOPS vs FLOPs</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                • <strong className="text-white">FLOPS (con 'S' mayúscula):</strong> Tasa de rendimiento temporal (<em>Floating-Point Operations Per Second</em>).<br />
+                • <strong className="text-slate-200">FLOPs (con 's' minúscula):</strong> Conteo absoluto de operaciones matemáticas ejecutadas por el algoritmo.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>Multiplicadores por Ciclo (FMA)</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.86rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                Con <strong>AVX-512 (Advanced Vector Extensions 512-bit)</strong> y 2 unidades <strong>FMA (Fused Multiply-Add: 2 ops/carril)</strong>, un núcleo de CPU puede entregar <strong>32 FLOPs (FP64)</strong> o <strong>64 FLOPs (FP32) por ciclo</strong>.
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Multiplicadores por Ciclo (FMA)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Con <strong className="text-white">AVX-512</strong> y 2 unidades <strong className="text-white">FMA (Fused Multiply-Add: 2 ops/carril)</strong>, un núcleo de CPU entrega <strong className="text-white">32 FLOPs (FP64)</strong> o <strong className="text-white">64 FLOPs (FP32)</strong> por ciclo de reloj.
               </p>
             </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Regla de Cálculo:</strong> En un procesador de 64 núcleos a 3.0 GHz con 32 FLOPs/ciclo (FP64), el rendimiento pico teórico es <code className="text-slate-100 font-mono font-bold">64 × 3.0 × 32 = 6.14 TFLOPS (FP64)</code>.
           </div>
         </div>
       </Slide>
 
-      {/* 2. Precisiones Numéricas Escalares */}
+      {/* 2. Precisiones Numéricas Escalares (TABLA DEDICADA) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Métricas • Formatos Escalares Tradicionales</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '0.8rem' }}>Jerarquía de Precisiones Numéricas IEEE 754</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Métricas • Formatos Escalares IEEE 754</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Jerarquía de Precisiones Numéricas Escalares
+            </h2>
+          </div>
 
-          <table className="hpc-table" style={{ width: '100%', marginBottom: '0.8rem' }}>
-            <thead>
-              <tr>
-                <th>Formato</th>
-                <th>Estructura de Bits</th>
-                <th>Dominio Principal en HPC / IA</th>
-                <th>Throughput Relativo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>FP64 (Double)</strong></td>
-                <td>1b Signo, 11b Exponente, 52b Mantisa</td>
-                <td>Simulaciones científicas (Física, Clima, Astrofísica)</td>
-                <td>1x (Línea Base)</td>
-              </tr>
-              <tr>
-                <td><strong>FP32 (Single)</strong></td>
-                <td>1b Signo, 8b Exponente, 23b Mantisa</td>
-                <td>Dinámica de fluidos, Gráficos 3D, Procesamiento de señales</td>
-                <td>2x FP64</td>
-              </tr>
-              <tr>
-                <td><strong>FP16 / BF16</strong></td>
-                <td>BF16: 1b S, 8b Exp, 7b Mant (Rango FP32)</td>
-                <td>Entrenamiento de Deep Learning y Redes Neuronales</td>
-                <td>4x - 8x (Tensor Cores)</td>
-              </tr>
-              <tr>
-                <td><strong>FP8 / INT8</strong></td>
-                <td>FP8: E5M2 / E4M3 | INT8: Entero 8 bits</td>
-                <td>Inferencia a gran escala y cuantización lineal de LLMs</td>
-                <td>16x FP64</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div className="hpc-card" style={{ padding: '0.7rem 1.2rem', fontSize: '0.82rem', color: '#cbd5e1' }}>
-            💡 <strong>Precisión Mixta (Mixed Precision):</strong> En HPC moderno, se calculan iteraciones intermedias en FP16/BF16 y se refina la solución final en FP64, reduciendo a la mitad el tráfico de memoria y duplicando la velocidad.
+          <div className="hpc-card overflow-hidden my-auto border border-slate-800">
+            <table className="w-full text-base text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-950/90 text-white border-b border-slate-700 text-sm">
+                  <th className="p-4 font-bold">Formato</th>
+                  <th className="p-4 font-bold">Estructura de Bits</th>
+                  <th className="p-4 font-bold">Dominio Principal en HPC / IA</th>
+                  <th className="p-4 font-bold">Throughput Relativo</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60">
+                <tr className="hover:bg-slate-800/30 transition-colors">
+                  <td className="p-4 font-bold text-white font-mono">FP64 (Double)</td>
+                  <td className="p-4 text-slate-300 text-sm">1b Signo, 11b Exponente, 52b Mantisa</td>
+                  <td className="p-4 text-slate-300 text-sm">Simulación Científica, CFD, Clima, Dinámica Molecular</td>
+                  <td className="p-4 font-mono text-slate-100 font-bold text-sm">1x (Línea Base)</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30 transition-colors">
+                  <td className="p-4 font-bold text-white font-mono">FP32 (Single)</td>
+                  <td className="p-4 text-slate-300 text-sm">1b Signo, 8b Exponente, 23b Mantisa</td>
+                  <td className="p-4 text-slate-300 text-sm">Gráficos 3D, Procesamiento de Señal, Física General</td>
+                  <td className="p-4 font-mono text-slate-100 font-bold text-sm">2x</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30 transition-colors">
+                  <td className="p-4 font-bold text-white font-mono">FP16 / BF16</td>
+                  <td className="p-4 text-slate-300 text-sm">1b Signo, 5/8b Exponente, 10/7b Mantisa</td>
+                  <td className="p-4 text-slate-300 text-sm">Entrenamiento e Inferencia de Redes Neuronales Profundas</td>
+                  <td className="p-4 font-mono text-slate-100 font-bold text-sm">4x - 8x</td>
+                </tr>
+                <tr className="hover:bg-slate-800/30 transition-colors">
+                  <td className="p-4 font-bold text-white font-mono">FP8 / INT8</td>
+                  <td className="p-4 text-slate-300 text-sm">Formatos E4M3 / E5M2 u 8 bits enteros</td>
+                  <td className="p-4 text-slate-300 text-sm">Inferencia de LLMs Masivos y Visión por Computador</td>
+                  <td className="p-4 font-mono text-slate-100 font-bold text-sm">8x - 16x</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </Slide>
 
-      {/* 3. Block Floating Point y Formatos MX (NUEVO) */}
+      {/* 3. Análisis de Precisiones y Precisión Mixta */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.7rem 1.5rem' }}>
-          <span className="hpc-badge">Formatos de Nueva Generación • OCP Microscaling</span>
-          <h2 style={{ fontSize: '1.95rem', marginBottom: '0.6rem' }}>Block Floating Point (BFP) y Formatos MX (Microscaling)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Métricas • Análisis de Precisión</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Trade-offs de Precisión: Rendimiento vs Estabilidad Numérica
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: '1rem', marginBottom: '0.6rem' }}>
-            <div className="hpc-card" style={{ padding: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.68rem' }}>Concepto BFP</span>
-                <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff' }}>¿Por qué Microscaling (MX)?</h4>
-              </div>
-              <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-                En formatos ultra-estrechos (4 o 6 bits), dedicar bits individuales al exponente arruina la mantisa. <strong>BFP (Block Floating Point)</strong> agrupa un bloque de <strong>32 elementos</strong> que comparten un <strong>único factor de escala de 8 bits (Scale Factor E8M0)</strong>.
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Ahorro de Memoria</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Impacto en Ancho de Banda</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Reducir la precisión de FP32 a FP16/BF16 reduce el tamaño de los tensores a la mitad:
               </p>
-              <div style={{ background: '#070a12', padding: '0.4rem 0.6rem', borderRadius: '5px', marginTop: '0.4rem', fontFamily: 'var(--font-code)', fontSize: '0.74rem', color: '#f4b860' }}>
-                <Math math="\text{Valor}_i = \text{Elemento}_i \times 2^{\text{Scale Factor} - \text{Bias}}" />
-              </div>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li><strong className="text-white">50% menos tráfico en DRAM / HBM:</strong> Alivia cuellos de botella de memoria.</li>
+                <li><strong className="text-white">2x capacidad en cachés:</strong> Mayor tasa de aciertos (Hit Rate) en L1/L2.</li>
+                <li><strong className="text-white">2x registros vectoriales:</strong> El doble de elementos en un registro ZMM de 512 bits.</li>
+              </ul>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-                <span className="hpc-badge" style={{ fontSize: '0.68rem' }}>Estándar OCP</span>
-                <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff' }}>Catálogo de Formatos MX</h4>
-              </div>
-              <ul style={{ fontSize: '0.76rem', paddingLeft: '1rem', margin: 0, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '0.25rem', lineHeight: 1.35 }}>
-                <li><strong>MXFP8 (E5M2 / E4M3):</strong> Bloque de 32 elementos FP8. Casi idéntica precisión a FP16 con 50% de memoria.</li>
-                <li><strong>MXFP6 (E3M2 / E2M3):</strong> 6 bits por elemento para compresión de activaciones.</li>
-                <li><strong>MXFP4 (E2M1):</strong> 4 bits por elemento. Clave en <strong>NVIDIA Blackwell (NVFP4)</strong> y <strong>AMD MI350</strong> para 2x throughput en LLMs.</li>
-                <li><strong>MXINT8:</strong> Formato entero de 8 bits con factor de escala compartido.</li>
+            <div className="hpc-card p-6">
+              <span className="hpc-badge font-mono mb-2 text-xs">Estabilidad Numérica</span>
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Precisión Mixta (Mixed Precision)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed mb-3">
+                Técnica estándar en aceleradores modernos (Tensor Cores / Matrix Cores):
+              </p>
+              <ul className="m-0 p-0 pl-4 text-sm text-slate-300 space-y-1.5 list-disc leading-relaxed">
+                <li>Las <strong className="text-white">multiplicaciones</strong> de matrices se calculan en baja precisión (FP16 o FP8) a máxima velocidad.</li>
+                <li>Las <strong className="text-white">sumas y acumulaciones</strong> se mantienen en FP32 para evitar pérdidas por redondeo (Underflow/Overflow).</li>
               </ul>
             </div>
           </div>
 
-          <div className="hpc-card" style={{ padding: '0.6rem 1rem', fontSize: '0.78rem', color: '#e5e7eb' }}>
-            🚀 <strong>Impacto en Hardware HPC:</strong> Estandarizado por la <strong>OCP (Open Compute Project)</strong> por AMD, Arm, Intel, Meta, Microsoft y NVIDIA. Permite que multiplicadores de 4 bits procesen operaciones tensoriales con la precisión dinámica de formatos de 16 bits.
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🚀 <strong className="text-white">Resultado:</strong> Multiplicación de hasta 8x en throughput conservando la convergencia matemática del algoritmo.
           </div>
         </div>
       </Slide>
 
-      {/* 4. Ancho de Banda */}
+      {/* 4. Block Floating Point (BFP): Motivación y Concepto */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Métricas • Transferencia</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>Ancho de Banda (Memory Bandwidth)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Formatos Emergentes • Block Floating Point (1/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Block Floating Point (BFP): Motivación y Silicio
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.2rem' }}>
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>~100 - 300 GB/s</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1rem', color: '#ffffff' }}>RAM Servidor (DDR5)</h4>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                <strong>DDR5 (Double Data Rate 5)</strong>: Memoria principal del servidor conectada por múltiples canales (8 a 12 canales por socket).
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">El Problema de FP8 Escalar</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Asignar un exponente privado a cada elemento individual de 4 u 8 bits desperdicia ancho de banda y superficie de silicio en circuitos redundantes de alineación de coma flotante.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>~3.0 - 5.3 TB/s</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1rem', color: '#ffffff' }}>Memoria HBM3e / HBM4</h4>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                <strong>HBM (High Bandwidth Memory)</strong>: Chips de DRAM apilados en 3D sobre interposers de silicio para GPUs y aceleradores.
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">El Principio de BFP</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                Un bloque de <strong className="text-white">32 elementos contiguos</strong> comparte un <strong className="text-white">único factor de escala común (exponente de 8 bits)</strong>, permitiendo representar cada elemento con mantisas compactas de solo 4 u 8 bits.
               </p>
             </div>
+          </div>
 
-            <div className="hpc-card" style={{ padding: '1.2rem' }}>
-              <span className="hpc-badge" style={{ fontSize: '0.72rem' }}>64 GB/s - 400 Gbps</span>
-              <h4 style={{ margin: '0.4rem 0 0.3rem 0', fontSize: '1rem', color: '#ffffff' }}>PCIe 5.0 / InfiniBand</h4>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.35 }}>
-                <strong>PCIe (Peripheral Component Interconnect Express)</strong> y redes <strong>InfiniBand</strong> para comunicación entre nodos del cluster con MPI.
-              </p>
-            </div>
+          <div className="hpc-card p-4 text-sm text-slate-300 text-center">
+            💡 <strong className="text-white">Eficiencia en Silicio:</strong> Multiplicar mantisas pequeñas requiere multiplicadores enteros mucho más sencillos, triplicando la densidad de cómputo por milímetro cuadrado sin perder rango dinámico.
           </div>
         </div>
       </Slide>
 
-      {/* 5. Latencia vs Ancho de Banda */}
+      {/* 5. Estándar Abierto OCP MX (Microscaling) */}
       <Slide>
-        <div style={{ textAlign: 'left', padding: '0.8rem 1.5rem' }}>
-          <span className="hpc-badge">Métricas • Tiempo de Respuesta</span>
-          <h2 style={{ fontSize: '2.1rem', marginBottom: '1rem' }}>Latencia vs Ancho de Banda (Bandwidth)</h2>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Formatos Emergentes • OCP MX (2/2)</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Catálogo OCP Microscaling (MXFP8, MXFP4, NVFP4)
+            </h2>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="hpc-card" style={{ padding: '1.4rem' }}>
-              <span className="hpc-badge">Concepto de Latencia</span>
-              <h3 style={{ margin: '0.4rem 0 0.4rem 0', fontSize: '1.15rem', color: '#ffffff' }}>Tiempo de Respuesta Inicial</h3>
-              <p style={{ margin: 0, fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.45 }}>
-                El retraso temporal en nanosegundos (ns) o ciclos de reloj desde que la CPU emite una instrucción <code>load</code> hasta que el primer byte llega al registro físico.
+          <div className="grid grid-cols-3 gap-5 my-2">
+            <div className="hpc-card p-5">
+              <h4 className="m-0 text-base font-bold text-white mb-2">MXFP8</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Bloques de 32 valores FP8 (E4M3/E5M2) con escala E8M0 compartida. Máxima precisión para entrenamiento y fine-tuning de LLMs.
               </p>
             </div>
 
-            <div className="hpc-card" style={{ padding: '1.4rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#ffffff' }}>🚰 Analogía de la Tubería</h3>
-              <p style={{ margin: '0.4rem 0 0 0', fontSize: '0.88rem', color: '#e5e7eb', lineHeight: 1.5 }}>
-                • <strong>Latencia:</strong> Tiempo que tarda la primera gota de agua en viajar por el tubo hasta el grifo.<br />
-                • <strong>Ancho de Banda:</strong> El caudal máximo del tubo (cuántos litros de datos fluyen por segundo una vez lleno).
+            <div className="hpc-card p-5">
+              <h4 className="m-0 text-base font-bold text-white mb-2">MXFP4</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Bloques de 32 valores FP4 (E2M1) con escala E8M0 compartida. Reduce el consumo de memoria un 75% frente a FP16 estándar.
               </p>
             </div>
+
+            <div className="hpc-card p-5">
+              <h4 className="m-0 text-base font-bold text-white mb-2">NVFP4 (Blackwell)</h4>
+              <p className="m-0 text-xs text-slate-300 leading-relaxed">
+                Implementación nativa de NVIDIA Blackwell en Tensor Cores de 5ª gen, alcanzando hasta 20 PFLOPS de cómputo por GPU.
+              </p>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            🤝 <strong className="text-white">Alianza de la Industria:</strong> Estandarizado por AMD, ARM, Intel, Meta, Microsoft, NVIDIA y Qualcomm dentro del Open Compute Project (OCP).
+          </div>
+        </div>
+      </Slide>
+
+      {/* 6. Ancho de Banda y Latencia */}
+      <Slide>
+        <div className="text-left px-8 py-6 max-w-6xl w-full min-h-[580px] mx-auto flex flex-col justify-between">
+          <div>
+            <span className="hpc-badge font-mono">Métricas • Tráfico de Memoria</span>
+            <h2 className="text-3xl font-bold text-white mb-3 border-b border-slate-800 pb-2">
+              Ancho de Banda vs Latencia
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 my-2">
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Ancho de Banda (Bandwidth)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                • <strong>Definición:</strong> Volumen de datos transferido por unidad de tiempo (GB/s o TB/s).<br />
+                • <strong>Analogía:</strong> El <em>grosor de la tubería</em>. Determina el caudal máximo sostenido de datos hacia las unidades de cómputo.
+              </p>
+            </div>
+
+            <div className="hpc-card p-6">
+              <h3 className="m-0 text-lg font-bold text-white mb-2">Latencia (Latency)</h3>
+              <p className="m-0 text-sm text-slate-300 leading-relaxed">
+                • <strong>Definición:</strong> Tiempo que tarda un dato individual en viajar desde la memoria hasta el registro del núcleo (en ns o ciclos).<br />
+                • <strong>Analogía:</strong> La <em>velocidad del agua</em> o tiempo de respuesta inicial.
+              </p>
+            </div>
+          </div>
+
+          <div className="hpc-card p-4 text-xs text-slate-300 text-center">
+            💡 <strong className="text-white">Enfoque de Optimización:</strong> En CPUs se optimiza para minimizar <em>Latencia</em> (cachés L1/L2 ultra rápidas); en GPUs se optimiza para maximizar <em>Ancho de Banda</em> masivo (HBM3e a &gt;5 TB/s).
           </div>
         </div>
       </Slide>

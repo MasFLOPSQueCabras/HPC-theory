@@ -1,89 +1,203 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { Chart } from '@tanstack/charts/react';
+import { defineChart, lineY, areaY, dot, ruleX, ruleY } from '@tanstack/charts';
+import { scaleLinear } from '@tanstack/charts/scales/linear';
+
+interface RooflinePoint {
+  readonly intensity: number;
+  readonly performance: number;
+  readonly type: 'memory' | 'compute';
+}
 
 export const RooflineChart: React.FC = () => {
   const [intensity, setIntensity] = useState<number>(0.5); // FLOPs/Byte
 
-  const peakFlops = 100; // GFLOPS (Ceiling)
-  const bandwidth = 100; // GB/s (Slope)
+  const peakFlops = 100; // GFLOPS
+  const bandwidth = 100; // GB/s (Slope = 100)
+  const kneePoint = peakFlops / bandwidth; // 1.0 FLOP/Byte
 
-  // Performance formula: min(Peak FLOPS, Operational Intensity * Bandwidth)
-  const calculatePerf = (i: number) => Math.min(peakFlops, i * bandwidth);
-  const currentPerf = calculatePerf(intensity);
-  const isMemoryBound = intensity * bandwidth < peakFlops;
+  // Current performance calculation: min(Peak FLOPS, I * BW)
+  const currentPerf = Math.min(peakFlops, intensity * bandwidth);
+  const isMemoryBound = intensity < kneePoint;
+
+  // Generate continuous curve for the roofline boundary
+  const rooflineData = useMemo<readonly RooflinePoint[]>(() => {
+    const points: RooflinePoint[] = [];
+    const step = 0.05;
+    const maxI = 2.5;
+    for (let i = 0; i <= maxI + 0.001; i += step) {
+      const roundedI = Math.round(i * 100) / 100;
+      const perf = Math.min(peakFlops, roundedI * bandwidth);
+      points.push({
+        intensity: roundedI,
+        performance: perf,
+        type: roundedI <= kneePoint ? 'memory' : 'compute',
+      });
+    }
+    return points;
+  }, [peakFlops, bandwidth, kneePoint]);
+
+  // Current operating point
+  const currentPoint = useMemo(() => [{
+    intensity,
+    performance: currentPerf,
+  }], [intensity, currentPerf]);
+
+  // Knee point
+  const kneeData = useMemo(() => [{
+    intensity: kneePoint,
+    performance: peakFlops,
+  }], [kneePoint, peakFlops]);
+
+  // Configure TanStack Chart
+  const chartDefinition = useMemo(() => {
+    return defineChart({
+      marks: [
+        // Shaded feasible performance region
+        areaY(rooflineData, {
+          x: 'intensity',
+          y: 'performance',
+          fill: '#38bdf8',
+          opacity: 0.1,
+        }),
+        // Ridge line (Memory bandwidth slope + Peak compute ceiling)
+        lineY(rooflineData, {
+          x: 'intensity',
+          y: 'performance',
+          stroke: '#38bdf8',
+          strokeWidth: 3,
+        }),
+        // Knee point vertical guideline
+        ruleX(kneeData, {
+          x: 'intensity',
+          stroke: '#64748b',
+          strokeWidth: 1.5,
+          strokeDasharray: '4 4',
+        }),
+        // Peak performance horizontal guideline
+        ruleY(kneeData, {
+          y: 'performance',
+          stroke: '#64748b',
+          strokeWidth: 1.5,
+          strokeDasharray: '4 4',
+        }),
+        // Knee point marker
+        dot(kneeData, {
+          x: 'intensity',
+          y: 'performance',
+          fill: '#ffffff',
+          stroke: '#38bdf8',
+          strokeWidth: 2,
+          r: 5,
+        }),
+        // Current user-controlled operational point
+        dot(currentPoint, {
+          x: 'intensity',
+          y: 'performance',
+          fill: '#ffffff',
+          stroke: isMemoryBound ? '#cbd5e1' : '#38bdf8',
+          strokeWidth: 3,
+          r: 7,
+        }),
+      ],
+      x: {
+        scale: scaleLinear().domain([0, 2.5]),
+        grid: true,
+        axis: {
+          label: 'Intensidad Aritmética (FLOPs / Byte)',
+        },
+      },
+      y: {
+        scale: scaleLinear().domain([0, 110]),
+        grid: true,
+        axis: {
+          label: 'Rendimiento Alcanzado (GFLOPS)',
+        },
+      },
+    });
+  }, [rooflineData, currentPoint, kneeData, isMemoryBound]);
 
   return (
-    <div style={{ background: 'var(--hpc-card-bg)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--hpc-card-border)', backdropFilter: 'blur(12px)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-        <h4 style={{ margin: 0, color: 'var(--hpc-primary)', fontSize: '1.1rem' }}>Gráfico Interactivo del Modelo Roofline</h4>
-        <span className={`hpc-badge ${isMemoryBound ? 'badge-rose' : 'badge-emerald'}`}>
-          {isMemoryBound ? 'Limitado por Memoria (Memory-Bound)' : 'Limitado por Cómputo (Compute-Bound)'}
-        </span>
+    <div className="hpc-card p-6 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+      {/* Header bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <span className="hpc-badge font-mono">Roofline Model</span>
+          <h4 className="m-0 text-base font-bold text-white tracking-tight">
+            Visualizador Interactivo de Cuellos de Botella
+          </h4>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className={`px-3 py-1 rounded-md text-xs font-semibold border transition-colors ${
+            isMemoryBound
+              ? 'bg-slate-800 text-slate-300 border-slate-700'
+              : 'bg-slate-800 text-white border-slate-600'
+          }`}>
+            {isMemoryBound ? 'Limitado por Memoria (Memory-Bound)' : 'Limitado por Cómputo (Compute-Bound)'}
+          </span>
+          <span className="px-3 py-1 rounded-md text-xs font-mono font-bold bg-slate-800 text-slate-100 border border-slate-700">
+            {currentPerf.toFixed(1)} / {peakFlops} GFLOPS ({(currentPerf / peakFlops * 100).toFixed(0)}%)
+          </span>
+        </div>
       </div>
 
-      <svg viewBox="0 0 500 250" style={{ width: '100%', height: '220px', overflow: 'visible' }}>
-        {/* Grid lines */}
-        <line x1="50" y1="200" x2="450" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
-        <line x1="50" y1="30" x2="50" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
-
-        {/* Axes labels */}
-        <text x="250" y="235" fill="var(--hpc-muted)" fontSize="11" textAnchor="middle">Intensidad Operacional (FLOPs / Byte)</text>
-        <text x="15" y="115" fill="var(--hpc-muted)" fontSize="11" textAnchor="middle" transform="rotate(-90 15 115)">Rendimiento (GFLOPS)</text>
-
-        {/* Slanted Roofline slope (Memory Ceiling) */}
-        <line x1="50" y1="200" x2="250" y2="60" stroke="#f4b860" strokeWidth="3" strokeDasharray="4 2" />
-        {/* Horizontal Flat Roofline (Compute Ceiling) */}
-        <line x1="250" y1="60" x2="450" y2="60" stroke="#34d399" strokeWidth="3" />
-
-        {/* Knee point text */}
-        <text x="250" y="50" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Knee Point (I = 1.0)</text>
-
-        {/* Current intensity point */}
-        {(() => {
-          // Map intensity (0.1 to 3.0) to SVG X (50 to 450)
-          // Knee point I=1.0 is X=250
-          const svgX = 50 + Math.min(intensity, 2.0) * 200;
-          const perf = calculatePerf(intensity);
-          // Map perf (0 to 100) to SVG Y (200 to 60)
-          const svgY = 200 - (perf / peakFlops) * 140;
-
-          return (
-            <g>
-              <line x1={svgX} y1="200" x2={svgX} y2={svgY} stroke="#38bdf8" strokeDasharray="2 2" opacity="0.6" />
-              <line x1="50" y1={svgY} x2={svgX} y2={svgY} stroke="#38bdf8" strokeDasharray="2 2" opacity="0.6" />
-              <circle cx={svgX} cy={svgY} r="7" fill="#38bdf8" stroke="#ffffff" strokeWidth="2" />
-              <text x={svgX} y={svgY - 12} fill="#38bdf8" fontSize="11" fontWeight="bold" textAnchor="middle">
-                {currentPerf.toFixed(0)} GFLOPS
-              </text>
-            </g>
-          );
-        })()}
-      </svg>
-
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '0.5rem', background: '#080d1a', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <label style={{ fontSize: '0.85rem', color: '#e5e7eb', flexShrink: 0 }}>
-          Intensidad Operacional (I): <strong style={{ color: 'var(--hpc-primary)' }}>{intensity.toFixed(2)} FLOPs/Byte</strong>
-        </label>
-        <input
-          type="range"
-          min="0.1"
-          max="2.0"
-          step="0.05"
-          value={intensity}
-          onChange={(e) => setIntensity(parseFloat(e.target.value))}
-          style={{ flexGrow: 1, accentColor: '#f4b860', cursor: 'pointer' }}
+      {/* TanStack Chart Area */}
+      <div className="my-3 h-[270px] w-full flex items-center justify-center">
+        <Chart
+          definition={chartDefinition}
+          height={270}
+          ariaLabel="Gráfico interactivo del Modelo Roofline con TanStack Charts"
+          className="tanstack-chart-container text-slate-300"
         />
-        <div style={{ display: 'flex', gap: '0.4rem' }}>
+      </div>
+
+      {/* Interactive Controls & Preset Buttons */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pt-3 border-t border-slate-800/80">
+        <div className="md:col-span-6 flex items-center gap-3">
+          <label htmlFor="intensity-slider" className="text-xs font-semibold text-slate-300 whitespace-nowrap">
+            Intensidad (I): <strong className="text-white font-mono">{intensity.toFixed(2)}</strong> FLOPs/B
+          </label>
+          <input
+            id="intensity-slider"
+            type="range"
+            min="0.05"
+            max="2.5"
+            step="0.05"
+            value={intensity}
+            onChange={(e) => setIntensity(parseFloat(e.target.value))}
+            className="w-full accent-slate-300 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+          />
+        </div>
+
+        <div className="md:col-span-6 flex items-center justify-end gap-1.5">
           <button
+            type="button"
             onClick={() => setIntensity(0.25)}
-            style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '4px', background: '#111827', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', cursor: 'pointer' }}
+            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
           >
-            Suma Vector
+            SpMV (0.25)
           </button>
           <button
-            onClick={() => setIntensity(1.5)}
-            style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', borderRadius: '4px', background: '#111827', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', cursor: 'pointer' }}
+            type="button"
+            onClick={() => setIntensity(0.5)}
+            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
           >
-            GEMM (MatMul)
+            Stencil (0.50)
+          </button>
+          <button
+            type="button"
+            onClick={() => setIntensity(1.0)}
+            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
+          >
+            Knee Point (1.0)
+          </button>
+          <button
+            type="button"
+            onClick={() => setIntensity(2.0)}
+            className="px-2.5 py-1 text-xs rounded bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white transition-all"
+          >
+            GEMM (2.0+)
           </button>
         </div>
       </div>

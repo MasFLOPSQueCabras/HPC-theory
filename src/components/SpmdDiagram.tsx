@@ -2,72 +2,60 @@ import React from 'react';
 
 export const SpmdDiagram: React.FC = () => {
   return (
-    <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.2rem', alignItems: 'center' }}>
-        
-        {/* SVG Canvas for SPMD */}
-        <div style={{ background: '#070a12', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.4rem' }}>
-            Mismo Código Binario &rarr; Hilos con Contadores de Programa (PC) Independientes
-          </div>
+    <div className="hpc-card p-5 w-full max-w-6xl mx-auto bg-slate-900/80 border border-slate-700/60 shadow-2xl backdrop-blur-xl">
+      <div className="text-xs font-mono text-slate-400 mb-3 font-semibold flex items-center justify-between">
+        <span>Mismo Código Binario &rarr; Hilos con Contadores de Programa (PC) Autónomos</span>
+        <span className="hpc-badge font-mono text-[10px]">4 Hilos / Ranks</span>
+      </div>
 
-          <svg viewBox="0 0 350 160" style={{ width: '100%', height: '160px' }}>
-            {/* Shared Code Box */}
-            <rect x="10" y="10" width="90" height="140" rx="6" fill="#1e293b" stroke="rgba(255,255,255,0.2)" />
-            <text x="55" y="30" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Código Fuente</text>
-            <text x="55" y="48" fill="#cbd5e1" fontSize="8" textAnchor="middle">(Mismo Binario)</text>
+      <div className="p-3 rounded-xl bg-slate-950/90 border border-slate-800 flex items-center justify-center">
+        <svg viewBox="0 0 680 220" className="w-full h-[220px]">
+          {/* Shared Code Box (Left) */}
+          <g>
+            <rect x="15" y="10" width="180" height="200" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.25)" />
+            <text x="105" y="34" fill="#ffffff" fontSize="13" fontWeight="bold" textAnchor="middle">Código Fuente</text>
+            <text x="105" y="52" fill="#94a3b8" fontSize="10.5" textAnchor="middle">(Binario Único Compartido)</text>
             
-            <line x1="20" y1="58" x2="90" y2="58" stroke="rgba(255,255,255,0.1)" />
+            <line x1="25" y1="64" x2="185" y2="64" stroke="rgba(255,255,255,0.15)" />
             
-            <text x="20" y="75" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">int id = get_id();</text>
-            <text x="20" y="92" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">int start = id*N;</text>
-            <text x="20" y="110" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">for(...) compute()</text>
-            <text x="20" y="128" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">MPI_Send(...);</text>
+            <text x="30" y="88" fill="#cbd5e1" fontSize="11" fontFamily="monospace">int id = get_id();</text>
+            <text x="30" y="112" fill="#cbd5e1" fontSize="11" fontFamily="monospace">int start = id * N;</text>
+            <text x="30" y="136" fill="#cbd5e1" fontSize="11" fontFamily="monospace">for(...) compute();</text>
+            <text x="30" y="160" fill="#cbd5e1" fontSize="11" fontFamily="monospace">MPI_Send(...);</text>
+            <text x="30" y="184" fill="#cbd5e1" fontSize="11" fontFamily="monospace">MPI_Reduce(...);</text>
+          </g>
 
-            {/* Autonomous Threads */}
-            {[
-              { id: 0, range: '[0 ... N/4-1]', pc: 'PC = 0x4012' },
-              { id: 1, range: '[N/4 ... N/2-1]', pc: 'PC = 0x4080' },
-              { id: 2, range: '[N/2 ... 3N/4-1]', pc: 'PC = 0x4024' },
-              { id: 3, range: '[3N/4 ... N-1]', pc: 'PC = 0x4098' }
-            ].map((t, i) => (
-              <g key={t.id}>
-                {/* Arrow from Code to Thread */}
-                <path d={`M 100 80 Q 120 ${30 + i * 36}, 140 ${30 + i * 36}`} stroke="#94a3b8" strokeWidth="1.2" fill="none" />
+          {/* Autonomous Threads & Data Partitions (Right) */}
+          {[
+            { id: 0, range: '[0 ... N/4 - 1]', pc: 'PC = 0x4012' },
+            { id: 1, range: '[N/4 ... N/2 - 1]', pc: 'PC = 0x4080' },
+            { id: 2, range: '[N/2 ... 3N/4 - 1]', pc: 'PC = 0x4024' },
+            { id: 3, range: '[3N/4 ... N - 1]', pc: 'PC = 0x4098' }
+          ].map((t, i) => (
+            <g key={t.id}>
+              {/* Curve Arrow from Code to Thread */}
+              <path
+                d={`M 195 110 Q 235 ${32 + i * 48}, 265 ${32 + i * 48}`}
+                stroke="#64748b"
+                strokeWidth="1.8"
+                fill="none"
+              />
 
-                {/* Thread Box */}
-                <rect x="140" y={16 + i * 36} width="85" height="28" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" />
-                <text x="148" y={30 + i * 36} fill="#ffffff" fontSize="9" fontWeight="bold">Hilo / Rank {t.id}</text>
-                <text x="148" y={40 + i * 36} fill="#94a3b8" fontSize="7">{t.pc}</text>
+              {/* Thread Box */}
+              <rect x="265" y={12 + i * 48} width="165" height="40" rx="6" fill="#1e293b" stroke="rgba(255,255,255,0.25)" />
+              <text x="280" y={29 + i * 48} fill="#ffffff" fontSize="11" fontWeight="bold">Hilo / Rank {t.id}</text>
+              <text x="280" y={44 + i * 48} fill="#94a3b8" fontSize="10" fontFamily="monospace">{t.pc}</text>
 
-                {/* Data Partition Box */}
-                <rect x="240" y={16 + i * 36} width="95" height="28" rx="4" fill="#0b0f19" stroke="rgba(255,255,255,0.15)" />
-                <text x="287" y={28 + i * 36} fill="#cbd5e1" fontSize="7.5" textAnchor="middle">Partición de Datos</text>
-                <text x="287" y={39 + i * 36} fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">{t.range}</text>
-              </g>
-            ))}
-          </svg>
-        </div>
+              {/* Connector line between thread and partition */}
+              <line x1="430" y1={32 + i * 48} x2="465" y2={32 + i * 48} stroke="#64748b" strokeWidth="1.5" strokeDasharray="3 2" />
 
-        {/* Right Explanation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div className="hpc-card" style={{ padding: '0.9rem' }}>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Ejecución Asíncrona</span>
-            <h4 style={{ margin: '0.3rem 0 0.2rem 0', color: '#ffffff', fontSize: '0.95rem' }}>Independencia de Hilos</h4>
-            <p style={{ margin: 0, fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              Cada proceso/hilo avanza a su propio ritmo con su propio <strong>Contador de Programa (PC)</strong>. Las ramas <code>if / else</code> divergentes no bloquean al resto de procesadores.
-            </p>
-          </div>
-
-          <div className="hpc-card" style={{ padding: '0.9rem' }}>
-            <span className="hpc-badge" style={{ fontSize: '0.7rem' }}>Modelos Dominantes</span>
-            <p style={{ margin: '0.3rem 0 0 0', fontSize: '0.78rem', color: '#cbd5e1', lineHeight: 1.4 }}>
-              • <strong>MPI (Message Passing Interface):</strong> Memoria distribuida entre nodos de cluster.<br />
-              • <strong>OpenMP:</strong> Hilos concurrentes en memoria compartida multi-socket.
-            </p>
-          </div>
-        </div>
-
+              {/* Data Partition Box */}
+              <rect x="465" y={12 + i * 48} width="195" height="40" rx="6" fill="#0b0f19" stroke="rgba(255,255,255,0.2)" />
+              <text x="562" y={28 + i * 48} fill="#94a3b8" fontSize="9.5" textAnchor="middle">Partición de Datos</text>
+              <text x="562" y={43 + i * 48} fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">{t.range}</text>
+            </g>
+          ))}
+        </svg>
       </div>
     </div>
   );
