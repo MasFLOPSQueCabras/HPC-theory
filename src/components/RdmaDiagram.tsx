@@ -93,14 +93,24 @@ export const RdmaDiagram: React.FC = () => {
             <rect x="20" y="15" width="280" height="175" rx="8" fill="#151a27" stroke="#34d399" strokeWidth="1.5" />
             <text x="160" y="38" fill="#34d399" fontSize="12.5" fontWeight="bold" textAnchor="middle">Nodo Local (Emisor)</text>
 
-            <rect x="38" y="50" width="244" height="36" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
-            <text x="160" y="73" fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">User Space Memory (Buffer)</text>
+            {/* User Space Box */}
+            <rect x="38" y="48" width="244" height="36" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
+            <text x="160" y="71" fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">User Space Memory (Buffer)</text>
 
-            <rect x="38" y="96" width="244" height="32" rx="5" fill="#07080c" stroke="#232a3d" strokeDasharray="3 3" />
-            <text x="160" y="116" fill="#34d399" fontSize="10.5" textAnchor="middle">Kernel Bypass (0 Copias en RAM)</text>
+            {/* Bypassed Kernel Area Outline */}
+            <rect x="38" y="92" width="244" height="36" rx="5" fill="#07080c" stroke="#334155" strokeDasharray="3 3" opacity="0.4" />
 
+            {/* RNIC Box */}
             <rect x="38" y="138" width="244" height="38" rx="5" fill="#102030" stroke="#38bdf8" strokeWidth="1.2" />
             <text x="160" y="162" fill="#38bdf8" fontSize="11" fontWeight="bold" textAnchor="middle">RNIC (Hardware Offload DMA)</text>
+
+            {/* Direct Kernel Bypass DMA Path (Node A) */}
+            <line x1="160" y1="84" x2="160" y2="138" stroke="#34d399" strokeWidth="3" />
+            <polygon points="154,130 160,138 166,130" fill="#34d399" />
+            <rect x="65" y="97" width="190" height="26" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
+            <text x="160" y="114" fill="#34d399" fontSize="10" fontWeight="bold" textAnchor="middle">
+              Kernel Bypass (0 Copias en RAM)
+            </text>
 
             {/* Central Network Bridge (Generous 200px gap between 300 and 500) */}
             <line x1="282" y1="157" x2="518" y2="157" stroke="#34d399" strokeWidth="3.5" />
@@ -117,17 +127,24 @@ export const RdmaDiagram: React.FC = () => {
             <rect x="500" y="15" width="280" height="175" rx="8" fill="#151a27" stroke="#34d399" strokeWidth="1.5" />
             <text x="640" y="38" fill="#34d399" fontSize="12.5" fontWeight="bold" textAnchor="middle">Nodo Remoto (Receptor)</text>
 
-            <rect x="518" y="50" width="244" height="36" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
-            <text x="640" y="73" fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">User Space Memory (Direct DMA)</text>
+            {/* User Space Box */}
+            <rect x="518" y="48" width="244" height="36" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
+            <text x="640" y="71" fill="#ffffff" fontSize="11" fontWeight="bold" textAnchor="middle">User Space Memory (Direct DMA)</text>
 
-            <rect x="518" y="96" width="244" height="32" rx="5" fill="#07080c" stroke="#232a3d" strokeDasharray="3 3" />
-            <text x="640" y="116" fill="#34d399" fontSize="10.5" textAnchor="middle">Kernel Bypass (0 Interrupciones CPU)</text>
+            {/* Bypassed Kernel Area Outline (Node B) */}
+            <rect x="518" y="92" width="244" height="36" rx="5" fill="#07080c" stroke="#334155" strokeDasharray="3 3" opacity="0.4" />
 
+            {/* RNIC Box */}
             <rect x="518" y="138" width="244" height="38" rx="5" fill="#102030" stroke="#38bdf8" strokeWidth="1.2" />
             <text x="640" y="162" fill="#38bdf8" fontSize="11" fontWeight="bold" textAnchor="middle">RNIC (RoCEv2 / InfiniBand NDR)</text>
 
-            {/* Direct DMA Flow Line */}
-            <path d="M 160,86 L 160,138 M 640,138 L 640,86" stroke="#34d399" strokeWidth="2.5" fill="none" />
+            {/* Direct Kernel Bypass DMA Path (Node B) */}
+            <line x1="640" y1="138" x2="640" y2="84" stroke="#34d399" strokeWidth="3" />
+            <polygon points="634,92 640,84 646,92" fill="#34d399" />
+            <rect x="545" y="97" width="190" height="26" rx="5" fill="#10241e" stroke="#34d399" strokeWidth="1.2" />
+            <text x="640" y="114" fill="#34d399" fontSize="10" fontWeight="bold" textAnchor="middle">
+              Kernel Bypass (0 Copias en RAM)
+            </text>
           </svg>
         )}
       </div>
