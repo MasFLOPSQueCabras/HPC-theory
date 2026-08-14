@@ -297,19 +297,36 @@ button, input, select, textarea, a, .tanstack-chart-container, svg {
   touch-action: manipulation;
 }
 
-@media (max-width: 768px) {
+/* Mobile Controls & Orientation Rules */
+.mobile-nav-bar {
+  display: none !important;
+}
+
+@media (orientation: portrait) {
+  .mobile-nav-bar {
+    display: flex !important;
+  }
+
+  /* In portrait mode, hide native reveal corner controls to avoid duplicates */
+  .reveal .controls {
+    display: none !important;
+  }
+
   .reveal .slide-number {
     top: 10px !important;
     right: 12px !important;
     font-size: 0.72rem !important;
     padding: 0.15rem 0.5rem !important;
   }
+}
+
+@media (orientation: landscape) {
+  .mobile-nav-bar {
+    display: none !important;
+  }
 
   .reveal .controls {
-    bottom: 12px !important;
-    right: 12px !important;
-    transform: scale(1.15) !important;
-    transform-origin: bottom right !important;
+    display: block !important;
   }
 }
 

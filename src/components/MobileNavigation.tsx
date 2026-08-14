@@ -111,7 +111,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
   if (!reveal) return null;
 
   return (
-    <div className="mobile-nav-bar fixed bottom-3 left-0 right-0 z-[99999] px-4 pointer-events-none flex justify-center md:hidden">
+    <div className="mobile-nav-bar fixed bottom-3 left-0 right-0 z-[99999] px-4 pointer-events-none hidden portrait:flex justify-center">
       <div className="pointer-events-auto flex items-center justify-between gap-2.5 bg-[#0d1017]/95 border border-[#232a3d] backdrop-blur-md px-3.5 py-2 rounded-xl shadow-2xl max-w-sm w-full">
         {/* Previous Button */}
         <button
