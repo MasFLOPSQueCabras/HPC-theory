@@ -28,9 +28,9 @@ export function Presentation() {
         deckRef={(api) => setDeckInstance(api)}
         config={{
           touch: true,
-          navigationMode: 'default',
+          navigationMode: 'linear',
           controls: true,
-          controlsTutorial: true,
+          controlsTutorial: false,
           controlsLayout: 'bottom-right',
           controlsBackArrows: 'faded',
           progress: true,
@@ -44,6 +44,7 @@ export function Presentation() {
           minScale: 0.05,
           maxScale: 3.0,
           mobileViewDistance: 4,
+          scrollActivationWidth: 0,
         }}
       >
         <Title />

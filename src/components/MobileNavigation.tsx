@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface MobileNavigationProps {
   reveal: any;
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) => {
-  const [slideText, setSlideText] = useState<string>('1 / 1');
-  const [routes, setRoutes] = useState({ left: false, right: false, up: false, down: false });
-  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+  const [slideText, setSlideText] = useState<string>('1 / 91');
 
   useEffect(() => {
     if (!reveal) return;
@@ -15,29 +13,28 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
     const updateState = () => {
       try {
         let current = 1;
-        let total = 1;
+        let total = 91;
 
-        if (typeof reveal.getSlidePastCount === 'function' && typeof reveal.getTotalSlides === 'function') {
+        if (typeof reveal.getSlidePastCount === 'function') {
           const past = reveal.getSlidePastCount();
-          const tot = reveal.getTotalSlides();
-          if (typeof past === 'number' && typeof tot === 'number' && tot > 0) {
+          if (typeof past === 'number') {
             current = past + 1;
+          }
+        } else if (typeof reveal.getIndices === 'function') {
+          const indices = reveal.getIndices();
+          if (indices && typeof indices.h === 'number') {
+            current = indices.h + 1;
+          }
+        }
+
+        if (typeof reveal.getTotalSlides === 'function') {
+          const tot = reveal.getTotalSlides();
+          if (typeof tot === 'number' && tot > 0) {
             total = tot;
           }
         }
 
-        // Check if Reveal DOM slide-number has text
-        const domSlideNumber = document.querySelector('.reveal .slide-number');
-        const formatted = domSlideNumber?.textContent?.trim() || `${current} / ${total}`;
-        setSlideText(formatted);
-
-        const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-        setRoutes({
-          left: !!available.left,
-          right: !!available.right,
-          up: !!available.up,
-          down: !!available.down,
-        });
+        setSlideText(`${current} / ${total}`);
       } catch (err) {
         console.error('Error updating reveal mobile state:', err);
       }
@@ -50,80 +47,11 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
       reveal.on('slidechanged', updateState);
       reveal.on('fragmentshown', updateState);
       reveal.on('fragmenthidden', updateState);
+      reveal.on('slidetransitionend', updateState);
     }
 
-    // Global Mobile Swipe Handler for seamless portrait navigation
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        touchStartRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-          time: Date.now(),
-        };
-      }
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (!touchStartRef.current || e.changedTouches.length !== 1) return;
-
-      const deltaX = e.changedTouches[0].clientX - touchStartRef.current.x;
-      const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
-      const deltaTime = Date.now() - touchStartRef.current.time;
-
-      const absX = Math.abs(deltaX);
-      const absY = Math.abs(deltaY);
-
-      // Require minimum swipe distance (25px) and fast enough gesture (< 700ms)
-      if (deltaTime < 700 && (absX > 25 || absY > 25)) {
-        if (absX > absY) {
-          // Horizontal Swipe
-          if (deltaX < -25) {
-            // Swipe Left -> Next
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.down) {
-              reveal.down();
-            } else {
-              reveal.next();
-            }
-          } else if (deltaX > 25) {
-            // Swipe Right -> Prev
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.up) {
-              reveal.up();
-            } else {
-              reveal.prev();
-            }
-          }
-        } else {
-          // Vertical Swipe
-          if (deltaY < -25) {
-            // Swipe Up -> Down into vertical sub-slide or next
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.down) {
-              reveal.down();
-            } else {
-              reveal.next();
-            }
-          } else if (deltaY > 25) {
-            // Swipe Down -> Up in vertical stack or prev
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.up) {
-              reveal.up();
-            } else {
-              reveal.prev();
-            }
-          }
-        }
-      }
-
-      touchStartRef.current = null;
-    };
-
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-
     // Periodic safety check to ensure slide number is always synced
-    const interval = setInterval(updateState, 500);
+    const interval = setInterval(updateState, 300);
 
     return () => {
       clearInterval(interval);
@@ -132,9 +60,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
         reveal.off('slidechanged', updateState);
         reveal.off('fragmentshown', updateState);
         reveal.off('fragmenthidden', updateState);
+        reveal.off('slidetransitionend', updateState);
       }
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [reveal]);
 
@@ -142,66 +69,38 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ reveal }) =>
 
   return (
     <div className="mobile-nav-bar fixed bottom-3 left-0 right-0 z-[99999] px-4 pointer-events-none hidden portrait:flex justify-center">
-      <div className="pointer-events-auto flex items-center justify-between gap-2.5 bg-[#0d1017]/95 border border-[#232a3d] backdrop-blur-md px-3.5 py-2 rounded-xl shadow-2xl max-w-sm w-full">
+      <div className="pointer-events-auto flex items-center justify-between gap-3 bg-[#0d1017]/95 border border-[#232a3d] backdrop-blur-md px-4 py-2 rounded-xl shadow-2xl max-w-sm w-full">
         {/* Previous Button */}
         <button
           type="button"
           onClick={() => {
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.up) {
-              reveal.up();
-            } else {
+            if (typeof reveal.prev === 'function') {
               reveal.prev();
             }
           }}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#151a27] border border-[#232a3d] text-slate-200 hover:text-white hover:border-[#e6ff00]/40 text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#151a27] border border-[#232a3d] text-slate-200 hover:text-white hover:border-[#e6ff00]/40 text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation cursor-pointer"
           aria-label="Diapositiva anterior"
         >
           <span>&larr;</span>
           <span>Ant</span>
         </button>
 
-        {/* 2D Direction Pad for vertical stacks */}
-        <div className="flex items-center gap-1 font-mono text-xs">
-          {routes.up && (
-            <button
-              type="button"
-              onClick={() => reveal.up()}
-              className="p-1.5 rounded bg-[#151a27] text-[#e6ff00] border border-[#e6ff00]/30 active:scale-90 touch-manipulation"
-              title="Sub-diapositiva arriba"
-            >
-              &uarr;
-            </button>
-          )}
-
-          <span className="text-[#e6ff00] font-bold px-2 py-0.5 rounded bg-[#07080c] border border-[#232a3d] text-[11px] font-mono tracking-wider">
+        {/* Slide Counter Badge */}
+        <div className="flex items-center justify-center font-mono">
+          <span className="text-[#e6ff00] font-bold px-3 py-1 rounded-md bg-[#07080c] border border-[#232a3d] text-xs font-mono tracking-wider shadow-inner select-none">
             {slideText}
           </span>
-
-          {routes.down && (
-            <button
-              type="button"
-              onClick={() => reveal.down()}
-              className="p-1.5 rounded bg-[#151a27] text-[#e6ff00] border border-[#e6ff00]/30 active:scale-90 touch-manipulation animate-pulse"
-              title="Sub-diapositiva abajo"
-            >
-              &darr;
-            </button>
-          )}
         </div>
 
         {/* Next Button */}
         <button
           type="button"
           onClick={() => {
-            const available = typeof reveal.availableRoutes === 'function' ? reveal.availableRoutes() : {};
-            if (available.down) {
-              reveal.down();
-            } else {
+            if (typeof reveal.next === 'function') {
               reveal.next();
             }
           }}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#151a27] border border-[#e6ff00]/40 text-[#e6ff00] hover:bg-[#1a2233] text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#151a27] border border-[#e6ff00]/40 text-[#e6ff00] hover:bg-[#1a2233] text-xs font-mono font-bold transition-all active:scale-95 touch-manipulation cursor-pointer"
           aria-label="Siguiente diapositiva"
         >
           <span>Sig</span>
